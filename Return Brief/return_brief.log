@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  5 AUG 2013 16:15
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  5 AUG 2013 17:19
 entering extended mode
 **./return_brief.tex
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Return Brief\return_brief.tex
@@ -129,9 +129,13 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 33.
- [1
 
-{C:/Users/Veritas/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
+! I can't write on file `return_brief.pdf'.
+Please type another file name for output: return_brief.pdf
+[1
+
+{C:/Users/Veritas/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+[2]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
@@ -142,17 +146,17 @@ Missing character: There is no ™ in font cmr12!
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Return Brief\return_brief.aux
 ") ) 
 Here is how much of TeX's memory you used:
- 1119 strings out of 493921
- 13042 string characters out of 3144871
+ 1120 strings out of 493921
+ 13066 string characters out of 3144871
  64584 words of memory out of 3000000
- 4456 multiletter control sequences out of 15000+200000
+ 4457 multiletter control sequences out of 15000+200000
  8313 words of font info for 32 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  27i,6n,24p,1015b,235s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pf
 b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><
 C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on return_brief.pdf (4 pages, 48011 bytes).
+Output written on return_brief.pdf (4 pages, 48358 bytes).
 PDF statistics:
  27 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
