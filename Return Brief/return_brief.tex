@@ -1,0 +1,82 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts}
+
+\pagestyle{plain}
+
+\setlength{\textwidth}{5.7truein}
+\setlength{\textheight}{8.7truein}
+\setlength{\oddsidemargin}{3.0mm}
+\setlength{\evensidemargin}{3.0mm}
+\setlength{\topmargin}{-12.5truemm}
+\setlength{\parindent}{0.0truemm}
+\parskip=2mm
+
+\title{\bf Sprint Zero Return Brief}
+\author{THEM \\ Carl Hattenfels \\ Scott Heiner \\ Shen Long Yao \\ Robert Meyer \\ Brendan Miller \\ David Uebergang}
+
+%\date{}
+%% See what happens if the above line has a % symbol at the start, so that it's ignored!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+
+\section*{Return Brief}
+
+Our team plans to implement a web based application that allows users to evaluate HTML5 files and entire website structures. This brief was provided by Lorna MacDonald, the course co-ordinator of the UQ course DECO1400. Specifically, this application will be utilised by the students of that course, providing them with an application to check the validity of their files. This external factor, however, will have little bearing on our final product, as Lorna has allowed us freedom in how we choose to implement her specification. This application aims to provide an easy way for students to check their code quickly and efficiently, and the web application allows for this capability to be platform independent.
+
+The application will analyse the content of individual pages and determine how closely the file's style conforms to ``best practice'' criteria. The common issues this program will check for are:
+\begin{itemize}
+\item Structural/syntactical
+\begin{itemize}
+\item Multiple instances of singular tags - html, head, body, footer
+\item Incorrect page structure (html, head, body, footer - where tags are missing or in the wrong order)
+\item Form elements not being contained in a form object
+\item Failure to close tags that require a closing tag
+\item Incorrect nesting of tags - resulting in overlapping html tags
+\item Incorrect table structures - cells not in rows, different numbers of cells in rows where colspans are not specified
+\item Missing title tag in head
+\item Missing required attributes (src for img, href or name for a, href for link etc)
+\item Use of short tags - self-closing tags not having forward slash
+\item Use of PHP in a html file (that is, not using php extension)
+\item Form elements
+\item incorrect or misspelt type attributes for inputs
+\item missing value attributes,
+\item radio inputs with the same id,
+\item inputs missing name attribute - causes issues when accessing via \\ JavaScript or PHP
+\end{itemize}
+\item Deprecated elements:
+\begin{itemize}
+\item Use of frames
+\item Use of deprecated, presentational tags (b, i, small etc)
+\end{itemize}
+\item Accessibility:
+\begin{itemize}
+\item Form elements not having labels
+\item Missing alt tags on images - accessibility standards not followed
+\end{itemize}
+\item Poor practice/Miscellaneous:
+\begin{itemize}
+\item Using tables for layout
+\item Semantic issues - multiple H1's, incorrect use of headings
+\item Multiple elements with the same value for the id attribute - causes issues when they begin to work with JavaScript and the DOM.
+\item Special characters used or non-ASCII character used.
+\end{itemize}\end{itemize}
+
+Users can also upload zipped files of entire websites that the application checks for whether the files have been linked correctly in the HTML files. The application should be able to recognise: 
+\begin{itemize}
+\item Incorrect linking to local files - images, css, javascript and other HTML files. This could be due to files being in a different location to the link specified or due a mismatch in the case used in the filepath. (the application may look into the files provided and give a possible correction)
+\item  Presence of an index.html file. This is something that students regularly forget which causes issues when they publish to a web server.
+\item  Cleanliness of file structure - placement of CSS files into a CSS directory, of image files into an images directory etc.
+\end{itemize}
+
+The application will utilise HTML5, CSS, php, as well as Python for parsing the files. For the duration of development, it will be hosted on a personal server, but after development may be placed on a UQ web server.
+
+\section*{Quote}
+
+\section*{Risk Analysis}
+
+\end{document}
