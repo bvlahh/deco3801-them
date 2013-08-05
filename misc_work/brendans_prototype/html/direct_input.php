@@ -9,8 +9,8 @@ print <<<END
     
     <div class="datainput">
         Direct Input
-        <form action="" method="">
-            <textarea name=""></textarea>
+        <form action="do_direct_input" method="post">
+            <textarea name="input"></textarea>
             <div>
                 <input type="submit" value="Validate" class="button" />
             </div>

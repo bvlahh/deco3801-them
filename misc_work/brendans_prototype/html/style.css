@@ -67,6 +67,7 @@ a:hover {
     font-weight: bold;
     padding-top: 5px;
     padding-left: 20px;
+    margin-bottom: -10px;
     
 }
 
@@ -282,4 +283,25 @@ a:hover {
     color: #DDDDDD;
     font-size: 80%;
     
+}
+
+.file {
+	
+	border: 1px solid #DDDDDD;
+	
+}
+
+.file_lines {
+	
+	padding-right: 5px;
+	background-color: #EEEEEE;
+	float: left;
+	
+}
+
+.file_body {
+	
+	background-color: #FBFBFB;
+	float: left;
+		
 }
