@@ -3,6 +3,7 @@
 require_once "misc.php";
 require_once "header.php";
 require_once "footer.php";
+require_once "JsonRpcClient.php";
 
 if (! array_key_exists("input", $_POST) )
 	redirect("/direct_input");
@@ -18,6 +19,10 @@ for ($l=1; $l<$lines+2; $l++)
 
 $escaped_input = htmlspecialchars($input);
 
+$parser = new JsonRpcClient("http://localhost:8080");
+
+$parsed = $parser->parse_html($escaped_input);
+
 draw_header("");
 
 print <<<END
@@ -30,8 +35,9 @@ print <<<END
 	
 	<div class="file_body">
 		<pre>$escaped_input</pre>
-	</div>
-	
+        <pre>$parsed</pre>
+
+	</div>	
 	<div class="cb"></div>
 	
 </div>
