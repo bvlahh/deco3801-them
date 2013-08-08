@@ -44,7 +44,7 @@ service iptables restart;
 # copy config files - we're not customising php.ini yet
 mv -f ./supervisord.conf /usr/etc/supervisord.conf;
 mv -f ./nginx.conf /etc/nginx/nginx.conf;
-#mv ./php.ini /etc/php.ini;
+mv -f ./php.ini /etc/php.ini;
 
 # start it all
 service supervisord start;
