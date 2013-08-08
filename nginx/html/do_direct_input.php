@@ -10,6 +10,10 @@ if (! array_key_exists("input", $_POST) )
 
 $input = $_POST["input"];
 
+$parser = new JsonRpcClient("http://localhost:8080");
+
+$parsed = $parser->parse_html($input);
+
 $lines = substr_count($input, "\n");
 
 $line_nos = "";
@@ -18,10 +22,6 @@ for ($l=1; $l<$lines+2; $l++)
 	$line_nos .= "$l\n";
 
 $escaped_input = htmlspecialchars($input);
-
-$parser = new JsonRpcClient("http://localhost:8080");
-
-$parsed = $parser->parse_html($escaped_input);
 
 draw_header("");
 
@@ -35,10 +35,13 @@ print <<<END
 	
 	<div class="file_body">
 		<pre>$escaped_input</pre>
-        <pre>$parsed</pre>
-
-	</div>	
+	</div>
+    
 	<div class="cb"></div>
+    
+    <div style="background-color: #EEEEEE; text-align: center;">
+        <pre>$parsed line(s)</pre>
+    </div>
 	
 </div>
 
