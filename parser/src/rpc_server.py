@@ -4,7 +4,7 @@ def line_count(input):
     return len(input.split('\n'))
 
 def parse_html(s):
-    return line_count(s) 
+    return '\n'+line_count(s) 
 
 server = SimpleJSONRPCServer(('localhost', 8080))
 server.register_function(parse_html, 'parse_html')
