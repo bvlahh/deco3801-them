@@ -14,16 +14,18 @@ $parser = new JsonRpcClient("http://localhost:8080");
 
 $parsed = $parser->parse_html($input);
 
-$lines = substr_count($input, "\n");
+$lines = $parsed == 1 ? "line" : "lines";
+
+$num_lines = substr_count($input, "\n");
 
 $line_nos = "";
 
-for ($l=1; $l<$lines+2; $l++)
+for ($l=1; $l<$num_lines+2; $l++)
 	$line_nos .= "$l\n";
 
 $escaped_input = htmlspecialchars($input);
 
-draw_header("");
+draw_header("Direct Input");
 
 print <<<END
 
@@ -40,7 +42,7 @@ print <<<END
 	<div class="cb"></div>
     
     <div style="background-color: #EEEEEE; text-align: center;">
-        <pre>$parsed line(s)</pre>
+        <pre>$parsed $lines</pre>
     </div>
 	
 </div>
