@@ -3,6 +3,7 @@
 require_once "misc.php";
 require_once "header.php";
 require_once "footer.php";
+require_once "JsonRpcClient.php";
 
 if (! array_key_exists("archive", $_FILES) )
     redirect("/upload_zip");
@@ -10,32 +11,73 @@ if (! array_key_exists("archive", $_FILES) )
 $filename = $_FILES["archive"]["name"];
 $file = $_FILES["archive"]["tmp_name"];
 
-$za = new ZipArchive();
+$z = new ZipArchive();
 
-$za->open($file);
+if (! $z->open($file) )
+    redirect("/upload_zip?upload_failed");
 
-draw_header("");
+$parser = new JsonRpcClient("http://localhost:8080");
 
-print "<pre>";
+draw_header("Uploaded ZIP");
 
-print_r($za);
+$archive_name = $filename;
+$num_files = $z->numFiles;
 
-var_dump($za);
+$files = $num_files == 1 ? "file" : "files";
 
-echo "numFiles: " . $za->numFiles . "\n";
-echo "status: " . $za->status  . "\n";
-echo "statusSys: " . $za->statusSys . "\n";
-echo "filename: " . $za->filename . "\n";
-echo "comment: " . $za->comment . "\n";
+print <<<END
+    
+    <span style="font-weight: bold;">$archive_name</span><br/>
+    $num_files $files<br/>
+    <table>
+        <tr>
+            <th>
+                Filename
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                RPC Says
+            </th>
+        </tr>
+END;
 
-for ($i=0; $i<$za->numFiles;$i++) {
-    echo "index: $i\n";
-    print_r($za->statIndex($i));
+for ($i=0; $i<($z->numFiles);$i++) {
+    
+    $file_name = $z->getNameIndex($i);
+    $file_stat = $z->statIndex($i);
+    
+    $file_data = $z->getFromIndex($i);
+    $len = strlen($file_data);
+    
+    $rpc = htmlspecialchars( $parser->parse_html($file_data) );
+    
+    print <<<END
+        
+        <tr>
+            <td>
+                $file_name
+            </td>
+            <td>
+                $len
+            </td>
+            <td>
+                $rpc
+            </td>
+        </tr>
+        
+END;
+    
 }
 
-echo "numFile:" . $za->numFiles . "\n";
+print <<<END
+    
+    </table>
+    
+END;
 
-print "</pre>";
+$z->close();
 
 draw_footer();
 

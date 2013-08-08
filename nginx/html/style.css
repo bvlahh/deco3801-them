@@ -295,7 +295,8 @@ a:hover {
 	padding-right: 5px;
 	background-color: #EEEEEE;
 	float: left;
-	
+	text-align: right;
+    
 }
 
 .file_body {
