@@ -3,7 +3,7 @@
 require_once "misc.php";
 require_once "header.php";
 require_once "footer.php";
-require_once "JsonRpcClient.php";
+require_once "rpc_client.php";
 
 if (! array_key_exists("archive", $_FILES) )
     redirect("/upload_zip");
@@ -15,8 +15,6 @@ $z = new ZipArchive();
 
 if (! $z->open($file) )
     redirect("/upload_zip?upload_failed");
-
-$parser = new JsonRpcClient("http://localhost:8080");
 
 draw_header("THEM prototype - Uploaded ZIP");
 
@@ -43,6 +41,10 @@ print <<<END
         </tr>
 END;
 
+$filenames = array();
+for ($i=0; $i<($z->numFiles);$i++)
+	$filenames[] = $z->getNameIndex($i);
+
 for ($i=0; $i<($z->numFiles);$i++) {
     
     $file_name = $z->getNameIndex($i);
@@ -51,7 +53,7 @@ for ($i=0; $i<($z->numFiles);$i++) {
     $file_data = $z->getFromIndex($i);
     $len = strlen($file_data);
     
-    $rpc = htmlspecialchars( $parser->parse_html($file_data) );
+    $rpc = htmlspecialchars( rpc_validate($filenames, base64_encode($file_data)) );
     
     print <<<END
         
