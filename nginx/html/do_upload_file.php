@@ -21,7 +21,7 @@ for ($l=1; $l<$num_lines+2; $l++)
 
 $escaped_input = htmlspecialchars($input);
 
-draw_header("Uploaded File");
+draw_header("THEM prototype - Uploaded File");
 
 print <<<END
     

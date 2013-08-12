@@ -25,7 +25,7 @@ for ($l=1; $l<$num_lines+2; $l++)
 
 $escaped_input = htmlspecialchars($input);
 
-draw_header("Direct Input");
+draw_header("THEM prototype - Direct Input");
 
 print <<<END
 

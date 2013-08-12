@@ -3,7 +3,7 @@
 require_once "header.php";
 require_once "footer.php";
 
-draw_header("Brendans prototype", 3);
+draw_header("THEM prototype - Upload ZIP", 3);
 
 print <<<END
     

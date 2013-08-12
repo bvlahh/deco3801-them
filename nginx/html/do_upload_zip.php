@@ -18,7 +18,7 @@ if (! $z->open($file) )
 
 $parser = new JsonRpcClient("http://localhost:8080");
 
-draw_header("Uploaded ZIP");
+draw_header("THEM prototype - Uploaded ZIP");
 
 $archive_name = $filename;
 $num_files = $z->numFiles;
