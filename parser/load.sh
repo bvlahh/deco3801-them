@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this copies ./html to the server
+# this copies ./src to the server
 
 server_user='root';
 server_address='vmx14562.hosting24.com.au';
@@ -9,27 +9,27 @@ app_dir='~/parser';
 
 srv_user='root';
 
-mkdir ./temp;
+mkdir ./temp1;
 
-cp -r ./src ./temp
+cp -r ./src ./temp1
 
-tar -cf temp.tar temp/;
+tar -cf temp1.tar temp1/;
 
-rm -rf ./temp;
+rm -rf ./temp1;
 
-scp ./temp.tar $server_user@$server_address:~;
+scp ./temp.tar1 $server_user@$server_address:~;
 
-rm -f ./temp.tar;
+rm -f ./temp.tar1;
 
 ssh $server_user@$server_address "
 
 rm -rf $app_dir;
 
-tar -xmf temp.tar;
+tar -xmf temp.tar1;
 mv -f ./temp/ $app_dir;
 
-rm -rf ./temp;
-rm -f ./temp.tar;
+rm -rf ./temp1;
+rm -f ./temp1.tar;
 
 supervisorctl restart parser
 ";
