@@ -287,6 +287,9 @@ E = {
         _("Unexpected end tag (%(name)s) before html."),
     "XXX-undefined-error":
         _("Undefined error (this sucks and should be fixed)"),
+    # DECO3801 - New error codes.
+    "multiple-instance-singular-tag":
+        _("Found more than one instance of the singular tag (%(name)s)."),
 }
 
 namespaces = {

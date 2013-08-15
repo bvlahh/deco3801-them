@@ -74,6 +74,10 @@ class HTMLParser(object):
         self.tokenizer_class = tokenizer
         self.errors = []
 
+        # DECO3801 - Keeps count of any instances of singular tags encountered
+        # to prevent multiple instaces.
+        self.singular = []
+
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
 
@@ -99,6 +103,10 @@ class HTMLParser(object):
         self.tree.reset()
         self.firstStartTag = False
         self.errors = []
+
+        # DECO3801 - Singular tags reset.
+        self.singular = []
+
         self.log = []  # only used with debug mode
         # "quirks" / "limited quirks" / "no quirks"
         self.compatMode = "no quirks"
@@ -468,10 +476,18 @@ def getPhases(debug):
             return self.startTagHandler[token["name"]](token)
 
         def startTagHtml(self, token):
-            if not self.parser.firstStartTag and token["name"] == "html":
+            if not self.parser.firstStartTag and not token["name"] == "html":
                 self.parser.parseError("non-html-root")
             # XXX Need a check here to see if the first start tag token emitted is
             # this token... If it's not, invoke self.parser.parseError().
+
+            # DECO3801 - Checks for a single instance of the html tag.
+            if token["name"] == 'html':
+                self.parser.singular.append(token["name"])
+                if self.parser.singular.count(token["name"]) > 1:
+                    self.parser.parseError("multiple-instance-singular-tag", 
+                        {"name": token["name"]})
+
             for attr, value in token["data"].items():
                 if attr not in self.tree.openElements[0].attributes:
                     self.tree.openElements[0].attributes[attr] = value
@@ -725,7 +741,11 @@ def getPhases(debug):
             return self.parser.phases["inBody"].processStartTag(token)
 
         def startTagHead(self, token):
-            self.parser.parseError("two-heads-are-not-better-than-one")
+            # DECO3801 - Multiple head tags found, throws singular tag
+            # error. Replaced original error message.
+            # Old: self.parser.parseError("two-heads-are-not-better-than-one")
+            self.parser.parseError("multiple-instance-singular-tag", 
+                        {"name": token["name"]})
 
         def startTagBaseLinkCommand(self, token):
             self.tree.insertElement(token)
@@ -1003,7 +1023,12 @@ def getPhases(debug):
             return self.parser.phases["inHead"].processStartTag(token)
 
         def startTagBody(self, token):
-            self.parser.parseError("unexpected-start-tag", {"name": "body"})
+            # DECO3801 - Removed old error message. Replaced with singular
+            # tag error (body).
+            # Old: self.parser.parseError("unexpected-start-tag", {"name": "body"})
+            self.parser.parseError("multiple-instance-singular-tag", 
+                        {"name": token["name"]})
+
             if (len(self.tree.openElements) == 1
                     or self.tree.openElements[1].name != "body"):
                 assert self.parser.innerHTML
@@ -2487,7 +2512,10 @@ def getPhases(debug):
             return self.parser.phases["inBody"].processStartTag(token)
 
         def startTagOther(self, token):
-            self.parser.parseError("unexpected-start-tag-after-body",
+            # DECO3801 - Hide error if token is body tag. Prevents
+            # overlap with singular tag error checking.
+            if not token["name"] == 'body':
+                self.parser.parseError("unexpected-start-tag-after-body",
                                    {"name": token["name"]})
             self.parser.phase = self.parser.phases["inBody"]
             return token
