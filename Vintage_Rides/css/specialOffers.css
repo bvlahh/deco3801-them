@@ -1,0 +1,76 @@
+.specialContainer {
+	position:relative;
+	background-color:#fff;
+	margin:0 auto;
+	width:900px;
+	height:200px;
+	border-style:solid;
+	border-width:4px;
+	border-color:#A1A1A1;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	}
+	
+.specialImage {
+	position: relative;
+	overflow:hidden;
+	left:20px;
+	top:25px;
+	width:187.5px;
+	height:150px;
+	}
+	
+.specialInfo {
+	position:relative;
+	margin:0 auto;
+	left:30px;
+	width:400px;
+	height:100%;
+	top:-160px;
+	}
+	
+.specialInfo p {
+	font-family:arial;
+	text-align:justify;
+	font-size:15px;
+	}
+	
+.specialPrice {
+	position:relative;
+	border-style:solid;
+	border-color:#8c8c8c;
+	border-width:1px;
+	width:150px;
+	height:150px;
+	top:-350px;
+	background-color:#e3e5ee;
+	left:725px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	}
+
+.specialPrice p {
+	font-family:arial;
+	font-size:14px;
+	text-align:center;
+	}
+
+.sprice {
+	position:relative;
+	width:150px;
+	height:50px;
+	}
+
+.sprice h5 {
+	color:#306583;
+	font-size:25px;
+	padding:0;
+	}
+
+.sbookNow {
+	position:relative;
+	top:40px;
+	left:35px;
+	width:80px;
+	height:30px;
+	}

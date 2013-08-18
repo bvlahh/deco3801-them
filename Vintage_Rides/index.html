@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	
+	<head>
+		<title>Vintage Rides</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/navigation.css">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+  		<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.3.css">
+  		<link rel="stylesheet" type="text/css" href="css/timepicker.css">
+  		<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+ 		<script type="text/javascript" src="js/jquery-ui-1.10.3.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/timepicker.js"></script>
+	</head>
+	
+	<body onLoad="javaSlideShow()">
+	
+		<div class="titleBar">
+			<div id="logoContainer">
+			<div id="logo">Vintage Rides</div>
+		</div>
+		<div id="menuContainer">
+		<div id="menu">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="specialOffers.html">Special Offers</a></li> 
+				<li><a href="cars.html">Cars</a></li> 
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact</a></li>  
+			</ul>
+		</div>	
+		</div>
+		</div>
+			
+		
+			<div class="title">Find the car you were meant to drive</div>		
+			<div class="feature">
+    			<img src="image.png" width="100%" style="border-bottom:1px solid black;">
+			</div>
+		<div class="wrapper">		
+					<div class="reservation">
+					
+						<form name="bookingForm" action="#" onsubmit="return ValidateForm();" method="post">
+							Pickup Location 
+							<br><select name="pickup">
+								<option value="airport">Brisbane International Airport</option>
+								<option value="city">Brisbane CBD</option>
+								<option value="other">Other, specify below</option>
+							</select></br>
+							Return Location 
+							<br><select name="return">
+								<option value="airport">Brisbane International Airport</option>
+								<option value="city">Brisbane CBD</option>
+								<option value="other">Other, specify below</option>
+							</select></br>
+							Select your car
+							<br><select name="cars">
+								<option value="" disabled selected>Choose your car</option>
+								<option value="touring">1922 Buick Touring Convertible</option>
+								<option value="dual">1929 Cadillac Dual Cowl Phaeton</option>
+								<option value="series">1931 Buick Series 80</option>
+								<option value="speedster">1935 Auburn Speedster</option>
+								<option value="type57">1937 Bugatti Type 57</option>
+								<option value="sara">1940 Chrysler Saratoga</option>
+								<option value="cadi">1941 Cadillac Convertible</option>
+								<option value="seda">1946 Buick Sedanette</option>
+								<option value="soto">1950 DeSoto</option>
+								<option value="XK">1955 Jaguar XK140</option>
+								<option value="linc">1956 Lincoln Premiere Coupe</option>
+								<option value="corvair">1960 Chevrolet Corvair</option>
+								<option value="tbird">1964 Ford Thunderbird</option>
+								<option value="pony">1969 Ford Mustang</option>
+								<option value="127">1971 FIAT 127</option>
+								<option value="capri">1972 Ford Capri</option>
+								<option value="t2000">1977 Triumph 2000</option>
+								</select><br>
+							Pick-Up/Drop-Off Date<br>	
+							<input id="sdate" type="text" size="10">
+							<input id="SetTime1" type="text" class="time" size="10">	
+							<input id="edate" type="text" size="10">
+							<input id="SetTime2" type="text" class="time" size="10"></br>
+							
+								
+							</select></br>	
+							Insurance <input type="checkbox" name="insurance" value="insurance">
+							Chauffeur <input type="checkbox" name="chauffeur" value="chauffeur">
+							Baby Seat <input type="checkbox" name="insurance" value="insurance">	
+							<textarea rows="5" cols="45" id="message" name="message">Please enter any comments here</textarea>
+							
+							<br><br><input type="submit" value="Submit">
+							
+							<div class="success" style="display: none;">
+							<p>Booking successfully processed!</p>
+							</div>
+						
+						</form>
+					
+					</div>
+					
+					<div class="featured">
+					<h2>Featured Cars</h2>
+					<div id="slideshow">
+					<img src="image/1.jpg" name='SlideShow' width=240 height=240>
+					</div>
+					</div>
+					
+					<div class="special">
+					<h2> Special Offers </h2>
+					<ul class="offersMenu">
+					<li><a href="specialOffers.html">Save 20% on weekend car hire on 1972 Ford Capri. Offer ends 19 July 2013</a></li>
+					<li><a href="specialOffers.html">15% off 10+ days car hire on 1960 Chevrolet Corvair. Offer ends 25 July 2013</a></li>
+					<li><a href="specialOffers.html">50% off 7 day rentals on 1971 FIAT 127. Offer ends 30 July 2013</a></li>
+					</ul>
+					</div>
+					
+					<div id="testimonial">
+						<h2>Testimonials </h2>
+						<div class="text">"The car was great & the employees were wonderful. I would definitely rent again." Judy B. 23/9/12 </div>
+						<div class="text">"All of your staff were great. I even left my phone in the car & they found it for me." Adam C. 11/10/13 </div>
+						<div class="text">"Very low prices considering they are renting highly valued vintage cars.Great service!" Charles W. 18/1/13 </div>
+						<div class="text">"Very fast and efficient service and everything exactly as promised and expected. Excellent clean, neat, tidy car." Eddy G. 21/1/13</div>
+						<div class="text">"I really appreciated being offered, and taking advantage of the offer, a Bugatti Type 57 for the day. It may have cost a little more, but the experience was worth it. Thanks." Thomas E. 29/1/13</div>
+						<div class="text">"It was great that the baby car seat was already in the car and installed - made for a quick getaway from the airport. Thank you we really appreciated that." Rick M. 10/2/13</div>
+					</div>
+					
+				</div>
+			</div>
+			
+	</body>
+</html>
