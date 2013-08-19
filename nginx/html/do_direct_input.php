@@ -19,7 +19,7 @@ $escaped_input = htmlspecialchars($input);
 
 draw_header("THEM prototype - Direct Input");
 
-draw_error_bar(15, 25, 5);
+draw_error_bar(15, 10, 5, 10);
 
 $len = strlen($escaped_input);
 
