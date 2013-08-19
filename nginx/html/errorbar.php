@@ -14,11 +14,11 @@ function draw_error_bar($t1, $t2, $t3) {
 		
 		<div style="width: ${total_wide}px; border: 1px solid #DDDDDD;">
 			
-			<div style="float: left; width: ${t1_wide}px; background-color: #00FF00; text-align: center;">$t1</div>
+			<div style="float: left; width: ${t1_wide}px; background-color: #CD2626; text-align: center;">$t1</div>
 			
-			<div style="float: left; width: ${t2_wide}px; background-color: #FFFF00; text-align: center;">$t2</div>
+			<div style="float: left; width: ${t2_wide}px; background-color: #7171C6; text-align: center;">$t2</div>
 			
-			<div style="float: left; width: ${t3_wide}px; background-color: #FF0000; text-align: center;">$t3</div>
+			<div style="float: left; width: ${t3_wide}px; background-color: #FFD700; text-align: center;">$t3</div>
 			
 			<div class="cb"></div>
 			
