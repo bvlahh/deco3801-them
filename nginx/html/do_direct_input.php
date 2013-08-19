@@ -74,7 +74,7 @@ print <<<END
 	
 </div>
 
-<div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px;" id="infobox">
+<div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px; padding: 5px;" id="infobox">
 Default
 </div>
 
