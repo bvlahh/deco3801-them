@@ -6,6 +6,24 @@ _ = gettext.gettext
 
 EOF = None
 
+# DECO3801 - List of tags for which an error will be raised if 
+# more than one instance of a single tag is found in a HTML document.
+singularTags = [
+    "html",
+    "head",
+    "body",
+    "footer",
+]
+
+# DECO3801 - A dictionary containing a mapping of html5lib error codes
+# to the error codes to be used for the front end section of THEM.
+errorCodes = {
+    "expected-doctype-but-got-start-tag": 1,
+    "multiple-instance-singular-tag": 2,
+    "incorrect-placement-singular-tag": 3,
+    "incorrect-placement-singular-end-tag": 4,
+}
+
 E = {
     "null-character":
         _("Null character in input stream, replaced with U+FFFD."),
@@ -290,6 +308,10 @@ E = {
     # DECO3801 - New error codes.
     "multiple-instance-singular-tag":
         _("Found more than one instance of the singular tag (%(name)s)."),
+    "incorrect-placement-singular-tag":
+        _("A structural singular tag (%(name)s) has been nested in another structural tag."),
+    "incorrect-placement-singular-end-tag":
+        _("A structural singular end tag (%(name)s) has been nested in another structural tag."),
 }
 
 namespaces = {
