@@ -60,7 +60,7 @@ for ($l=1; $l<$num_lines+2; $l++)
 
 print <<<END
 
-<div class="file" style="float: left;">
+<div class="file" style="float: left; margin-top: 10px">
 	
 	<div class="file_lines">
 		<pre>$line_nos</pre>
@@ -71,14 +71,10 @@ print <<<END
 	</div>
     
 	<div class="cb"></div>
-    
-    <div style="background-color: #EEEEEE; text-align: center;">
-        <pre>$parsed $lines</pre>
-    </div>
 	
 </div>
 
-<div style="float: left; border: 1px solid #DDDDDD;" id="infobox">
+<div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px;" id="infobox">
 Default
 </div>
 
