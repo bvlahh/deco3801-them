@@ -1,8 +1,8 @@
-import html5parser
-from html5parser import treewalkers
-from html5parser import treebuilders
+import html5lib
+from html5lib import treewalkers
+from html5lib import treebuilders
 
-parser = html5parser.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
+parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
 minidom_document = parser.parse('<html><footer></footer><head><head></html>')
 # <html><html><body><body></body></body></html></html>
