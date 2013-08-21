@@ -1,6 +1,6 @@
 <?php
 
-function draw_error_bar($t1, $t2, $t3, $f4, $total_height, $total_wide) {
+function draw_error_bar($t1, $t2, $t3, $t4, $total_wide, $total_height) {
     
     $total = $t1 + $t2 + $t3 + $t4;
     
@@ -15,12 +15,12 @@ END;
     
     if ($t1 != 0)
         print <<<END
-            <div style="float: left; width: ${t1_wide}px; background-color: #ff7fff; text-align: center; padding: 10px 0px 10px 0px;">$t1</div>
+            <div style="float: left; width: ${t1_wide}px; background-color: #7f7fff; text-align: center; padding: 10px 0px 10px 0px;">$t1</div>
 END;
     
     if ($t2 != 0)
         print <<<END
-            <div style="float: left; width: ${t2_wide}px; background-color: #7f7fff; text-align: center; padding: 10px 0px 10px 0px;">$t2</div>
+            <div style="float: left; width: ${t2_wide}px; background-color: #ff7fff; text-align: center; padding: 10px 0px 10px 0px;">$t2</div>
 END;
     
     if ($t3 != 0)

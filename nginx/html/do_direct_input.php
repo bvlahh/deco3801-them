@@ -11,7 +11,7 @@ if (! array_key_exists("input", $_POST) )
 
 $input = $_POST["input"];
 
-$parsed = rpc_validate(array(), $input);
+$parsed = rpc_validate(array(), base64_encode($input) );
 
 $lines = $parsed == 1 ? "line" : "lines";
 
@@ -19,7 +19,11 @@ $len = strlen($input);
 
 draw_header("THEM prototype - Direct Input");
 
-draw_error_bar(15, 10, 5, 10, 500);
+draw_error_bar(15, 10, 5, 10, 500, 30);
+
+print "<div><pre>";
+print_r( $parsed );
+print "</pre></div>";
 
 print <<<END
 
@@ -35,6 +39,8 @@ function infobox(number) {
 
 END;
 
+$escaped_input = "";
+
 if ( $len > 100 ) {
     
     $info = rand(0, 10);
@@ -47,9 +53,13 @@ if ( $len > 100 ) {
     
     $escaped_document = htmlspecialchars( substr($input, 0, $start_tag) ) . $s1 . htmlspecialchars( substr($input, $start_tag, $end_tag - $start_tag) ) . $s2 . htmlspecialchars( substr($input, $end_tag, $len - $end_tag) );
     
+} else {
+    
+    $escaped_document = htmlspecialchars( $input );
+    
 }
 
-$num_lines = substr_count($escaped_input, "\n");
+$num_lines = substr_count($input, "\n");
 
 $line_nos = "";
 
