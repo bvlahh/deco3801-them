@@ -3,6 +3,7 @@ import signal
 import sys 
 import errno
 import time
+import base64
  
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer
 import html5lib
@@ -33,11 +34,10 @@ def _gogentle(signum, frame):
     # Prevent keyboard interrupt error
     os._exit(1)
 
-# Generates an array of errors found for the given input string
-# passed on from the direct input page.
-def direct_input_errors(input):
+# Generates an array of errors found after parsing the given base64 input.
+def parse_base64(input):
     parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
-    document = parser.parse(input)
+    document = parser.parse(base64.b64decode(input["document"]))
     return parser.parseErrors()
 
 def line_count(input):
@@ -49,11 +49,11 @@ def line_count(input):
 
 # Basic line count test
 def parse_html(s):
-    return line_count(s)
+    return parse_base64(s)
 
 # Registered function for parsing direct input.
 def parse_direct_input(s):
-    return direct_input_errors(s)
+    return parse_base64(s)
  
 # Server processing
 def main(name, *argv):

@@ -13,6 +13,8 @@ mkdir ./temp1;
 
 cp -r ./src ./temp1
 
+cp -r ./html5-python ./temp1
+
 tar -cf temp1.tar temp1/;
 
 rm -rf ./temp1;
