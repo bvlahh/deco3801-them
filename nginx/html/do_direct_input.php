@@ -19,7 +19,7 @@ $len = strlen($input);
 
 draw_header("THEM prototype - Direct Input");
 
-draw_error_bar(15, 10, 5, 10, 500, 30);
+//draw_error_bar(15, 10, 5, 10, 500, 30);
 
 print "<div>RPC Says:<pre>";
 print_r( $parsed );
@@ -29,10 +29,17 @@ print <<<END
 
 <script type="text/javascript">
 
-function infobox(number) {
+function set_message(text) {
     
-    document.getElementById("infobox").innerHTML = "info number " + number;
-        
+    document.getElementById("infobox").innerHTML = text;
+    
+}
+
+function messagebox(number) {
+    
+    if (number == 1)
+        set_message("something something doctype");
+    
 }
 
 </script>
@@ -41,21 +48,18 @@ END;
 
 $escaped_input = "";
 
-if ( $len > 100 ) {
+// the issue that will crop up with this is indices changing when error spans
+// are inserted and content html escaped
+foreach( $parsed as $parse ) {
     
-    $info = rand(0, 10);
+    $err_no = $parse[0];
+    $start_tag = $parse[1];
+    $end_tag = $parse[2];
     
-    $s1 = "<span style=\"background-color: #00FF00;\" onclick=\"infobox($info);\">";
+    $s1 = "<span style=\"background-color: #ff7f7f;\" onclick=\"messagebox($err_no);\">";
     $s2 = "</span>";
     
-    $start_tag = rand(0, $len-1);
-    $end_tag = rand($start_tag+1, $len);
-    
     $escaped_document = htmlspecialchars( substr($input, 0, $start_tag) ) . $s1 . htmlspecialchars( substr($input, $start_tag, $end_tag - $start_tag) ) . $s2 . htmlspecialchars( substr($input, $end_tag, $len - $end_tag) );
-    
-} else {
-    
-    $escaped_document = htmlspecialchars( $input );
     
 }
 
