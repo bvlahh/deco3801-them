@@ -21,7 +21,7 @@ draw_header("THEM prototype - Direct Input");
 
 draw_error_bar(15, 10, 5, 10, 500, 30);
 
-print "<div><pre>";
+print "<div>RPC Says:<pre>";
 print_r( $parsed );
 print "</pre></div>";
 
