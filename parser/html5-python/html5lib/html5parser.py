@@ -149,7 +149,7 @@ class HTMLParser(object):
         for error in self.errors:
             if not (errorCodes.get(error[1]) == None):
                 formattedErrors.append([errorCodes.get(error[1]),
-                    error[0][0], error[0][1], error[2]["name"]])
+                    error[0][0], error[0][1], error[2]])
  
         return formattedErrors
 
