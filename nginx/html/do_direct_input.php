@@ -46,7 +46,7 @@ function messagebox(number) {
 
 END;
 
-$escaped_input = "";
+$escaped_document = "";
 
 // the issue that will crop up with this is indices changing when error spans
 // are inserted and content html escaped
