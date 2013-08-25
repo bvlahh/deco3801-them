@@ -22,6 +22,12 @@ errorCodes = {
     "multiple-instance-singular-tag": 2,
     "incorrect-placement-singular-tag": 3,
     "incorrect-placement-singular-end-tag": 4,
+    "incorrect-start-tag-placement-before-head": 5,
+    "incorrect-end-tag-placement-before-head": 6,
+    "incorrect-start-tag-placement-in-head": 7,
+    "incorrect-end-tag-placement-in-head": 8,
+    "head-end-tag-missing": 9,
+
 }
 
 E = {
@@ -312,6 +318,16 @@ E = {
         _("A structural singular tag (%(name)s) has been nested in another structural tag."),
     "incorrect-placement-singular-end-tag":
         _("A structural singular end tag (%(name)s) has been nested in another structural tag."),
+    "incorrect-start-tag-placement-before-head":
+        _("The start tag (%(name)s) was found before the head tag."),
+    "incorrect-end-tag-placement-before-head":
+        _("The end tag (%(name)s) was found before the head tag."),
+    "incorrect-start-tag-placement-in-head":
+        _("The start tag (%(name)s) is not valid in the head section."),
+    "incorrect-end-tag-placement-in-head":
+        _("The end tag (%(name)s) is not valid in the head section."),
+    "head-end-tag-missing":
+        _("The head end tag is missing."),
 }
 
 namespaces = {
