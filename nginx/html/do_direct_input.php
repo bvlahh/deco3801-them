@@ -14,8 +14,6 @@ $input = $_POST["input"];
 
 $parsed = rpc_validate(array(), base64_encode($input) );
 
-$lines = $parsed == 1 ? "line" : "lines";
-
 $len = strlen($input);
 
 draw_header("THEM prototype - Direct Input");
@@ -50,6 +48,7 @@ function messagebox(number) {
 
 END;
 
+$input = str_replace("\r", "", $input); // remove the return from what we show to the user
 $escaped_document = "";
 $start = 0;
 
@@ -69,7 +68,6 @@ foreach( $parsed as $parse ) {
 
 }
 $escaped_document = $escaped_document . htmlspecialchars( substr($input, $start, $len));
-$escaped_input = str_replace("\r", "", $escaped_document);
 
 $num_lines = substr_count($input, "\n");
 
