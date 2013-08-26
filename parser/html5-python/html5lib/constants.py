@@ -28,6 +28,7 @@ errorCodes = {
     "incorrect-end-tag-placement-in-head": 8,
     "head-end-tag-missing": 9,
     "unexpected-html-end-tag-before-body-close": 10,
+    "expected-eof-but-got-end-tag": 11,
 
 }
 
@@ -329,6 +330,8 @@ E = {
         _("The end tag (%(name)s) is not valid in the head section."),
     "head-end-tag-missing":
         _("The head end tag is missing."),
+    "unexpected-html-end-tag-before-body-close":
+        _("A closing HTML end tag was found before the expected body end tag."),
 }
 
 namespaces = {
