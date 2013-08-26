@@ -1,0 +1,10 @@
+For Tech Spike:
+Single error being detected
+Direct input - error
+Single file - error & no error (so error bar needs to show this)
+ -- red = Structure/syntax
+ -- blue = depreciated elements 
+ -- orange = accessibility
+ -- yellow = poor practice / misc
+Multiple files - multi-file page linking to individual file page
+Zip upload - displays directory structure (need folder and file images for this)
