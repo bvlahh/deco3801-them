@@ -5,12 +5,12 @@ require_once "header.php";
 require_once "footer.php";
 require_once "rpc_client.php";
 require_once "errorbar.php";
+require_once "errorstring.php";
 
 if (! array_key_exists("input", $_POST) )
     redirect("/direct_input");
 
 $input = $_POST["input"];
-$input = str_replace("\r", "", $input);
 
 $parsed = rpc_validate(array(), base64_encode($input) );
 
@@ -27,6 +27,8 @@ print "<div>RPC Says:<pre>";
 print_r( $parsed );
 print "</pre></div>";
 
+$err_test = error_string(1);
+
 print <<<END
 
 <script type="text/javascript">
@@ -40,7 +42,7 @@ function set_message(text) {
 function messagebox(number) {
     
     if (number == 1)
-        set_message("Missing doctype declaration");
+        set_message($err_test);
     
 }
 
@@ -67,6 +69,7 @@ foreach( $parsed as $parse ) {
 
 }
 $escaped_document = $escaped_document . htmlspecialchars( substr($input, $start, $len));
+$escaped_input = str_replace("\r", "", $escaped_document);
 
 $num_lines = substr_count($input, "\n");
 
