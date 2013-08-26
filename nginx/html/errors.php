@@ -1,8 +1,9 @@
 <?php
 
-function error_string($error_number) {
+class Errors
+{
     
-    $error_strings = array(
+    static $error_strings = array(
         
         1 => "No valid doctype was found.",
         2 => "Multiple instance of a singular tag.",
@@ -20,7 +21,17 @@ function error_string($error_number) {
         
     );
     
-    return $error_strings[$error_number];
+    static function errorString($error_number) {
+        
+        return Errors::$error_strings[$error_number];
+        
+    }
+    
+    static function errorColor($error_number) {
+        
+        return "#888888";
+        
+    }
     
 }
 

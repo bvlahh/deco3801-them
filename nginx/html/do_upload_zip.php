@@ -11,15 +11,15 @@ if (! array_key_exists("archive", $_FILES) )
 $filename = $_FILES["archive"]["name"];
 $file = $_FILES["archive"]["tmp_name"];
 
-$z = new ZipArchive();
+$zip = new ZipArchive();
 
-if (! $z->open($file) )
+if (! $zip->open($file) )
     redirect("/upload_zip?upload_failed");
 
 draw_header("THEM prototype - Uploaded ZIP");
 
 $archive_name = $filename;
-$num_files = $z->numFiles;
+$num_files = $zip->numFiles;
 
 $files = $num_files == 1 ? "file" : "files";
 
@@ -42,18 +42,19 @@ print <<<END
 END;
 
 $filenames = array();
-for ($i=0; $i<($z->numFiles);$i++)
-	$filenames[] = $z->getNameIndex($i);
+for ($i=0; $i<($zip->numFiles);$i++)
+	$filenames[] = $zip->getNameIndex($i);
 
-for ($i=0; $i<($z->numFiles);$i++) {
+for ($i=0; $i<($zip->numFiles);$i++) {
     
-    $file_name = $z->getNameIndex($i);
-    $file_stat = $z->statIndex($i);
+    $file_name = $zip->getNameIndex($i);
+    $file_stat = $zip->statIndex($i);
     
-    $file_data = $z->getFromIndex($i);
+    $file_data = $zip->getFromIndex($i);
     $len = strlen($file_data);
     
-    $rpc = htmlspecialchars( rpc_validate($filenames, base64_encode($file_data)) );
+    //$rpc = htmlspecialchars( rpc_validate($filenames, base64_encode($file_data)) );
+    $rpc = "";
     
     print <<<END
         
@@ -79,7 +80,7 @@ print <<<END
     
 END;
 
-$z->close();
+$zip->close();
 
 draw_footer();
 

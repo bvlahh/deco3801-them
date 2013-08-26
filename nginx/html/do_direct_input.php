@@ -25,8 +25,6 @@ print "<div>RPC Says:<pre>";
 print_r( $parsed );
 print "</pre></div>";
 
-$err_test = error_string(1);
-
 $input = str_replace("\r", "", $input); // remove the return before inserting show error tags
 $escaped_document = "";
 $start = 0;
