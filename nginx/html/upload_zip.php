@@ -10,7 +10,7 @@ print <<<END
     <div class="datainput">
         Upload ZIP
         <form action="do_upload_zip" method="post" enctype="multipart/form-data" >
-            <input type="file" name="archive" />
+            <input type="file" name="archive" class="filepicker" />
             <div>
                 <input type="submit" value="Validate" class="button" />
             </div>

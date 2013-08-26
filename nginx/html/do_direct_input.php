@@ -10,6 +10,7 @@ if (! array_key_exists("input", $_POST) )
     redirect("/direct_input");
 
 $input = $_POST["input"];
+$input = str_replace("\r", "", $input);
 
 $parsed = rpc_validate(array(), base64_encode($input) );
 
@@ -19,7 +20,8 @@ $len = strlen($input);
 
 draw_header("THEM prototype - Direct Input");
 
-//draw_error_bar(15, 10, 5, 10, 500, 30);
+//draw_error_bar(15, 10, 5, 10, 0, 500, 30, true);
+draw_error_bar(0, 0, 0, 0, 1, 500, 30, true);
 
 print "<div>RPC Says:<pre>";
 print_r( $parsed );
@@ -38,7 +40,7 @@ function set_message(text) {
 function messagebox(number) {
     
     if (number == 1)
-        set_message("something something doctype");
+        set_message("Missing doctype declaration");
     
 }
 
