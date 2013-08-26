@@ -5,7 +5,6 @@ require_once "header.php";
 require_once "footer.php";
 require_once "rpc_client.php";
 require_once "errorbar.php";
-require_once "errorcodes.php";
 
 if (! array_key_exists("input", $_POST) )
     redirect("/direct_input");
@@ -70,7 +69,7 @@ print <<<END
 </div>
 
 <div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px; padding: 5px;" id="infobox">
-Default
+
 </div>
 
 <div class="cb"></div>
