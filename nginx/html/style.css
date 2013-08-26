@@ -190,6 +190,7 @@ a:hover {
     margin-top: 10px;
     width: 500px;
     height: 500px;
+    border: 1px solid #DDDDDD;
     
 }
 
@@ -310,4 +311,13 @@ a:hover {
 	background-color: #FBFBFB;
 	float: left;
 		
+}
+
+.filepicker {
+    
+    display: block;
+    padding: 5px;
+    margin: 5px;
+    background-color: #DDDDDD;
+    
 }
