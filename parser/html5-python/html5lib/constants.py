@@ -27,6 +27,7 @@ errorCodes = {
     "incorrect-start-tag-placement-in-head": 7,
     "incorrect-end-tag-placement-in-head": 8,
     "head-end-tag-missing": 9,
+    "unexpected-html-end-tag-before-body-close": 10,
 
 }
 

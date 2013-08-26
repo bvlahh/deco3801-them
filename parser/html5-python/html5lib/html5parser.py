@@ -1447,10 +1447,29 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["afterBody"]
 
         def endTagHtml(self, token):
-            # We repeat the test for the body end tag token being ignored here
-            if self.tree.elementInScope("body"):
-                self.endTagBody(impliedTagToken("body"))
-                return token
+            # DECO3801 - Check for correct instance of the end HTML tag. If
+            # another end HTML tag exists after the one being checked, the current
+            # tag is reported as an error. Otherwise, the original processing
+            # continues.
+            hasClosing = False
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "html" and remaining.get('type') == tokenTypes["EndTag"]:
+                    hasClosing = True
+
+            if hasClosing:
+                self.parser.parseError("incorrect-placement-singular-end-tag",
+                                   {"name": token["name"]})
+            else:
+                self.parser.parseError("unexpected-html-end-tag-before-body-close",
+                                   {"name": token["name"]})
+                # We repeat the test for the body end tag token being ignored here
+                # DECO3801 - This is the original implementation. It will terminate
+                # the body section before the end HTML tag is declared, causing
+                # the parser to read the HTML end tag as the end of the document. 
+                # Remaining tags will be treated as misplaced tags.
+                if self.tree.elementInScope("body"):
+                    self.endTagBody(impliedTagToken("body"))
+                    return token
 
         def endTagBlock(self, token):
             # Put us back in the right whitespace handling mode
