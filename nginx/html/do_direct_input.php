@@ -27,28 +27,7 @@ print "</pre></div>";
 
 $err_test = error_string(1);
 
-print <<<END
-
-<script type="text/javascript">
-
-function set_message(text) {
-    
-    document.getElementById("infobox").innerHTML = text;
-    
-}
-
-function messagebox(number) {
-    
-    if (number == 1)
-        set_message("$err_test");
-    
-}
-
-</script>
-
-END;
-
-$input = str_replace("\r", "", $input); // remove the return from what we show to the user
+$input = str_replace("\r", "", $input); // remove the return before inserting show error tags
 $escaped_document = "";
 $start = 0;
 
@@ -97,6 +76,9 @@ Default
 </div>
 
 <div class="cb"></div>
+
+
+<script type="text/javascript" src="errorlabels.js"></script>
 
 END;
 
