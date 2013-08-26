@@ -94,7 +94,12 @@ class HTMLParser(object):
                                               parseMeta=parseMeta,
                                               useChardet=useChardet,
                                               parser=self, **kwargs)
-        self.tokenizer2 = self.tokenizer_class(stream, encoding=encoding,
+        
+        # DECO3801 - Tokenizer to generate the list of tags used to track the 
+        # remaining tags to be processed. Used in a number of error checks 
+        # in an attempt to check if the current token is the only remaining 
+        # instance of that token in the file.
+        self.tokenizerRemaining = self.tokenizer_class(stream, encoding=encoding,
                                               parseMeta=parseMeta,
                                               useChardet=useChardet,
                                               parser=self, **kwargs)
@@ -251,7 +256,7 @@ class HTMLParser(object):
     # after the current token.
     def generateRemainingTokens(self):
         self.remainingTokens = []
-        for token in self.tokenizer2:
+        for token in self.tokenizerRemaining:
             self.remainingTokens.append(token)
 
     def parse(self, stream, encoding=None, parseMeta=True, useChardet=True):
@@ -731,14 +736,25 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["inHead"]
 
         def startTagOther(self, token):
-            # DEO3801 - Check for invalid placement of start tags preceding
-            # the opening head tag.
-            # Old:
-            # self.startTagHead(impliedTagToken("head", "StartTag"))
-            # return token
+            # DEO3801 - Check that the document contains an opening head tag.
+            # If not, the head opening and closing tags are added and the 
+            # phase is advanced to the afterHead phase.
 
-            self.parser.parseError("incorrect-start-tag-placement-before-head",
+            hasHeadStart = False
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "head" and remaining.get('type') == tokenTypes["StartTag"]:
+                    hasHeadStart = True
+
+            if hasHeadStart:
+                self.parser.parseError("incorrect-start-tag-placement-before-head",
                                    {"name": token["name"]})
+            else:
+                self.parser.parseError("head-start-tag-missing",
+                                   {"name": token["name"]})
+                self.startTagHead(impliedTagToken("head", "StartTag")) 
+                self.parser.phases["inHead"].endTagHead(impliedTagToken("head"))
+                self.parser.phase = self.parser.phases["afterHead"]
+                return token
             
 
         def endTagImplyHead(self, token):
@@ -746,7 +762,8 @@ def getPhases(debug):
             return token
 
         def endTagOther(self, token):
-            # DECO3801 TODO: Redo error checking to suit modified start tag check.
+            # DECO3801 - Error check for invalid end tags appearing
+            # before the head section of the document.
             # Old:
             # self.parser.parseError("end-tag-after-implied-root",
             #                        {"name": token["name"]})
@@ -2795,14 +2812,18 @@ def getPhases(debug):
         def startTagOther(self, token):
             self.parser.parseError("expected-eof-but-got-start-tag",
                                    {"name": token["name"]})
-            self.parser.phase = self.parser.phases["inBody"]
-            return token
+            # DECO3801 - Removed to prevent false reporting of start tags detected
+            # after the end HTML tag.
+            # self.parser.phase = self.parser.phases["inBody"]
+            # return token
 
         def processEndTag(self, token):
             self.parser.parseError("expected-eof-but-got-end-tag",
                                    {"name": token["name"]})
-            self.parser.phase = self.parser.phases["inBody"]
-            return token
+            # DECO3801 - Removed to prevent false reporting of tags detected after
+            # the end HTML tag.
+            # self.parser.phase = self.parser.phases["inBody"]
+            # return token
 
     class AfterAfterFramesetPhase(Phase):
         def __init__(self, parser, tree):

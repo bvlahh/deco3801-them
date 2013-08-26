@@ -27,8 +27,10 @@ errorCodes = {
     "incorrect-start-tag-placement-in-head": 7,
     "incorrect-end-tag-placement-in-head": 8,
     "head-end-tag-missing": 9,
-    "unexpected-html-end-tag-before-body-close": 10,
-    "expected-eof-but-got-end-tag": 11,
+    "head-start-tag-missing": 10,
+    "unexpected-html-end-tag-before-body-close": 11,
+    "expected-eof-but-got-start-tag": 12,
+    "expected-eof-but-got-end-tag": 13,
 
 }
 
