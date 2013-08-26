@@ -5,7 +5,7 @@ require_once "header.php";
 require_once "footer.php";
 require_once "rpc_client.php";
 require_once "errorbar.php";
-require_once "errorstring.php";
+require_once "errorcodes.php";
 
 if (! array_key_exists("input", $_POST) )
     redirect("/direct_input");
@@ -42,7 +42,7 @@ function set_message(text) {
 function messagebox(number) {
     
     if (number == 1)
-        set_message($err_test);
+        set_message("$err_test");
     
 }
 
