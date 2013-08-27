@@ -792,7 +792,7 @@ def getPhases(debug):
                 # due to original error checking conflicting with our check.
                 # Old:
                 # (("br", "html", "body"), self.endTagHtmlBodyBr)
-                ("html", self.endTagHtml),
+                # ("html", self.endTagHtml),
             ])
             self.endTagHandler.default = self.endTagOther
 
