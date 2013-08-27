@@ -31,6 +31,8 @@ errorCodes = {
     "unexpected-html-end-tag-before-body-close": 11,
     "expected-eof-but-got-start-tag": 12,
     "expected-eof-but-got-end-tag": 13,
+    "unexpected-end-tag": 14,
+    "unexpected-end-tag-after-body": 15,
 
 }
 

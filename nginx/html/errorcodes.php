@@ -17,6 +17,8 @@ function error_string($error_number) {
         11 => "A closing HTML tag was found before the closing body tag.",
         12 => "A start tag was found after the expected closing HTML tag.",
         13 => "A closing tag was found after the expected closing HTML tag.",
+        14 => "This closing tag is missing a matching start tag.",
+        15=> "A misplaced closing tag was found after the closing body tag.",
         
     );
     

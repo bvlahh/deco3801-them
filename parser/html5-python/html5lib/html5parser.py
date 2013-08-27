@@ -783,14 +783,16 @@ def getPhases(debug):
                  self.startTagBaseLinkCommand),
                 ("meta", self.startTagMeta),
                 ("head", self.startTagHead),
-                # DECO3801 - Body start tag check
-                ("body", self.startTagBody),
             ])
             self.startTagHandler.default = self.startTagOther
 
             self. endTagHandler = utils.MethodDispatcher([
                 ("head", self.endTagHead),
-                (("br", "html", "body"), self.endTagHtmlBodyBr)
+                # DECO3801 - HTML end tag check. Old end tag check removed
+                # due to original error checking conflicting with our check.
+                # Old:
+                # (("br", "html", "body"), self.endTagHtmlBodyBr)
+                ("html", self.endTagHtml),
             ])
             self.endTagHandler.default = self.endTagOther
 
@@ -857,7 +859,7 @@ def getPhases(debug):
             # Old:
             # self.anythingElse()
             # return token
-            self.parser.parseError("incorrect-end-tag-placement-in-head",
+            self.parser.parseError("incorrect-start-tag-placement-in-head",
                                    {"name": token["name"]})
 
         # DECO3801 - Checks if the body tag found comes before a closing
@@ -1029,9 +1031,12 @@ def getPhases(debug):
                 (("option", "optgroup"), self.startTagOpt),
                 (("math"), self.startTagMath),
                 (("svg"), self.startTagSvg),
-                (("caption", "col", "colgroup", "frame", "head",
+                (("caption", "col", "colgroup", "frame",
                   "tbody", "td", "tfoot", "th", "thead",
-                  "tr"), self.startTagMisplaced)
+                  "tr"), self.startTagMisplaced),
+                # DECO3801 - Error check for head start tags found within the main
+                # body section.
+                ("head", self.startTagHead)
             ])
             self.startTagHandler.default = self.startTagOther
 
@@ -1424,6 +1429,12 @@ def getPhases(debug):
             "tr", "noscript"
             """
             self.parser.parseError("unexpected-start-tag-ignored", {"name": token["name"]})
+
+        # DECO3801 - Error check for head start tag occurring within the body
+        # section.
+        def startTagHead(self, token):
+            self.parser.parseError("incorrect-placement-singular-tag",
+                {"name": token["name"]})
 
         def startTagOther(self, token):
             self.tree.reconstructActiveFormattingElements()
