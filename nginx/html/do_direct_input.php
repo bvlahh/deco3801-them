@@ -42,7 +42,7 @@ foreach( $parsed as $parse ) {
         $s1 . htmlspecialchars(substr($input, $start_tag, $end_tag - $start_tag)) . $s2;  
     $current_index = $end_tag;
 }
-$escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, strlen($input) - $start));
+$escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, strlen($input) - $current_index));
 
 $num_lines = substr_count($input, "\n");
 
