@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, unicode_literals
 
-from . import support
-import unittest, html5parser
-from html5parser import treebuilders
+#from . import support
+import unittest, html5lib
+from html5lib import treebuilders
 
 class TestPageStructure(unittest.TestCase):
 	"""
@@ -15,7 +15,7 @@ class TestPageStructure(unittest.TestCase):
 	"""
 
 	def setUp(self):
-		self.parser = html5parser.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
+		self.parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
 	def test_singular_html(self):
 		"""
@@ -28,7 +28,7 @@ class TestPageStructure(unittest.TestCase):
 
 		self.parser.parse(htmlSingleLine)
 
-		self.assertIn(((1, 12), u'multiple-instance-singular-tag', {u'name': u'html'}), 
+		self.assertIn(((6, 11), u'multiple-instance-singular-tag', {u'name': u'html'}), 
 			self.parser.errors, "Multiple instances of html tag not reported (single line).")
 
 		self.parser.reset()

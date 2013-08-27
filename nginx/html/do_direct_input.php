@@ -10,11 +10,8 @@ if (! array_key_exists("input", $_POST) )
     redirect("/direct_input");
 
 $input = $_POST["input"];
-$input = str_replace("\r", "", $input);
 
 $parsed = rpc_validate(array(), base64_encode($input) );
-
-$lines = $parsed == 1 ? "line" : "lines";
 
 $len = strlen($input);
 
@@ -27,27 +24,7 @@ print "<div>RPC Says:<pre>";
 print_r( $parsed );
 print "</pre></div>";
 
-print <<<END
-
-<script type="text/javascript">
-
-function set_message(text) {
-    
-    document.getElementById("infobox").innerHTML = text;
-    
-}
-
-function messagebox(number) {
-    
-    if (number == 1)
-        set_message("Missing doctype declaration");
-    
-}
-
-</script>
-
-END;
-
+$input = str_replace("\r", "", $input); // remove the return before inserting show error tags
 $escaped_document = "";
 $current_index = 0;
 // the issue that will crop up with this is indices changing when error spans
@@ -91,10 +68,13 @@ print <<<END
 </div>
 
 <div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px; padding: 5px;" id="infobox">
-Default
+
 </div>
 
 <div class="cb"></div>
+
+
+<script type="text/javascript" src="errorlabels.js"></script>
 
 END;
 

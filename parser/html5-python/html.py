@@ -4,7 +4,7 @@ from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-minidom_document = parser.parse('<html><head></head><body></html></body>')
+minidom_document = parser.parse('<html><body><head><br></head><body><head></body></body></html>')
 # <html><html><body><body></body></body></html></html>
 # <html><html><head><head></head></head></html></html>
 # <html><html><footer><footer></footer></footer></html></html>
@@ -31,4 +31,3 @@ print '---------------------'
 
 #for item in stream:
 	#print item
-

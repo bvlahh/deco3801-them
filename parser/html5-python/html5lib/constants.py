@@ -26,9 +26,13 @@ errorCodes = {
     "incorrect-end-tag-placement-before-head": 6,
     "incorrect-start-tag-placement-in-head": 7,
     "incorrect-end-tag-placement-in-head": 8,
-    "head-end-tag-missing": 9,
-    "unexpected-html-end-tag-before-body-close": 10,
-    "expected-eof-but-got-end-tag": 11,
+    "head-start-tag-missing": 9,
+    "head-end-tag-missing": 10,
+    "unexpected-html-end-tag-before-body-close": 11,
+    "expected-eof-but-got-start-tag": 12,
+    "expected-eof-but-got-end-tag": 13,
+    "unexpected-end-tag": 14,
+    "unexpected-end-tag-after-body": 15,
 
 }
 
