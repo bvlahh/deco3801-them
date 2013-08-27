@@ -3,19 +3,23 @@
 require_once "php/misc.php";
 require_once "php/header.php";
 require_once "php/footer.php";
+require_once "php/files.php";
+require_once "php/errors.php";
+require_once "php/errorbar.php";
 
 if (! array_key_exists("file", $_GET) )
     redirect("/");
 
 $file = $_GET["file"];
 
-$file = pull_file($file);
+$file = get_file($file);
 
 if (! $file)
     redirect("/");
 
-$filename = "View File";
-$input = "lol";
+$filename = $file["filename"];
+$input = base64_decode($file["document"]);
+$parsed = json_decode($file["cached_parse"]);
 
 // remove the carrage return before inserting show error tags, to keep
 // the char indices correct
@@ -30,7 +34,7 @@ $current_index = 0;
 foreach( $parsed as $parse ) {
     
     $err_no = $parse[0];
-    $err_colour = Errors::errorColor($error_no);
+    $err_colour = Errors::errorColor($err_no);
     $start_tag = $parse[1];
     $end_tag = $parse[2] + 1; // substr takes in end-index exclusive
     
@@ -54,6 +58,11 @@ for ($l=1; $l<$num_lines+2; $l++)
     $line_nos .= "$l\n";
 
 draw_header("THEM prototype - $filename");
+
+if ( count($parsed) == 0 )
+    draw_error_bar(0, 0, 0, 0, 1, 500, 10);
+else
+    draw_error_bar(0, 1, 0, 0, 0, 500, 10);
 
 print <<<END
 

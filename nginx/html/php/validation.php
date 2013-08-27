@@ -2,7 +2,7 @@
 
 require_once "JsonRpcClient.php";
 
-function rpc_validate($files, $document) {
+function validate($files, $document) {
 	
 	$parser = new JsonRpcClient("http://localhost:8080");
 	

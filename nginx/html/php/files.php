@@ -1,27 +1,55 @@
 <?php
 
-function create_set() {
-    create_set(in php_session text)
+//$res = $mysqli->query("SELECT NOW();");
+//while ( $row = $res->fetch_assoc() )
+//    print_r( $row );
+
+function create_set($text) {
+    
+    $mysqli = new mysqli("localhost");
+    $mysqli->select_db("validator");
+    $text = $mysqli->real_escape_string($text);
+    $res = $mysqli->query("call create_set(\"$text\");");
+    $row = $res->fetch_array();
+    return $row[0];
+    
 }
 
-function add_file() {
-    add_file(in upload_set int, in filename text, in document text, in cached_parse text)
+function add_file($upload_set, $filename, $document, $parse_data) {
+    
+    $mysqli = new mysqli("localhost");
+    $mysqli->select_db("validator");
+    $upload_set = (int)$upload_set;
+    $filename = $mysqli->real_escape_string($filename);
+    $document = $mysqli->real_escape_string($document);
+    $parse_data = $mysqli->real_escape_string($parse_data);
+    $res = $mysqli->query("call add_file($upload_set, \"$filename\", \"$document\", \"$parse_data\");");
+    if (! $res)
+        die($mysqli->error);
+    $row = $res->fetch_array();
+    return $row[0];
+    
 }
 
-function cache_parse() {
-    cache_parse(in file int, in parse_data text) 
+function cache_parse($file_id, $parse_data) {
+    
+    $mysqli = new mysqli("localhost");
+    $mysqli->select_db("validator");
+    $file_id = (int)$file_id;
+    $parse_data = $mysqli->real_escape_string($parse_data);
+    $res = $mysqli->query("call cache_parse($file_id, \"$parse_data\");");
+    
 }
 
-function get_file() {
-    get_file(in file int)
-}
-
-function touch_set() {
-    touch_set(in set_id int)
-}
-
-function touch_file() {
-    touch_file(in file_id int)
+function get_file($file_id) {
+    
+    $mysqli = new mysqli("localhost");
+    $mysqli->select_db("validator");
+    $file_id = $mysqli->real_escape_string($file_id);
+    $res = $mysqli->query("call get_file(\"$file_id\");");
+    $row = $res->fetch_assoc();
+    return $row;
+    
 }
 
 ?>

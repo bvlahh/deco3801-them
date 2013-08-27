@@ -1,6 +1,6 @@
 <?php
 
-require_once "errors.php";
+require_once "php/errors.php";
 
 header("Content-type: application/x-javascript");
 

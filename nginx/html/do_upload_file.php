@@ -3,7 +3,7 @@
 require_once "php/misc.php";
 require_once "php/header.php";
 require_once "php/footer.php";
-require_once "php/rpc_client.php";
+require_once "php/validation.php";
 
 if (! array_key_exists("file", $_FILES) )
     redirect("/upload_file");
@@ -22,7 +22,7 @@ for ($l=1; $l<$num_lines+2; $l++)
 
 $escaped_input = htmlspecialchars($input);
 
-$rpc_data = rpc_validate(array(), base64_encode($input));
+$rpc_data = validate(array(), base64_encode($input));
 
 draw_header("THEM prototype - Uploaded File");
 
