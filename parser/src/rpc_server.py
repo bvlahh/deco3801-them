@@ -38,6 +38,7 @@ def _gogentle(signum, frame):
 def parse_base64(input):
     parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
     document = parser.parse(base64.b64decode(input["document"]))
+    print dir(document)
     return parser.parseErrors()
 
 def line_count(input):

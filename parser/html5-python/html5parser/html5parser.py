@@ -144,15 +144,16 @@ class HTMLParser(object):
     # DECO3801 - Returns a formatted array of error entries made up of arrays
     # containing error information in the format:
     # [error code, tag start position, tag end position]
-    def parseErrors(self):
-        formattedErrors = []
-        for error in self.errors:
-            if not (errorCodes.get(error[1]) == None):
-                formattedErrors.append([errorCodes.get(error[1]),
-                    error[0][0], error[0][1]])
- 
-        return formattedErrors
-
+#    def parseErrors(self):
+#        formattedErrors = []
+#        for error in self.errors:
+#            print "Hello World!"
+#            if not (errorCodes.get(error[1]) == None):
+#                formattedErrors.append([errorCodes.get(error[1]),
+#                    error[0][0], error[0][1]])
+# 
+#        return (formattedErrors, self.errors)
+#
     def isHTMLIntegrationPoint(self, element):
         if (element.name == "annotation-xml" and
                 element.namespace == namespaces["mathml"]):

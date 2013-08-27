@@ -49,24 +49,23 @@ function messagebox(number) {
 END;
 
 $escaped_document = "";
-$start = 0;
-
+$current_index = 0;
 // the issue that will crop up with this is indices changing when error spans
 // are inserted and content html escaped
+
 foreach( $parsed as $parse ) {
-    
     $err_no = $parse[0];
     $start_tag = $parse[1];
-    $end_tag = $parse[2];
+    $end_tag = $parse[2] + 1; // substr takes in end-index exclusive
+
     
     $s1 = "<span style=\"background-color: #ff7f7f;\" onclick=\"messagebox($err_no);\">";
     $s2 = "</span>";
-    
-    $escaped_document = $escaped_document . htmlspecialchars( substr($input, $start, $start_tag) ) . $s1 . htmlspecialchars( substr($input, $start_tag, $end_tag - $start_tag) ) . $s2;
-    $start = $end_tag;
-
+    $escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, $start_tag - $current_index)) . 
+        $s1 . htmlspecialchars(substr($input, $start_tag, $end_tag - $start_tag)) . $s2;  
+    $current_index = $end_tag;
 }
-$escaped_document = $escaped_document . htmlspecialchars( substr($input, $start, $len));
+$escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, strlen($input) - $start));
 
 $num_lines = substr_count($input, "\n");
 

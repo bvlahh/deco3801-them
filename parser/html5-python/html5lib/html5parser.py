@@ -153,6 +153,7 @@ class HTMLParser(object):
     def parseErrors(self):
         formattedErrors = []
         for error in self.errors:
+            print error
             if not (errorCodes.get(error[1]) == None):
                 formattedErrors.append([errorCodes.get(error[1]),
                     error[0][0], error[0][1], error[2]])
@@ -233,6 +234,11 @@ class HTMLParser(object):
                     and not token["selfClosingAcknowledged"]):
                 self.parseError("non-void-element-with-trailing-solidus",
                                 {"name": token["name"]})
+        
+        ## DECO3801 Check for closing html tag
+        if "html" not in self.singularEndTags:
+           self.parseError("no-closing-html-tag", {"name": token["name"]});
+        
 
         # When the loop finishes it's EOF
         reprocess = True
@@ -242,6 +248,8 @@ class HTMLParser(object):
             reprocess = self.phase.processEOF()
             if reprocess:
                 assert self.phase not in phases
+
+
 
     def normalizedTokens(self):
         for token in self.tokenizer:
