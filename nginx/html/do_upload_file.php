@@ -1,9 +1,9 @@
 <?php
 
-require_once "misc.php";
-require_once "header.php";
-require_once "footer.php";
-require_once "rpc_client.php";
+require_once "php/misc.php";
+require_once "php/header.php";
+require_once "php/footer.php";
+require_once "php/rpc_client.php";
 
 if (! array_key_exists("file", $_FILES) )
     redirect("/upload_file");

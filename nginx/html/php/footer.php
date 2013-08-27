@@ -29,7 +29,7 @@ function draw_footer() {
 		<div class="footer">
             <div class="footer_html5">
                 <a href="http://www.w3.org/TR/html5-author/">
-                    <img src="/HTML5_Badge.svg" alt="HTML5 Logo"/>
+                    <img src="/images/HTML5_Badge.svg" alt="HTML5 Logo"/>
                 </a>
             </div>
 			<div class="footer_navigation">

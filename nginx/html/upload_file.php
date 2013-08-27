@@ -1,7 +1,7 @@
 <?php
 
-require_once "header.php";
-require_once "footer.php";
+require_once "php/header.php";
+require_once "php/footer.php";
 
 draw_header("THEM prototype - Upload File", 2);
 
@@ -26,6 +26,7 @@ print <<<END
     </div>
 	
     <script type="text/javascript">
+    //<![CDATA[
         
         var fileDiv = document.getElementById("files");
         var fileCount = 2;
@@ -37,6 +38,7 @@ print <<<END
             
         }
         
+    //]]>
     </script>
     
 END;

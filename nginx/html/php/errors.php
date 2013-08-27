@@ -31,7 +31,7 @@ class Errors
     
     static function errorColor($error_number) {
         
-        return "#888888";
+        return "#ff7f7f";
         
     }
     
