@@ -241,8 +241,8 @@ class HTMLParser(object):
                                 {"name": token["name"]})
         
         ## DECO3801 Check for closing html tag
-        if "html" not in self.singularEndTags:
-           self.parseError("no-closing-html-tag", {"name": token["name"]});
+        if "html" not in self.remainingTokens:
+            self.parseError("no-closing-html-tag", {"name": "html"});
         
 
         # When the loop finishes it's EOF
