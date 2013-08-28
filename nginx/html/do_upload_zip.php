@@ -41,10 +41,8 @@ $set = create_set("");
 for ($i=0; $i<($zip->numFiles);$i++) {
     
     $file_name = $zip->getNameIndex($i);
-    $file_stat = $zip->statIndex($i);
     
     $file_data = $zip->getFromIndex($i);
-    $len = strlen($file_data);
     
     $encoded_input = base64_encode($file_data);
     

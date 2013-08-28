@@ -14,14 +14,17 @@ END;
 
 print <<<END
     
-    Demo Error Bars:
+    <br />
+    <br />
+    
+    Error Bars - Any size you want:
     
 END;
 
 draw_error_bar(1, 1, 1, 1, 1, 500, 10);
-draw_error_bar(1, 1, 1, 1, 1, 200, 10);
 draw_error_bar(1, 1, 1, 1, 1, 500, 10, true);
-draw_error_bar(1, 1, 1, 1, 1, 200, 10, true);
+draw_error_bar(1, 1, 1, 1, 1, 250, 10);
+draw_error_bar(1, 1, 1, 1, 1, 250, 10, true);
 
 draw_footer();
 
