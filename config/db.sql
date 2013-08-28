@@ -19,6 +19,15 @@ create table uploaded_files (
 
 delimiter //
 
+create procedure garbage_collect()
+begin
+    create temporary table old_sets(id int);
+    insert into old_sets select id from uploaded_sets where last_touched < (unix_timestamp(now())-3600); # 1 hour
+    delete from uploaded_files where upload_set in (select id from old_sets);
+    delete from uploaded_sets where id in (select id from old_sets);
+    drop table old_sets;
+end //
+
 create procedure touch_set(in set_id int)
 begin
    declare right_now int;
@@ -37,9 +46,9 @@ begin
     select last_insert_id();
 end //
 
-create procedure put_file(in upload_set int, in filename text, in document text)
+create procedure add_file(in upload_set int, in filename text, in document text, in cached_parse text)
 begin
-    insert into uploaded_files values (0, upload_set, filename, document);
+    insert into uploaded_files values (0, upload_set, filename, document, cached_parse);
     call touch_set(upload_set);
     select last_insert_id();
 end //
@@ -50,7 +59,12 @@ begin
     call touch_file(file);
 end //
 
+create procedure get_file(in file int)
+begin
+    call touch_file(file);
+    select * from uploaded_files where id = file;
+end //
+
 delimiter ;
 
 grant all on validator.* to ''@'localhost';
-
