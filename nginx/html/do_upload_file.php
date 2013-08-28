@@ -6,9 +6,6 @@ require_once "php/footer.php";
 require_once "php/validation.php";
 require_once "php/files.php";
 
-if (! array_key_exists("file", $_FILES) )
-    redirect("/upload_file");
-
 $uploaded_files = array();
 $f = 0;
 
@@ -19,9 +16,13 @@ while ( array_key_exists("file$f", $_FILES) ) {
     
 }
 
+$num_files = count($uploaded_files);
+
+if ( $num_files == 0 )
+    redirect("/upload_file");
+
 draw_header("THEM prototype - Uploaded Files");
 
-$num_files = count($uploaded_files);
 $files = $num_files == 1 ? "file" : "files";
 
 print <<<END
