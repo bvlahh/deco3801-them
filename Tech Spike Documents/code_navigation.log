@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  30 AUG 2013 00:41
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  30 AUG 2013 00:54
 entering extended mode
 **./code_navigation.tex
 
@@ -198,11 +198,7 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 
 {C:/Users/Veritas/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Tech Spike Documents\code_nav
-igation.aux") )
-(\end occurred inside a group at level 1)
-
-### simple group (level 1) entered at line 53 ({)
-### bottom level 
+igation.aux") ) 
 Here is how much of TeX's memory you used:
  2996 strings out of 493921
  40605 string characters out of 3144871
@@ -211,11 +207,11 @@ Here is how much of TeX's memory you used:
  9366 words of font info for 36 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  27i,7n,49p,838b,233s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-tt10.pfb>
-Output written on code_navigation.pdf (1 page, 49428 bytes).
+<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmt
+t10.pfb>
+Output written on code_navigation.pdf (1 page, 49208 bytes).
 PDF statistics:
  18 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
