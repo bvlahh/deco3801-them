@@ -1,4 +1,13 @@
 
+/*
+
+HTML5 Logo oranges:
+#d64824
+#e44d26
+#f16529
+
+*/
+
 * {
     
     margin: 0;
@@ -26,32 +35,7 @@ a:hover {
     
     color: #e44d26;
     
-    /*
-    HTML5 Logo oranges:
-    #d64824;
-    #e44d26;
-    #f16529;
-    */
-    
 }
-
-/*
-.topbox {
-    
-    background-color: #444444;
-    padding: 15px;
-    color: #EEEEEE;
-    border-bottom: 1px solid #DDDDDD;
-    
-}
-
-.topbox a {
-    
-    color: #EEEEEE;
-    text-decoration: none;
-    
-}
-*/
 
 .topbox {
     
@@ -67,6 +51,13 @@ a:hover {
     font-weight: bold;
     padding-top: 5px;
     padding-left: 20px;
+    
+}
+
+.topbox_top a {
+    
+    color: #444444;
+    text-decoration: none;
     
 }
 
@@ -141,7 +132,7 @@ a:hover {
     text-decoration: none;
     color: #222222;
     display: block;
-    width: 120px;
+    width: 200px;
     height: 120px;
     line-height: 120px;
     text-align: center;
@@ -179,11 +170,18 @@ a:hover {
     
 }
 
+.datainput button {
+    
+    margin-top: 10px;
+    
+}
+
 .datainput textarea {
     
     margin-top: 10px;
     width: 500px;
     height: 500px;
+    border: 1px solid #DDDDDD;
     
 }
 
@@ -304,4 +302,13 @@ a:hover {
 	background-color: #FBFBFB;
 	float: left;
 		
+}
+
+.filepicker {
+    
+    display: block;
+    padding: 5px;
+    margin: 5px;
+    background-color: #DDDDDD;
+    
 }

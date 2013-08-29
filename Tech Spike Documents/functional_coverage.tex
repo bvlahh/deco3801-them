@@ -1,0 +1,58 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{graphicx}
+
+\pagestyle{plain}
+
+\setlength{\textwidth}{6.3truein}
+\setlength{\textheight}{8.7truein}
+\setlength{\oddsidemargin}{1.0mm}
+\setlength{\evensidemargin}{1.0mm}
+\setlength{\topmargin}{-20.5truemm}
+\setlength{\parindent}{0.0truemm}
+\parskip=2mm
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{lightgray}{gray}{0.7}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  commentstyle=\color{lightgray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{\bf \large DECO3801 - Tech Spike Functional Coverage Document}
+\author{\normalsize THEM - Typed HTML5 Evaluation Machine \\ \normalsize Carl Hattenfels, Scott Heiner, Shen Yong Lau, Robert Meyer, Brendan Miller, David Uebergang}
+\date{}
+
+\begin{document}
+
+\maketitle
+The following is a comprehensive list of functional specifications our HTML5 Evaluator will have implemented by the end of this course. Those that are have yet to be implemented are greyed out.
+
+\begin{itemize}
+\item Users can type HTML code into a direct input field, which is sent to the back-end parser for verification.
+\item Users can upload one or multiple HTML files, which are saved to the database and sent to the parser for verification.
+\item Users can upload a zip file, which is unzipped and added as a set to the database. These files are sent to the parser for verification, {\color{gray} along with information about the file structure.}
+{\color{gray}\item The help page should provide the user with information as to how to navigate the application.}
+\item The Single File (or Direct Input) Error Page displays an error bar showing the relative amount of each type of error the code contains. On this page, the user's code is displayed with text highlighting the sections of code marked as erroneous by the parser.
+The user can click on highlighted text to show the respective error message relating to that error. This is shown in a sidebar. % do we want mouseover?
+\item The Multiple File Error Page displays a list of files the user has uploaded. Clicking a file name takes you to its individual page. {\color{gray} Error bars are included next to each file representing that file's error count.}
+{\color{gray}\item The File Structure Error Page displays the user's file structure visually, with each individual HTML file having an error bar indicating the types of error that document contains. It should also have a display that shows any errors in file structure that are not tied to specific files, e.g. having no \verb'index.html'. Errors in file structure and file linking returned by the parser should be displayed too. Placing the mouse over such a file error will display the error message relating to that particular error in a sidebar structure. Clicking a file should take you to the file's individual error page.}
+{\color{gray}\item The back-end Python program should parse errors passed to it from the website in the four key areas of syntactical / semantic considerations, accessibility requirements, deprecated tags, and poor practice. These should all have associated error messages and, where appropriate, possible corrections. It should take a file structure passed to it from the website and provide information about incorrect file links, with possible suggestions.} Currently, we have implemented a spread of errors that the system can parse.
+\end{itemize}
+\end{document}

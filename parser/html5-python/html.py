@@ -1,10 +1,10 @@
-import html5parser
-from html5parser import treewalkers
-from html5parser import treebuilders
+import html5lib
+from html5lib import treewalkers
+from html5lib import treebuilders
 
-parser = html5parser.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
+parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-minidom_document = parser.parse('<html><footer></footer><head><head></html>')
+minidom_document = parser.parse('<html><body><head><br></head><body><head></body></body></html>')
 # <html><html><body><body></body></body></html></html>
 # <html><html><head><head></head></head></html></html>
 # <html><html><footer><footer></footer></footer></html></html>
@@ -13,6 +13,7 @@ minidom_document = parser.parse('<html><footer></footer><head><head></html>')
 # <html><html><body><html></html><body></html></html>
 #<html><html><head><html></html></head></html></html>
 #<html><html><head><html></html></head><footer></footer></html></html>
+#<html></head><head><body></head><body></body></html>
 
 walker = treewalkers.getTreeWalker("etree")
 stream = walker(minidom_document)
@@ -28,5 +29,5 @@ print '---------------------'
 print minidom_document
 print '---------------------'
 
-for item in stream:
-	print item
+#for item in stream:
+	#print item

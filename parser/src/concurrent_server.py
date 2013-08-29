@@ -3,8 +3,12 @@ import signal
 import sys 
 import errno
 import time
+import base64
  
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer
+import html5lib
+from html5lib import treewalkers
+from html5lib import treebuilders
  
 # Child processes
 _PIDS = []
@@ -30,6 +34,12 @@ def _gogentle(signum, frame):
     # Prevent keyboard interrupt error
     os._exit(1)
 
+# Generates an array of errors found after parsing the given base64 input.
+def parse_base64(input):
+    parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
+    document = parser.parse(base64.b64decode(input["document"]))
+    return parser.parseErrors()
+
 def line_count(input):
     if ( type(input) == unicode ):
         time.sleep(10)
@@ -37,29 +47,32 @@ def line_count(input):
     else:
         return None
 
-# Parsing function
+# Basic line count test
 def parse_html(s):
-    return line_count(s) 
+    return parse_base64(s)
+
+# Registered function for parsing direct input.
+def parse_direct_input(s):
+    return parse_base64(s)
  
-# server
+# Server processing
 def main(name, *argv):
     global _PIDS
  
-    # JSON-RPC over HTTP on INET socket localhost:8080
-    # under the hood, this calls `socket.bind` then `socket.listen`
+    # Create a new JSON-RPC server on localhost:8080
     s = SimpleJSONRPCServer(('localhost', 8080))
  
     # Register the functions to be called by the PHP client
     s.register_function(parse_html, 'parse_html')
  
-    # simple pre-fork server, fork before accept
+    # Creates 5 child server processes
     for i in range(5):
-        # fork our current process
+        # Fork current process
         pid = os.fork()
  
-        # if we are the child fork ... 
+        # Child fork:
         if 0 == pid:
-            # die without unhandled exception
+            # Prevent interrupt messages
             for signum in ( signal.SIGINT, signal.SIGTERM, ):
                 signal.signal(signum, _gogentle)
  
@@ -67,15 +80,15 @@ def main(name, *argv):
             s.serve_forever()
             os._exit(0)
  
-        # if we are the papa fork
+        # Parent:
         else:
             _PIDS.append(pid)
  
-    # setup signal relaying for INT and TERM
+    # Handle interrupt signals quietly
     for signum in ( signal.SIGINT, signal.SIGTERM, ):
         signal.signal(signum, _kronos)
  
-    # wait on the kids
+    # Wait for child processes
     while len(_PIDS):
         pid, rc = os.waitpid(-1, 0)
         _PIDS.remove(pid)

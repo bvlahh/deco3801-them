@@ -6,6 +6,36 @@ _ = gettext.gettext
 
 EOF = None
 
+# DECO3801 - List of tags for which an error will be raised if 
+# more than one instance of a single tag is found in a HTML document.
+singularTags = [
+    "html",
+    "head",
+    "body",
+    "footer",
+]
+
+# DECO3801 - A dictionary containing a mapping of html5lib error codes
+# to the error codes to be used for the front end section of THEM.
+errorCodes = {
+    "expected-doctype-but-got-start-tag": 1,
+    "multiple-instance-singular-tag": 2,
+    "incorrect-placement-singular-tag": 3,
+    "incorrect-placement-singular-end-tag": 4,
+    "incorrect-start-tag-placement-before-head": 5,
+    "incorrect-end-tag-placement-before-head": 6,
+    "incorrect-start-tag-placement-in-head": 7,
+    "incorrect-end-tag-placement-in-head": 8,
+    "head-start-tag-missing": 9,
+    "head-end-tag-missing": 10,
+    "unexpected-html-end-tag-before-body-close": 11,
+    "expected-eof-but-got-start-tag": 12,
+    "expected-eof-but-got-end-tag": 13,
+    "unexpected-end-tag": 14,
+    "unexpected-end-tag-after-body": 15,
+
+}
+
 E = {
     "null-character":
         _("Null character in input stream, replaced with U+FFFD."),
@@ -287,6 +317,25 @@ E = {
         _("Unexpected end tag (%(name)s) before html."),
     "XXX-undefined-error":
         _("Undefined error (this sucks and should be fixed)"),
+    # DECO3801 - New error codes.
+    "multiple-instance-singular-tag":
+        _("Found more than one instance of the singular tag (%(name)s)."),
+    "incorrect-placement-singular-tag":
+        _("A structural singular tag (%(name)s) has been nested in another structural tag."),
+    "incorrect-placement-singular-end-tag":
+        _("A structural singular end tag (%(name)s) has been nested in another structural tag."),
+    "incorrect-start-tag-placement-before-head":
+        _("The start tag (%(name)s) was found before the head tag."),
+    "incorrect-end-tag-placement-before-head":
+        _("The end tag (%(name)s) was found before the head tag."),
+    "incorrect-start-tag-placement-in-head":
+        _("The start tag (%(name)s) is not valid in the head section."),
+    "incorrect-end-tag-placement-in-head":
+        _("The end tag (%(name)s) is not valid in the head section."),
+    "head-end-tag-missing":
+        _("The head end tag is missing."),
+    "unexpected-html-end-tag-before-body-close":
+        _("A closing HTML end tag was found before the expected body end tag."),
 }
 
 namespaces = {

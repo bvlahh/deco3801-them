@@ -205,19 +205,27 @@ class HTMLUnicodeInputStream(object):
 
     def _position(self, offset):
         chunk = self.chunk
-        nLines = chunk.count('\n', 0, offset)
-        positionLine = self.prevNumLines + nLines
-        lastLinePos = chunk.rfind('\n', 0, offset)
-        if lastLinePos == -1:
-            positionColumn = self.prevNumCols + offset
-        else:
-            positionColumn = offset - (lastLinePos + 1)
-        return (positionLine, positionColumn)
+        # DECO3801 - Updated the position array to show the range
+        # of characters over which the error applies, spanning back
+        # to the starting < symbol for the tag.
+        # The old position method displayed line number and current 
+        # character position.
+        # Old:
+        #nLines = chunk.count('\n', 0, offset)
+        #positionLine = self.prevNumLines + nLines
+        #lastLinePos = chunk.rfind('\n', 0, offset)
+        #if lastLinePos == -1:
+        #    positionColumn = self.prevNumCols + offset
+        #else:
+        #    positionColumn = offset - (lastLinePos + 1)
+
+        previousStartBracket = chunk.rfind('<', 0, offset)
+        return (previousStartBracket, offset - 1)
 
     def position(self):
         """Returns (line, col) of the current position in the stream."""
         line, col = self._position(self.chunkOffset)
-        return (line + 1, col)
+        return (line, col)
 
     def char(self):
         """ Read one character from the stream or queue if available. Return

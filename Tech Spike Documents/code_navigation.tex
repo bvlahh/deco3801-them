@@ -1,0 +1,61 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{graphicx}
+
+\pagestyle{plain}
+
+\setlength{\textwidth}{6.3truein}
+\setlength{\textheight}{8.7truein}
+\setlength{\oddsidemargin}{1.0mm}
+\setlength{\evensidemargin}{1.0mm}
+\setlength{\topmargin}{-20.5truemm}
+\setlength{\parindent}{0.0truemm}
+\parskip=2mm
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{lightgray}{gray}{0.7}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  commentstyle=\color{lightgray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{\bf \large DECO3801 - Tech Spike Code Navigation Document}
+\author{\normalsize THEM - Typed HTML5 Evaluation Machine \\ \normalsize Carl Hattenfels, Scott Heiner, Shen Yong Lau, Robert Meyer, Brendan Miller, David Uebergang}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+There are two primary components to our project: the website and the parser. The PHP files for the website can be found in the \verb'nginx\html' folder. All of the website files have been coded from scratch; that is, all files in \verb'nginx\html' have been written by us. The two files that are akin to templates for each page are 
+
+\begin{verbatim}
+/nginx/html/php/header.php
+/nginx/html/php/footer.php
+\end{verbatim}
+
+The Python files for the parser can be found in \verb'parser'. Since we are adapting a pre-existing library for this parser, \verb'html5lib', some files relate to the library and some to our application. The html5-python folder (\verb'parser\html5-python') contains all of the code of \verb'html5lib', the main parsing library behind our site. We have made a number of additions and modifications to this code base, all of which have been marked with a ``DECO3801" tag to signify where we have made these changes. The following directory listings comprise all of the files that have been modified.
+
+\begin{verbatim}/html5-python/html5-lib/html5parser.py
+/html5-python/html5-lib/constants.py
+/html5-python/html5-lib/inputstream.py
+\end{verbatim}
+
+The source code found in the ``src" directory contains the source code for the concurrent JSON-RPC folder. The file \verb'rpc_server.py' is the current version in use, and other files in this folder should be disregarded.
+\end{document}

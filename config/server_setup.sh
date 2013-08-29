@@ -26,7 +26,14 @@ yum -y install nginx;
 # we'll run nginx under supervisor along with php, so turn off auto start
 chkconfig nginx off;
 
-# no database yet
+# mysql
+yum -y install mysql-server;
+chkconfig mysqld off;
+service mysqld stop;
+sleep 10;
+service mysqld start;
+sleep 10;
+service mysqld stop;
 
 # install supervisor and init script, auto start it when the machine starts
 yum -y install python-setuptools;
@@ -49,4 +56,6 @@ mv -f ./php.ini /etc/php.ini;
 # start it all
 service supervisord start;
 
+sleep 10;
+cat ./db.sql | mysql;
 

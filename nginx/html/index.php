@@ -1,7 +1,7 @@
 <?php
 
-require_once "header.php";
-require_once "footer.php";
+require_once "php/header.php";
+require_once "php/footer.php";
 
 draw_header("THEM prototype", 0);
 
@@ -10,7 +10,7 @@ print <<<END
     <div class="startbuttons">
         
         <div>
-            Welcome to THEM
+            Welcome to The HTML5 Evaluation Machine
         </div>
         
         <a href="/direct_input" >
