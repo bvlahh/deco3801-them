@@ -2,7 +2,9 @@
 
 class Errors
 {
-    
+    /**
+    * A mapping of error codes to their associated error message.
+    */
     static $error_strings = array(
         
         1 => "No valid doctype was found.",
@@ -19,16 +21,26 @@ class Errors
         12 => "A start tag was found after the expected closing HTML tag.",
         13 => "A closing tag was found after the expected closing HTML tag.",
         14 => "This closing tag is missing a matching start tag.",
-        15=> "A misplaced closing tag was found after the closing body tag.",
+        15 => "A misplaced closing tag was found after the closing body tag.",
         
     );
     
+    /**
+    * Returns the error message associated with the given error code.
+    *
+    * @param int $error_number The error code.
+    */
     static function errorString($error_number) {
         
         return Errors::$error_strings[$error_number];
         
     }
     
+    /**
+    * Returns a hexadecimal colour value associated with the given error code.
+    *
+    * @param int $error_number The error code.
+    */
     static function errorColor($error_number) {
         
         return "#ff7f7f";

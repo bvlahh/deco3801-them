@@ -1,5 +1,10 @@
 <?php
 
+/**
+* Displays the error message associated with the given error code in the "infobox"
+* element when a user clicks an error span in the results page.
+*/
+
 require_once "php/errors.php";
 
 header("Content-type: application/x-javascript");

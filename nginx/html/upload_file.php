@@ -1,5 +1,9 @@
 <?php
 
+/**
+* Input page for single and multiple HTML file uploads.
+*/
+
 require_once "php/header.php";
 require_once "php/footer.php";
 

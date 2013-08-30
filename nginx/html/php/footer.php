@@ -1,5 +1,8 @@
 <?php
 
+/**
+* Footer template.
+*/
 function draw_footer() {
     
     /*

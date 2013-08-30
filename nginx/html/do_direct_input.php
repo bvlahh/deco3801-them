@@ -1,5 +1,10 @@
 <?php
 
+/**
+* Send the input entered into the direct input form to the parser and redirect to the 
+* results page.
+*/
+
 require_once "php/misc.php";
 require_once "php/header.php";
 require_once "php/footer.php";

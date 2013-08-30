@@ -1,5 +1,10 @@
 <?php
 
+/**
+* Send one or more HTML files to the parser, generating a list of links to the
+* results page for each of the files parsed.
+*/
+
 require_once "php/misc.php";
 require_once "php/header.php";
 require_once "php/footer.php";
@@ -34,6 +39,11 @@ print <<<END
 END;
 
 $set = create_set("");
+
+/**
+* Parse each of the uploaded files and generate a link to the results page
+* for each file.
+*/
 
 foreach ($uploaded_files as $uploaded_file) {
     

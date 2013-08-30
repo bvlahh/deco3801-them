@@ -1,5 +1,19 @@
 <?php
 
+/**
+* Draws the error bar, with each error type taking up a fraction of the total defined width
+* based on the number of errors of that type as a fraction of the total number of errors.
+*
+* @param int $blue          The number of "blue" errors.
+* @param int $red           The number of "red" errors.
+* @param int $orange        The number of "orange" errors.
+* @param int $yellow        The number of "yellow" errors.
+* @param int $green         The number of "green" errors.
+* @param int $total_wide    The total width of the error bar object in pixels.
+* @param int $total_height  The total height of the error bar object in pixels.
+*
+* NOTE: The error colours haven't yet been assigned a meaning (eg. structural error)
+*/
 function draw_error_bar($blue, $red, $orange, $yellow, $green, $total_wide, $total_height, $show_numbers = false) {
     
     $total = $blue + $red + $orange + $yellow + $green;

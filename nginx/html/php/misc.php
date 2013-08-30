@@ -1,5 +1,8 @@
 <?php
 
+/**
+* 404 error handler.
+*/
 function exit_404() {
     
     header("Status: 404 Not Found");
@@ -7,6 +10,9 @@ function exit_404() {
     
 }
 
+/**
+* Page redirect.
+*/
 function redirect($url) {
     
     header("Location: $url");

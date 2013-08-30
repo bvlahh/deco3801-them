@@ -1,5 +1,10 @@
 <?php
 
+/**
+* Header template.
+*
+* @param string $title The title of the page.
+*/
 function draw_header($title, $selected_tab=0) {
     
     print <<<END

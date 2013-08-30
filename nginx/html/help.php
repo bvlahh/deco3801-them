@@ -1,5 +1,7 @@
 <?php
 
+// The help page. Currently a test bed for the error bars.
+
 require_once "php/header.php";
 require_once "php/footer.php";
 require_once "php/errorbar.php";

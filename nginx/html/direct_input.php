@@ -1,5 +1,9 @@
 <?php
 
+/**
+* The direct input entry form.
+*/
+
 require_once "php/header.php";
 require_once "php/footer.php";
 
