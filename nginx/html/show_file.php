@@ -104,12 +104,11 @@ print <<<END
     
 </div>
 
-<div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px; padding: 5px;" id="infobox">
+<div class="infobox" id="infobox">
 
 </div>
 
 <div class="cb"></div>
-
 
 <script type="text/javascript" src="errorlabels.js"></script>
 

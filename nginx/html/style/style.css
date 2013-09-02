@@ -285,6 +285,12 @@ a:hover {
 .file {
 	
 	border: 1px solid #DDDDDD;
+    
+    height: 500px;
+    overflow-y: scroll;
+    
+    width: 500px;
+    overflow-x: scroll;
 	
 }
 
@@ -301,7 +307,9 @@ a:hover {
 	
 	background-color: #FBFBFB;
 	float: left;
-		
+    
+    max-width: 0px;
+    
 }
 
 .filepicker {
@@ -310,5 +318,18 @@ a:hover {
     padding: 5px;
     margin: 5px;
     background-color: #DDDDDD;
+    
+}
+
+.infobox {
+    
+    float: left;
+    border: 1px solid #DDDDDD;
+    margin: 10px;
+    padding: 5px;
+    
+    min-width: 490px;
+    min-height: 490px;
+    background-color: #ffffff;
     
 }
