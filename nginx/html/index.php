@@ -22,7 +22,7 @@ print <<<END
         Accessibility<br />
         Poor Practice / Other Miscellenous Issues.<br /><br /></div>
 
-        Start uploading now by clicking on <a href="/direct_input">Direct Input</a>, <a href="/upload_file">Upload File</a> or <a href="/upload_zip">Upload Zip</a> in the sidebar.<br \><br \>
+        Start uploading now by clicking on <a href="/direct_input">Direct Input</a>, <a href="/upload_file">Upload File</a> or <a href="/upload_zip">Upload Zip</a> in the sidebar.<br /><br />
 
         For more information on how everything works, check out the <a href="/help">help page</a>!
         
