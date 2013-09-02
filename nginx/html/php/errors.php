@@ -22,7 +22,16 @@ class Errors
         13 => "A closing tag was found after the expected closing HTML tag.",
         14 => "This closing tag is missing a matching start tag.",
         15 => "A misplaced closing tag was found after the closing body tag.",
-        
+        16 => "The document is missing a closing HTML tag.",
+        17 => "The tag has a symbol in place of a valid tag name.",
+        18 => "A closing angled bracket was found instead of a tag name.",
+        19 => "A question mark was found instead of a tag name.",
+        20 => "A closing tag cannot contain a self closing solidus symbol '/'.",
+        21 => "This tag is not a self closing void tag type.",
+        22 => "Br tags are self closing and don't require a closing tag.",
+        23 => "A void tag is missing the self closing backslash symbol.",
+        24 => "One or more attributes were found in a closing tag.",
+
     );
     
     /**

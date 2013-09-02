@@ -240,7 +240,7 @@ class HTMLParser(object):
                 self.parseError("non-void-element-with-trailing-solidus",
                                 {"name": token["name"]})
         
-        ## DECO3801 Check for closing html tag
+        # DECO3801 - Check for closing html tag
         if "html" not in self.singularEndTags:
            self.parseError("no-closing-html-tag", {"name": token["name"]});
         
@@ -1297,6 +1297,12 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["inTable"]
 
         def startTagVoidFormatting(self, token):
+            # DECO3801 - Check that the void start tag contains a self closing 
+            # backslash symbol. Raises an error if the token isn't seen as 
+            # self closing.
+            if not token["selfClosing"]:
+                self.parser.parseError("void-token-not-self-closing", 
+                        {"name": token["name"]})
             self.tree.reconstructActiveFormattingElements()
             self.tree.insertElement(token)
             self.tree.openElements.pop()
@@ -1488,6 +1494,7 @@ def getPhases(debug):
             # tag is reported as an error. Otherwise, the original processing
             # continues.
             hasClosing = False
+            self.parser.singularEndTags.append(token["name"])
             for remaining in self.parser.remainingTokens:
                 if remaining.get('name') == "html" and remaining.get('type') == tokenTypes["EndTag"]:
                     hasClosing = True
@@ -2697,6 +2704,8 @@ def getPhases(debug):
             return token
 
         def endTagHtml(self, name):
+            # DECO3801 - Error checking for the closing HTML tag.
+            self.parser.singularEndTags.append(name["name"])
             if self.parser.innerHTML:
                 self.parser.parseError("unexpected-end-tag-after-body-innerhtml")
             else:
