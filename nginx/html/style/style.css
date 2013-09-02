@@ -123,34 +123,7 @@ a:hover {
     
 }
 
-.startbuttons {
-    
-}
-
-.startbuttons a {
-    
-    text-decoration: none;
-    color: #222222;
-    display: block;
-    width: 200px;
-    height: 120px;
-    line-height: 120px;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #DDDDDD;
-    background-color: #FBFBFB;
-    margin: 10px;
-    float: left;
-    
-}
-
-.startbuttons a:hover {
-    
-    background-color: #EEEEEE;
-    
-}
-
-.startbuttons div {
+.indextitle {
     
     text-align: center;
     font-size: 120%;
