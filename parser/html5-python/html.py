@@ -4,7 +4,7 @@ from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-minidom_document = parser.parse('<html><body><head><br></head><body><head></body></body></html>')
+minidom_document = parser.parse('<html><head></head><body></body>')
 # <html><html><body><body></body></body></html></html>
 # <html><html><head><head></head></head></html></html>
 # <html><html><footer><footer></footer></footer></html></html>
@@ -14,6 +14,9 @@ minidom_document = parser.parse('<html><body><head><br></head><body><head></body
 #<html><html><head><html></html></head></html></html>
 #<html><html><head><html></html></head><footer></footer></html></html>
 #<html></head><head><body></head><body></body></html>
+
+# Causes a number of undefined errors.
+#<html><*body></body /></body></html>
 
 walker = treewalkers.getTreeWalker("etree")
 stream = walker(minidom_document)
