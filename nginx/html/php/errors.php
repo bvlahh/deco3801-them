@@ -52,6 +52,10 @@ class Errors
     */
     static function errorColor($error_number) {
         
+        // hacked testing
+        if ($error_number == 1)
+            return "#7f7fff";
+        
         return "#ff7f7f";
         
     }

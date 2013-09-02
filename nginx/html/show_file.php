@@ -42,6 +42,8 @@ $input = str_replace("\r", "", $input);
 $escaped_document = "";
 $current_index = 0;
 
+$error_lines = array();
+
 /**
 * Process each of the returned errors.
 * The array of errors contains arrays of the form [error_number, starting_position, end_position]
@@ -57,6 +59,9 @@ foreach( $parsed as $parse ) {
     
     $start_span = "<span style=\"background-color: $err_colour;\" onclick=\"messagebox($err_no);\">";
     $end_span = "</span>";
+    
+    //$error_lines[] = array(substr_count(substr($input, 0, $start_tag), "\n"), $err_colour);
+    $error_lines[substr_count(substr($input, 0, $start_tag), "\n")] = $err_colour;
     
     /**
     * Generates a formatted version of the original HTML document containing all errors 
@@ -78,8 +83,14 @@ $num_lines = substr_count($input, "\n");
 $line_nos = "";
 
 // A string representation of the line count
-for ($l=1; $l<$num_lines+2; $l++)
-    $line_nos .= "$l\n";
+for ($l=1; $l<$num_lines+2; $l++) {
+    if (array_key_exists($l-1, $error_lines)) {
+        //$bgc = ${error_lines[$l]};
+        $line_nos .= "<span style=\"background-color: ${error_lines[$l-1]};\">$l</span>\n";
+    } else {
+        $line_nos .= "$l\n";
+    }
+}
 
 draw_header("THEM prototype - $filename");
 
@@ -104,12 +115,11 @@ print <<<END
     
 </div>
 
-<div style="float: left; border: 1px solid #DDDDDD; margin-top: 10px; margin-left: 10px; padding: 5px;" id="infobox">
+<div class="infobox" id="infobox">
 
 </div>
 
 <div class="cb"></div>
-
 
 <script type="text/javascript" src="errorlabels.js"></script>
 

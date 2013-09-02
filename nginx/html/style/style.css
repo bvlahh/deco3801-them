@@ -123,34 +123,7 @@ a:hover {
     
 }
 
-.startbuttons {
-    
-}
-
-.startbuttons a {
-    
-    text-decoration: none;
-    color: #222222;
-    display: block;
-    width: 200px;
-    height: 120px;
-    line-height: 120px;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #DDDDDD;
-    background-color: #FBFBFB;
-    margin: 10px;
-    float: left;
-    
-}
-
-.startbuttons a:hover {
-    
-    background-color: #EEEEEE;
-    
-}
-
-.startbuttons div {
+.indextitle {
     
     text-align: center;
     font-size: 120%;
@@ -285,6 +258,12 @@ a:hover {
 .file {
 	
 	border: 1px solid #DDDDDD;
+    
+    height: 500px;
+    overflow-y: scroll;
+    
+    width: 500px;
+    overflow-x: scroll;
 	
 }
 
@@ -301,7 +280,9 @@ a:hover {
 	
 	background-color: #FBFBFB;
 	float: left;
-		
+    
+    max-width: 0px;
+    
 }
 
 .filepicker {
@@ -310,5 +291,18 @@ a:hover {
     padding: 5px;
     margin: 5px;
     background-color: #DDDDDD;
+    
+}
+
+.infobox {
+    
+    float: left;
+    border: 1px solid #DDDDDD;
+    margin: 10px;
+    padding: 5px;
+    
+    min-width: 490px;
+    min-height: 490px;
+    background-color: #ffffff;
     
 }
