@@ -42,7 +42,10 @@ errorCodes = {
     "unexpected-end-tag-treated-as": 22,
     "void-token-not-self-closing": 23,
     "attributes-in-end-tag": 24,
- 
+    "early-termination-before-head": 25,
+    "early-termination-in-head": 26,
+    "early-termination-before-body": 27,
+    "early-termination-in-body": 28,
 }
 
 E = {
@@ -349,6 +352,14 @@ E = {
         _("The document is missing a closing HTML tag."),
     "void-token-not-self-closing":
         _("The void token (%(name)s) is missing the self closing backslash."),
+    "early-termination-before-head":
+        _("The closing HTML tag occured before the head phase implying incorrect placement."),
+    "early-termination-in-head":
+        _("The closing HTML tag occured in the head phase implying incorrect placement."),
+    "early-termination-before-body":
+        _("The closing HTML tag occured before the body phase implying incorrect placement."),
+    "early-termination-in-body":
+        _("The closing HTML tag occured in the body phase implying incorrect placement."),
 }
 
 namespaces = {

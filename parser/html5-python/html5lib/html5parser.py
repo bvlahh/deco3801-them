@@ -720,7 +720,9 @@ def getPhases(debug):
             self.startTagHandler.default = self.startTagOther
 
             self.endTagHandler = utils.MethodDispatcher([
-                (("br"), self.endTagImplyHead)
+                ("br", self.endTagImplyHead),
+                # DECO3801 - Closing HTML tag handler.
+                ("html", self.endTagHtml)
             ])
             self.endTagHandler.default = self.endTagOther
 
@@ -778,6 +780,29 @@ def getPhases(debug):
             self.parser.parseError("incorrect-end-tag-placement-before-head",
                                    {"name": token["name"]})
 
+        # DECO3801 - Error checking for a closing HTML tag occuring before
+        # the starting head tag. If no other closing HTML tag is found
+        # after this instance, the current closing HTML tag is considered
+        # the closing tag for the document and any tags occuring after it
+        # will be reported as errors.
+        def endTagHtml(self, token):
+            hasClosingHtml = False
+            self.parser.singularEndTags.append(token["name"])
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "html" and remaining.get('type') == tokenTypes["EndTag"]:
+                    hasClosingHtml = True
+
+            if hasClosingHtml:
+                self.parser.parseError("incorrect-placement-singular-end-tag",
+                                   {"name": token["name"]})
+            else:
+                # DECO3801 - Redirects to the after body phase, causing all
+                # remaining tags to be treated as being misplaced.
+                self.parser.parseError("early-termination-before-head",
+                                   {"name": token["name"]})
+                self.parser.phase = self.parser.phases["afterBody"]
+                return token
+
     class InHeadPhase(Phase):
         def __init__(self, parser, tree):
             Phase.__init__(self, parser, tree)
@@ -800,7 +825,7 @@ def getPhases(debug):
                 # due to original error checking conflicting with our check.
                 # Old:
                 # (("br", "html", "body"), self.endTagHtmlBodyBr)
-                # ("html", self.endTagHtml),
+                ("html", self.endTagHtml),
             ])
             self.endTagHandler.default = self.endTagOther
 
@@ -905,6 +930,29 @@ def getPhases(debug):
         def anythingElse(self):
             self.endTagHead(impliedTagToken("head"))
 
+        # DECO3801 - Error checking for a closing HTML tag occuring inside
+        # the head tags. If no other closing HTML tag is found
+        # after this instance, the current closing HTML tag is considered
+        # the closing tag for the document and any tags occuring after it
+        # will be reported as errors.
+        def endTagHtml(self, token):
+            hasClosingHtml = False
+            self.parser.singularEndTags.append(token["name"])
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "html" and remaining.get('type') == tokenTypes["EndTag"]:
+                    hasClosingHtml = True
+
+            if hasClosingHtml:
+                self.parser.parseError("incorrect-placement-singular-end-tag",
+                                   {"name": token["name"]})
+            else:
+                # DECO3801 - Redirects to the after body phase, causing all
+                # remaining tags to be treated as being misplaced.
+                self.parser.parseError("early-termination-in-head",
+                                   {"name": token["name"]})
+                self.parser.phase = self.parser.phases["afterBody"]
+                return token
+
     # XXX If we implement a parser for which scripting is disabled we need to
     # implement this phase.
     #
@@ -924,9 +972,10 @@ def getPhases(debug):
             ])
             self.startTagHandler.default = self.startTagOther
             self.endTagHandler = utils.MethodDispatcher([
-                (("body", "html", "br"), self.endTagHtmlBodyBr),
-                # DECO3801 - Handler method for head end tag.
-                ("head", self.endTagHead)
+                (("body", "br"), self.endTagHtmlBodyBr),
+                # DECO3801 - Handler methods for head and html end tags.
+                ("head", self.endTagHead),
+                ("html", self.endTagHtml),
             ])
             self.endTagHandler.default = self.endTagOther
 
@@ -988,6 +1037,29 @@ def getPhases(debug):
             #self.tree.insertElement(impliedTagToken("body", "StartTag"))
             self.parser.phase = self.parser.phases["inBody"]
             self.parser.framesetOK = True
+
+        # DECO3801 - Error checking for a closing HTML tag occuring before
+        # the body section. If no other closing HTML tag is found
+        # after this instance, the current closing HTML tag is considered
+        # the closing tag for the document and any tags occuring after it
+        # will be reported as errors.
+        def endTagHtml(self, token):
+            hasClosingHtml = False
+            self.parser.singularEndTags.append(token["name"])
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "html" and remaining.get('type') == tokenTypes["EndTag"]:
+                    hasClosingHtml = True
+
+            if hasClosingHtml:
+                self.parser.parseError("incorrect-placement-singular-end-tag",
+                                   {"name": token["name"]})
+            else:
+                # DECO3801 - Redirects to the after body phase, causing all
+                # remaining tags to be treated as being misplaced.
+                self.parser.parseError("early-termination-before-body",
+                                   {"name": token["name"]})
+                self.parser.phase = self.parser.phases["afterBody"]
+                return token
 
     class InBodyPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#parsing-main-inbody
@@ -1488,31 +1560,33 @@ def getPhases(debug):
                         break
             self.parser.phase = self.parser.phases["afterBody"]
 
+        # DECO3801 - Error checking for a closing HTML tag occuring before
+        # the body section. If no other closing HTML tag is found
+        # after this instance, the current closing HTML tag is considered
+        # the closing tag for the document and any tags occuring after it
+        # will be reported as errors.
         def endTagHtml(self, token):
-            # DECO3801 - Check for correct instance of the end HTML tag. If
-            # another end HTML tag exists after the one being checked, the current
-            # tag is reported as an error. Otherwise, the original processing
-            # continues.
-            hasClosing = False
+            hasClosingHtml = False
             self.parser.singularEndTags.append(token["name"])
             for remaining in self.parser.remainingTokens:
                 if remaining.get('name') == "html" and remaining.get('type') == tokenTypes["EndTag"]:
-                    hasClosing = True
+                    hasClosingHtml = True
 
-            if hasClosing:
+            if hasClosingHtml:
                 self.parser.parseError("incorrect-placement-singular-end-tag",
                                    {"name": token["name"]})
             else:
-                self.parser.parseError("unexpected-html-end-tag-before-body-close",
+                # DECO3801 - Redirects to the after body phase, causing all
+                # remaining tags to be treated as being misplaced.
+                self.parser.parseError("early-termination-in-body",
                                    {"name": token["name"]})
-                # We repeat the test for the body end tag token being ignored here
-                # DECO3801 - This is the original implementation. It will terminate
-                # the body section before the end HTML tag is declared, causing
-                # the parser to read the HTML end tag as the end of the document. 
-                # Remaining tags will be treated as misplaced tags.
-                if self.tree.elementInScope("body"):
-                    self.endTagBody(impliedTagToken("body"))
-                    return token
+                self.parser.phase = self.parser.phases["afterBody"]
+                return token
+
+                # DECO3801 - Old implementation:
+                # if self.tree.elementInScope("body"):
+                #    self.endTagBody(impliedTagToken("body"))
+                #    return token
 
         def endTagBlock(self, token):
             # Put us back in the right whitespace handling mode
