@@ -31,7 +31,7 @@ class Errors
         22 => "Br tags are self closing and don't require a closing tag.",
         23 => "A void tag is missing the self closing backslash symbol.",
         24 => "One or more attributes were found in a closing tag.",
-        25 => "Closing HTML tag found before the head phase. Misplaced closing HTML tag or missing head and body sections."
+        25 => "Closing HTML tag found before the head phase. Misplaced closing HTML tag or missing head and body sections.",
         26 => "Closing HTML tag found in head phase. Misplaced closing HTML tag or missing closing head tag.",
         27 => "Closing HTML tag found before body phase. Misplaced closing HTML tag or missing body tags.",
         28 => "Closing HTML tag found in the body phase. Misplaced closing HTML tag or missing closing body tag.",
