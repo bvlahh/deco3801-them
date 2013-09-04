@@ -55,9 +55,15 @@ def parse_html(s):
 # Registered function for parsing direct input.
 def parse_direct_input(s):
     return parse_base64(s)
+
+# Sleeps for two seconds before returning the difference
+# between the current time and the given starting time.
+def test_concurrency(start):
+    time.sleep(2)
+    return time.time() - start
  
 # Server processing
-def main(name, *argv):
+def main():
     global _PIDS
  
     # Create a new JSON-RPC server on localhost:8080
@@ -65,6 +71,8 @@ def main(name, *argv):
  
     # Register the functions to be called by the PHP client
     s.register_function(parse_html, 'parse_html')
+
+    s.register_function(test_concurrency, 'test_concurrency')
  
     # Creates 5 child server processes
     for i in range(5):
@@ -97,4 +105,4 @@ def main(name, *argv):
     return 0
  
 if __name__ == '__main__':
-    sys.exit(main(*sys.argv))
+    sys.exit(main())
