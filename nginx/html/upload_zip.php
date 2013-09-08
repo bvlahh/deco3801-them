@@ -1,7 +1,11 @@
 <?php
 
-require_once "header.php";
-require_once "footer.php";
+/**
+* Input page for zip file uploads.
+*/
+
+require_once "php/header.php";
+require_once "php/footer.php";
 
 draw_header("THEM prototype - Upload ZIP", 3);
 
@@ -10,7 +14,9 @@ print <<<END
     <div class="datainput">
         Upload ZIP
         <form action="do_upload_zip" method="post" enctype="multipart/form-data" >
-            <input type="file" name="archive" class="filepicker" />
+            <div>
+                <input type="file" name="archive" class="filepicker" />
+            </div>
             <div>
                 <input type="submit" value="Validate" class="button" />
             </div>

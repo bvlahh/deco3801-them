@@ -33,7 +33,19 @@ errorCodes = {
     "expected-eof-but-got-end-tag": 13,
     "unexpected-end-tag": 14,
     "unexpected-end-tag-after-body": 15,
-
+    "no-closing-html-tag": 16,
+    "expected-tag-name": 17,
+    "expected-tag-name-but-got-right-bracket": 18,
+    "expected-tag-name-but-got-question-mark": 19,
+    "self-closing-flag-on-end-tag": 20,
+    "non-void-element-with-trailing-solidus": 21,
+    "unexpected-end-tag-treated-as": 22,
+    "void-token-not-self-closing": 23,
+    "attributes-in-end-tag": 24,
+    "early-termination-before-head": 25,
+    "early-termination-in-head": 26,
+    "early-termination-before-body": 27,
+    "early-termination-in-body": 28,
 }
 
 E = {
@@ -336,6 +348,18 @@ E = {
         _("The head end tag is missing."),
     "unexpected-html-end-tag-before-body-close":
         _("A closing HTML end tag was found before the expected body end tag."),
+    "no-closing-html-tag":
+        _("The document is missing a closing HTML tag."),
+    "void-token-not-self-closing":
+        _("The void token (%(name)s) is missing the self closing backslash."),
+    "early-termination-before-head":
+        _("The closing HTML tag occured before the head phase implying incorrect placement."),
+    "early-termination-in-head":
+        _("The closing HTML tag occured in the head phase implying incorrect placement."),
+    "early-termination-before-body":
+        _("The closing HTML tag occured before the body phase implying incorrect placement."),
+    "early-termination-in-body":
+        _("The closing HTML tag occured in the body phase implying incorrect placement."),
 }
 
 namespaces = {

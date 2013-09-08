@@ -1,7 +1,11 @@
 <?php
 
-require_once "header.php";
-require_once "footer.php";
+/**
+* Input page for single and multiple HTML file uploads.
+*/
+
+require_once "php/header.php";
+require_once "php/footer.php";
 
 draw_header("THEM prototype - Upload File", 2);
 
@@ -11,7 +15,7 @@ print <<<END
         Upload HTML File
         <form action="do_upload_file" method="post" enctype="multipart/form-data" >
             <div id="files">
-                <input type="file" name="file1" class="filepicker" />
+                <input type="file" name="file0" class="filepicker" />
             </div>
             <div>
                 <div style="float: left;">
@@ -26,9 +30,10 @@ print <<<END
     </div>
 	
     <script type="text/javascript">
+    //<![CDATA[
         
         var fileDiv = document.getElementById("files");
-        var fileCount = 2;
+        var fileCount = 1;
         
         function addFileUpload() {
             
@@ -37,6 +42,7 @@ print <<<END
             
         }
         
+    //]]>
     </script>
     
 END;

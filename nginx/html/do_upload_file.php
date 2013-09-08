@@ -1,56 +1,69 @@
 <?php
 
-require_once "misc.php";
-require_once "header.php";
-require_once "footer.php";
-require_once "rpc_client.php";
+/**
+* Send one or more HTML files to the parser, generating a list of links to the
+* results page for each of the files parsed.
+*/
 
-if (! array_key_exists("file", $_FILES) )
+require_once "php/misc.php";
+require_once "php/header.php";
+require_once "php/footer.php";
+require_once "php/validation.php";
+require_once "php/files.php";
+
+$uploaded_files = array();
+$f = 0;
+
+while ( array_key_exists("file$f", $_FILES) ) {
+    
+    $uploaded_files[] = $_FILES["file$f"];
+    $f++;
+    
+}
+
+$num_files = count($uploaded_files);
+
+if ( $num_files == 0 )
     redirect("/upload_file");
 
-$filename = $_FILES["file"]["name"];
-$file = $_FILES["file"]["tmp_name"];
+draw_header("THEM prototype - Uploaded Files");
 
-$input = file_get_contents($file);
-
-$num_lines = substr_count($input, "\n");
-
-$line_nos = "";
-
-for ($l=1; $l<$num_lines+2; $l++)
-	$line_nos .= "$l\n";
-
-$escaped_input = htmlspecialchars($input);
-
-$rpc_data = rpc_validate(array(), base64_encode($input));
-
-draw_header("THEM prototype - Uploaded File");
+$files = $num_files == 1 ? "file" : "files";
 
 print <<<END
     
-    <div style="font-weight: bold;">
-        $filename
-    </div>
-    
-    <div class="file">
-	    
-	    <div class="file_lines">
-		    <pre>$line_nos</pre>
-	    </div>
-	    
-	    <div class="file_body">
-		    <pre>$escaped_input</pre>
-	    </div>
-        
-	    <div class="cb"></div>
-        
-        <div>
-        	$rpc_data
-        </div>
-        
-    </div>
+    <span style="font-weight: bold;">Uploaded Files</span><br />
+    $num_files $files<br />
+    <br />
     
 END;
+
+$set = create_set("");
+
+/**
+* Parse each of the uploaded files and generate a link to the results page
+* for each file.
+*/
+
+foreach ($uploaded_files as $uploaded_file) {
+    
+    $file_name = $uploaded_file["name"];
+    $tmp_file = $uploaded_file["tmp_name"];
+    
+    $file_data = file_get_contents($tmp_file);
+    $encoded_input = base64_encode($file_data);
+    
+    $parsed = validate(array(), $encoded_input);
+    
+    $encoded_parsed = json_encode($parsed);
+    
+    $file = add_file($set, $file_name, $encoded_input, $encoded_parsed);
+    
+    print <<<END
+        <a href="show_file?file=$file">$file_name</a><br />
+END;
+    
+}
 
 draw_footer();
 

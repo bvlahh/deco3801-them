@@ -1,7 +1,11 @@
 <?php
 
-require_once "header.php";
-require_once "footer.php";
+/**
+* The direct input entry form.
+*/
+
+require_once "php/header.php";
+require_once "php/footer.php";
 
 draw_header("THEM prototype - Direct Input", 1);
 
@@ -10,7 +14,9 @@ print <<<END
     <div class="datainput">
         Direct Input
         <form action="do_direct_input" method="post">
-            <textarea name="input"></textarea>
+            <div>
+                <textarea name="input" rows="" cols=""></textarea>
+            </div>
             <div>
                 <input type="submit" value="Validate" class="button" />
             </div>

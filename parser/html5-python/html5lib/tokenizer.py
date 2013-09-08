@@ -396,7 +396,9 @@ class HTMLTokenizer(object):
         else:
             # XXX
             self.tokenQueue.append({"type": tokenTypes["ParseError"], "data":
-                                    "expected-tag-name"})
+                                    "expected-tag-name",
+                                    # DECO3801 - Report the incorrect tag name.
+                                    "datavars": {"data": data}})
             self.tokenQueue.append({"type": tokenTypes["Characters"], "data": "<"})
             self.stream.unget(data)
             self.state = self.dataState
