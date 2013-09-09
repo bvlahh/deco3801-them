@@ -24,20 +24,10 @@ $zip = new ZipArchive();
 if (! $zip->open($file) )
     redirect("/upload_zip?upload_failed");
 
-draw_header("THEM prototype - Uploaded ZIP");
-
 $archive_name = $filename;
 $num_files = $zip->numFiles;
 
 $files = $num_files == 1 ? "file" : "files";
-
-print <<<END
-    
-    <span style="font-weight: bold;">$archive_name</span><br />
-    $num_files $files<br />
-    <br />
-    
-END;
 
 /**
 * Generate an array of filenames contained within the zip.
@@ -63,20 +53,16 @@ for ($i=0; $i<($zip->numFiles);$i++) {
     
     $encoded_input = base64_encode($file_data);
     
-    $parsed = validate($filenames, $encoded_input);
+    $parsed = validate($filenames, $file_name, $encoded_input);
     
     $encoded_parsed = json_encode($parsed);
     
-    $file = add_file($set, $file_name, $encoded_input, $encoded_parsed);
-    
-    print <<<END
-        <a href="show_file?file=$file">$file_name</a><br />
-END;
+    add_file($set, $file_name, $encoded_input, $encoded_parsed);
     
 }
 
 $zip->close();
 
-draw_footer();
+redirect("/show_set?set=$set");
 
 ?>

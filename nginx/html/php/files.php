@@ -51,4 +51,20 @@ function get_file($file_id) {
     
 }
 
+function get_set($set_id) {
+    
+    $mysqli = new mysqli(DB_HOST);
+    $mysqli->select_db(DB_NAME);
+    $set_id = $mysqli->real_escape_string($set_id);
+    $res = $mysqli->query("call get_set(\"$set_id\");");
+    
+    $set = array();
+    
+    while ( $row = $res->fetch_assoc() )
+        $set[] = $row;
+    
+    return $set;
+    
+}
+
 ?>

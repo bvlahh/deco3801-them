@@ -53,7 +53,7 @@ foreach ($uploaded_files as $uploaded_file) {
     $file_data = file_get_contents($tmp_file);
     $encoded_input = base64_encode($file_data);
     
-    $parsed = validate(array(), $encoded_input);
+    $parsed = validate(array(), $file_name, $encoded_input);
     
     $encoded_parsed = json_encode($parsed);
     
