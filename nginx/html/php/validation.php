@@ -11,13 +11,14 @@ require_once "JsonRpcClient.php";
 * which has been uploaded as a zip.
 * @param string    $document  The HTML document which is to be parsed.
 */
-function validate($files, $document) {
+function validate($files, $filename, $document) {
 	
 	$parser = new JsonRpcClient("http://localhost:8080");
 	
 	return $parser->parse_html(
 			array(
 					"files" => $files,
+					"filename" => $filename,
 					"document" => $document
 				)
 		);

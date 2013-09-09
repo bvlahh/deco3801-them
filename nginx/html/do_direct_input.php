@@ -21,7 +21,7 @@ $input = $_POST["input"];
 $encoded_input = base64_encode($input);
 
 // send it to the parser
-$parsed = validate(array(), $encoded_input );
+$parsed = validate(array(), "", $encoded_input );
 $encoded_parsed = json_encode($parsed);
 
 // put it in the db
