@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.1)  11 SEP 2013 07:23
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  11 SEP 2013 08:59
 entering extended mode
 **user_test_guide
 
@@ -122,57 +122,52 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 21.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-Overfull \hbox (63.14525pt too wide) in paragraph at lines 25--27
-\OT1/cmr/m/n/10.95 Name: $[]$ Pro-gram or De-gree: $[]$ 
- []
+) [1
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 36--37
+{C:/Users/Veritas/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 43--44
+Underfull \hbox (badness 10000) in paragraph at lines 67--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--58
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
 
  []
 
-[1
 
-{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 73--78
+Underfull \hbox (badness 10000) in paragraph at lines 97--102
 
  []
 
-[2]
+[2] [3]
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\User Testing Files\user_test_
 guide.aux") ) 
 Here is how much of TeX's memory you used:
- 1120 strings out of 493921
- 13002 string characters out of 3144871
- 65562 words of memory out of 3000000
- 4453 multiletter control sequences out of 15000+200000
- 11351 words of font info for 43 fonts, out of 3000000 for 9000
+ 1121 strings out of 493921
+ 13017 string characters out of 3144871
+ 66562 words of memory out of 3000000
+ 4454 multiletter control sequences out of 15000+200000
+ 11658 words of font info for 44 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 27i,8n,24p,249b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,8n,24p,249b,221s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
 cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
 r10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12
 .pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msa
 m10.pfb>
-Output written on user_test_guide.pdf (2 pages, 53140 bytes).
+Output written on user_test_guide.pdf (3 pages, 56845 bytes).
 PDF statistics:
- 25 PDF objects out of 1000 (max. 8388607)
+ 28 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
