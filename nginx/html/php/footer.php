@@ -58,7 +58,7 @@ function draw_footer() {
                     About
                 </div>
                 <div class="footer_about_body">
-                    THEM was developed in response to the tolerant nature of the HTML5 specification. Its primary aim is an educational tool for students learning web design. Because of this purpose it is built to validate for best practice which exceeds standards complance.
+                    THEM was developed in response to the tolerant nature of the HTML5 specification. Its primary aim is an educational tool for students learning web design. Because of this purpose it is built to validate for best practice which exceeds standards compliance.
                 </div>
             </div>
             <div class="cb"></div>
