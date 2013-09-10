@@ -301,7 +301,7 @@ a:hover {
     margin: 10px;
     padding: 5px;
     
-    min-width: 490px;
+    width: 490px;
     min-height: 490px;
     background-color: #ffffff;
     
