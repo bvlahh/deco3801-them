@@ -26,18 +26,6 @@ $num_files = count($uploaded_files);
 if ( $num_files == 0 )
     redirect("/upload_file");
 
-draw_header("THEM prototype - Uploaded Files");
-
-$files = $num_files == 1 ? "file" : "files";
-
-print <<<END
-    
-    <span style="font-weight: bold;">Uploaded Files</span><br />
-    $num_files $files<br />
-    <br />
-    
-END;
-
 $set = create_set("");
 
 /**
@@ -53,18 +41,14 @@ foreach ($uploaded_files as $uploaded_file) {
     $file_data = file_get_contents($tmp_file);
     $encoded_input = base64_encode($file_data);
     
-    $parsed = validate(array(), $encoded_input);
+    $parsed = validate(array(), $file_name, $encoded_input);
     
     $encoded_parsed = json_encode($parsed);
     
-    $file = add_file($set, $file_name, $encoded_input, $encoded_parsed);
-    
-    print <<<END
-        <a href="show_file?file=$file">$file_name</a><br />
-END;
+    add_file($set, $file_name, $encoded_input, $encoded_parsed);
     
 }
 
-draw_footer();
+redirect("/show_set?set=$set");
 
 ?>

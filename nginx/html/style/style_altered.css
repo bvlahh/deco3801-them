@@ -1,0 +1,328 @@
+
+/*
+
+HTML5 Logo oranges:
+#d64824
+#e44d26
+#f16529
+
+*/
+
+* {
+    
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    
+    min-width: 750px;
+    color: #222222;
+    font-family: sans-serif;
+    background-color: #222222;
+    height:100%;
+    
+}
+
+html {
+
+    height:100%;
+
+}
+
+a {
+    
+    color: #222222;
+    text-decoration: underline;
+    
+}
+
+a:hover {
+    
+    color: #e44d26;
+    
+}
+
+.topbox {
+    
+}
+
+.topbox_top {
+    
+    background-color: #FBFBFB;
+    color: #444444;
+    display: block;
+    height: 56px;
+    font-size: 60px;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-left: 20px;
+    
+}
+
+.topbox_top a {
+    
+    color: #444444;
+    text-decoration: none;
+    
+}
+
+.topbox_bottom {
+    
+    background-color: #444444;
+    color: #EEEEEE;
+    display: block;
+    padding: 10px;
+    
+}
+
+.contentbox {
+    
+    background-color: #FBFBFB;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -100px;
+    
+}
+
+.sidebar {
+    
+    float: left;
+    background-color: #FBFBFB;
+    width: 200px;
+    
+}
+
+.sidebuttons {
+    
+}
+
+.sidebuttons a {
+    
+    text-align: center;
+    display: block;
+    padding: 15px;
+    color: #222222;
+    text-decoration: none;
+    border-bottom: 1px solid #DDDDDD;
+    border-left: 1px solid #DDDDDD;
+    background-color: #FBFBFB;
+    
+}
+
+.sidebuttons a:hover {
+    
+    background-color: #EEEEEE;
+    
+}
+
+.contentpane {
+    
+    min-height: 250px;
+    border-left: 1px solid #DDDDDD;
+    float: left;
+    padding: 10px;
+    line-height: 1.2;
+    
+}
+
+.cb {
+    
+    clear: both;
+    
+}
+
+.indextitle {
+    
+    text-align: center;
+    font-size: 120%;
+    
+}
+
+.datainput {
+    
+    border: 1px solid #EEEEEE;
+    padding: 15px;
+    
+}
+
+.datainput input {
+    
+    margin-top: 10px;
+    
+}
+
+.datainput button {
+    
+    margin-top: 10px;
+    
+}
+
+.datainput textarea {
+    
+    margin-top: 10px;
+    width: 500px;
+    height: 500px;
+    border: 1px solid #DDDDDD;
+    
+}
+
+.datainput div {
+    
+    text-align: right;
+    
+}
+
+.button {
+    
+    margin: 5px 5px 0px 0px;
+    padding: 10px;
+    color: #FBFBFB;
+    background-color: #e44d26;
+    border: 1px solid #DDDDDD;
+    
+}
+
+.footer {
+    
+    height: 100px;
+    padding: 15px;
+    border-top: 1px solid #DDDDDD;
+    color: #DDDDDD;
+    background-color: #444444;
+    position: absolute;
+    bottom: 0;
+    width:100%;
+    
+}
+
+.push {
+
+    height: 100px;
+
+}
+
+.footer_html5 {
+    
+    float: left;
+    margin-left: 10px;
+    
+}
+
+.footer_html5 a {
+    
+}
+
+.footer_html5 img {
+    
+    height: 100px;
+    width: 100px;
+    
+}
+
+.footer_navigation {
+    
+    float: left;
+    margin-top: -5px;
+    margin-left: 40px;
+    
+}
+
+.footer_navigation span {
+    
+    display: block;
+    color: #EEEEEE;
+    font-size: 120%;
+    
+}
+
+.footer_navigation a {
+    
+    display: block;
+    color: #DDDDDD;
+    font-size: 80%;
+    
+}
+
+.footer_navigation a:hover {
+    
+    color: #e44d26;
+    
+}
+
+.footer_about {
+    
+    float: left;
+    margin-left: 40px;
+    margin-top: -5px;
+    width: 400px;
+    
+}
+
+.footer_about_title {
+    
+    color: #EEEEEE;
+    font-size: 120%;
+    
+}
+
+.footer_about_body {
+    
+    color: #DDDDDD;
+    font-size: 80%;
+    
+}
+
+.file {
+	
+	border: 1px solid #DDDDDD;
+    
+    height: 500px;
+    overflow-y: scroll;
+    
+    width: 500px;
+    overflow-x: scroll;
+	
+}
+
+.file_lines {
+	
+	padding-right: 5px;
+	background-color: #EEEEEE;
+	float: left;
+	text-align: right;
+    
+}
+
+.file_body {
+	
+	background-color: #FBFBFB;
+	float: left;
+    
+    max-width: 0px;
+    
+}
+
+.filepicker {
+    
+    display: block;
+    padding: 5px;
+    margin: 5px;
+    background-color: #DDDDDD;
+    
+}
+
+.infobox {
+    
+    float: left;
+    border: 1px solid #DDDDDD;
+    margin: 10px;
+    padding: 5px;
+    
+    min-width: 490px;
+    min-height: 490px;
+    background-color: #ffffff;
+    
+}
