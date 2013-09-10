@@ -12,7 +12,7 @@ HTML5 Logo oranges:
     
     margin: 0;
     padding: 0;
-    
+
 }
 
 body {
@@ -21,7 +21,14 @@ body {
     color: #222222;
     font-family: sans-serif;
     background-color: #222222;
+    height:100%;
     
+}
+
+html {
+
+    height:100%;
+
 }
 
 a {
@@ -39,6 +46,11 @@ a:hover {
 
 .topbox {
     
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+
 }
 
 .topbox_top {
@@ -73,6 +85,7 @@ a:hover {
 .contentbox {
     
     background-color: #FBFBFB;
+    margin-top: 100px;
     
 }
 
@@ -81,6 +94,8 @@ a:hover {
     float: left;
     background-color: #FBFBFB;
     width: 200px;
+    height: 100%;
+    border-right: 1px solid #DDDDDD;
     
 }
 
@@ -96,7 +111,6 @@ a:hover {
     color: #222222;
     text-decoration: none;
     border-bottom: 1px solid #DDDDDD;
-    border-left: 1px solid #DDDDDD;
     background-color: #FBFBFB;
     
 }
@@ -109,11 +123,10 @@ a:hover {
 
 .contentpane {
     
-    min-height: 250px;
     border-left: 1px solid #DDDDDD;
-    float: left;
-    padding: 10px;
     line-height: 1.2;
+    margin-left: 200px;
+    height: 100%;
     
 }
 
@@ -127,6 +140,7 @@ a:hover {
     
     text-align: center;
     font-size: 120%;
+    padding-top: 10px;
     
 }
 
@@ -174,13 +188,24 @@ a:hover {
     
 }
 
+.push {
+
+    height: 131px;
+
+}
+
 .footer {
     
     height: 100px;
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     border-top: 1px solid #DDDDDD;
     color: #DDDDDD;
     background-color: #444444;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     
 }
 

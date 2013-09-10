@@ -15,7 +15,7 @@ We plan to hold three sessions, Wednesday 12pm-2pm, Thursday 1pm-3pm and Friday 
 -How long will it take?
 -Where is it?
 
-Hi! I'm Scott Heiner. On behalf of THEM, I'd like to invite you to participate in testing of our DECO3801 project - the Typed HTML5 Evaluation Machine. It's a tool to check HTML files and projects for validity. All we need you to do is work through some small excercises with HTML and a quick survey. You can even bring your own HTML web projects if you have some - we're happy to help validate them! It should take about 45 minutes to complete.
+Hi! I'm Scott Heiner. On behalf of THEM, I'd like to invite you to test our DECO3801 project - the Typed HTML5 Evaluation Machine. It's a tool to check HTML files and projects for validity. All we need you to do is work through some small excercises with HTML and a quick survey. You can even bring your own HTML web projects if you have some - we're happy to help validate them! It should take about 45 minutes to complete.
 
 We're holding 3 sessions:
 Wednesday 11/9 12pm-2pm (78-122)
