@@ -16,7 +16,7 @@ $f = 0;
 
 while ( array_key_exists("file$f", $_FILES) ) {
     
-    if ($_FILES["file$f"] != "")
+    if ($_FILES["file$f"]["tmp_name"] != "")
         $uploaded_files[] = $_FILES["file$f"];
     
     $f++;
