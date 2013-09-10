@@ -972,7 +972,7 @@ def getPhases(debug):
             ])
             self.startTagHandler.default = self.startTagOther
             self.endTagHandler = utils.MethodDispatcher([
-                (("body", "br"), self.endTagHtmlBodyBr),
+                (("body"), self.endTagBody),
                 # DECO3801 - Handler methods for head and html end tags.
                 ("head", self.endTagHead),
                 ("html", self.endTagHtml),
@@ -980,15 +980,32 @@ def getPhases(debug):
             self.endTagHandler.default = self.endTagOther
 
         def processEOF(self):
-            self.anythingElse()
-            return True
+            # DECO3801 - Replaced the original implementation
+            # to reflect the removal of the original insertion of
+            # tags which has been replaced with our error checks.
+            # If the parser reaches here, the document doesn't contain
+            # an expected body phase.
+            # OLD: 
+            # self.anythingElse()
+            # return True
+            return False
 
         def processCharacters(self, token):
-            self.anythingElse()
-            return token
+            # DECO3801 - Replaced with error. Prevents shift to in-body
+            # phase.
+            # Old:
+            # self.anythingElse()
+            # return token
+            # TODO: Correct the error message.
+            self.parser.parseError("placeholder-type", {"name": token["name"]})
 
         def startTagHtml(self, token):
-            return self.parser.phases["inBody"].processStartTag(token)
+            # DECO3801 - Replaced shift to in-body phase with correct
+            # error checking.
+            # Old:
+            # return self.parser.phases["inBody"].processStartTag(token)
+            self.parser.parseError("incorrect-placement-singular-tag", 
+                {"name": token["name"]})
 
         def startTagBody(self, token):
             self.parser.framesetOK = False
@@ -1017,26 +1034,31 @@ def getPhases(debug):
                         {"name": token["name"]})
 
         def startTagOther(self, token):
-            self.anythingElse()
-            return token
+            # DECO3801 - Report start tags occuring after the head section
+            # and before the body section as being misplaced.
+            self.parser.parseError("start-tag-before-body-after-head", 
+                {"name": token["name"]})
 
         # DECO3801 - Handler method for head end tags after a completed head
         # block.
         def endTagHead(self, token):
             self.parser.parseError("incorrect-placement-singular-end-tag", 
-                        {"name": token["name"]})
+                {"name": token["name"]})
 
-        def endTagHtmlBodyBr(self, token):
-            self.anythingElse()
-            return token
+        def endTagBody(self, token):
+            self.parser.parseError("incorrect-placement-singular-end-tag", 
+                {"name": token["name"]})
 
         def endTagOther(self, token):
-            self.parser.parseError("unexpected-end-tag", {"name": token["name"]})
+            self.parser.parseError("end-tag-before-body-after-head", {"name": token["name"]})
 
-        def anythingElse(self):
-            #self.tree.insertElement(impliedTagToken("body", "StartTag"))
-            self.parser.phase = self.parser.phases["inBody"]
-            self.parser.framesetOK = True
+        # DECO3801 - Removed as the original functionality of this phase
+        # has been revamped.
+        # Old:
+        # def anythingElse(self):
+        #     self.tree.insertElement(impliedTagToken("body", "StartTag"))
+        #     self.parser.phase = self.parser.phases["inBody"]
+        #     self.parser.framesetOK = True
 
         # DECO3801 - Error checking for a closing HTML tag occuring before
         # the body section. If no other closing HTML tag is found

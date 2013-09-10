@@ -35,6 +35,9 @@ class Errors
         26 => "Closing HTML tag found in head phase. Misplaced closing HTML tag or missing closing head tag.",
         27 => "Closing HTML tag found before body phase. Misplaced closing HTML tag or missing body tags.",
         28 => "Closing HTML tag found in the body phase. Misplaced closing HTML tag or missing closing body tag.",
+        29 => "This start tag is of a tag type which belongs within the head section.",
+        30 => "Found a start tag after the head phase and before the body phase, implying that it is misplaced.",
+        31 => "Found a closing tag after the head phase and before the body phase, implying that it is misplaced.",
     );
     
     /**

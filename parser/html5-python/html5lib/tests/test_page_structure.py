@@ -17,95 +17,142 @@ class TestPageStructure(unittest.TestCase):
 	def setUp(self):
 		self.parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-	def test_singular_html(self):
+	def test_singular_tags(self):
 		"""
-		Test that a multiple-instance-singular-tag error is thrown
-		for cases where more than one instance of the html tag is included.
-		"""
-		htmlSingleLine = "<html><html></html></html>"
-		htmlMultiLine = "<html>\n<html>\n</html>\n</html>"
-		htmlMultiInstance = "<html><html><html><html></html></html></html></html>"
+		Test that the multiple-instance-singular-tag error is thrown
+		for cases where more than one instance of a singular tag block is 
+		present.
 
-		self.parser.parse(htmlSingleLine)
+		Inputs: 
+		Nested blocks of singular tags (html, body, head).
+		eg. <html><html></html></html>
+
+		Ouputs:
+		All three test cases should report a multiple instance of both
+		the start and closing tags for each of the three singular tags.
+		"""
+		multipleHTMLInstances = "<html><html></html></html>"
+		multipleHeadInstances = "<head><head></head></head>"
+		multipleBodyInstances = "<body><body></body></body>"
+
+		self.parser.parse(multipleHTMLInstances)
 
 		self.assertIn(((6, 11), u'multiple-instance-singular-tag', {u'name': u'html'}), 
-			self.parser.errors, "Multiple instances of html tag not reported (single line).")
+			self.parser.errors, "Multiple instances of starting HTML tag not reported.")
+
+		self.assertIn(((12, 18), u'incorrect-placement-singular-end-tag', {u'name': u'html'}),
+			self.parser.errors, "Multiple instances of closing HTML tag not reported.")
 
 		self.parser.reset()
-		self.parser.parse(htmlMultiLine)
+		self.parser.parse(multipleHeadInstances)
 
-		self.assertIn(((2, 6), u'multiple-instance-singular-tag', {u'name': u'html'}), 
-			self.parser.errors, "Multiple instances of html tag not reported (multi line).")
+		self.assertIn(((6, 11), u'multiple-instance-singular-tag', {u'name': u'head'}), 
+			self.parser.errors, "Multiple instances of starting HTML tag not reported.")
+
+		self.assertIn(((19, 25), u'incorrect-placement-singular-end-tag', {u'name': u'head'}),
+			self.parser.errors, "Multiple instances of closing head tag not reported.")
 
 		self.parser.reset()
-		self.parser.parse(htmlMultiInstance)
+		self.parser.parse(multipleBodyInstances)
 
-		self.assertIn(((1, 12), u'multiple-instance-singular-tag', {u'name': u'html'}), 
-			self.parser.errors, "First repeated instance of html tag not reported (single line).")
-		self.assertIn(((1, 18), u'multiple-instance-singular-tag', {u'name': u'html'}), 
-			self.parser.errors, "Second instance of html tag not reported (single line).")
-		self.assertIn(((1, 24), u'multiple-instance-singular-tag', {u'name': u'html'}), 
-			self.parser.errors, "Third instance of html tag not reported (single line).")
+		self.assertIn(((6, 11), u'multiple-instance-singular-tag', {u'name': u'body'}), 
+			self.parser.errors, "Multiple instances of starting HTML tag not reported.")
 
-	def test_singular_head(self):
+		self.assertIn(((19, 25), u'unexpected-end-tag-after-body', {u'name': u'body'}),
+			self.parser.errors, "Multiple instances of closing body tag not reported.")
+
+	def test_missing_doctype(self):
 		"""
-		Test that a multiple-instance-singular-tag error is thrown
-		for cases where more than one instance of the head tag is included.
+		Test that the expected-doctype-but-got-start-tag error is thrown
+		for cases no DOCTYPE is declared.
+
+		Inputs:
+		Nested blocks of singular tags (html, body, head), all of which
+		are missing the DOCTYPE declaration.
+		eg. <html><html></html></html>
+
+		Output:
+		All test cases should report a missing DOCTYPE declaration.
 		"""
-		headSingleLine = "<head><head></head></head>"
-		headMultiLine = "<head>\n<head>\n</head>\n</head>"
-		headMultiInstance = "<head><head><head><head></head></head></head></head>"
+		multipleHTMLInstances = "<html><html></html></html>"
+		multipleHeadInstances = "<head><head></head></head>"
+		multipleBodyInstances = "<body><body></body></body>"
 
-		self.parser.parse(headSingleLine)
-
-		self.assertIn(((1, 12), u'multiple-instance-singular-tag', {u'name': u'head'}), 
-			self.parser.errors, "Multiple instances of head tag not reported (single line).")
-
-		self.parser.reset()
-		self.parser.parse(headMultiLine)
-
-		self.assertIn(((2, 6), u'multiple-instance-singular-tag', {u'name': u'head'}), 
-			self.parser.errors, "Multiple instances of head tag not reported (multi line).")
+		self.parser.parse(multipleHTMLInstances)
+		
+		self.assertIn(((0, 5), u'expected-doctype-but-got-start-tag', {u'name': u'html'}),
+			self.parser.errors, "Failed to report missing DOCTYPE declaration.")
 
 		self.parser.reset()
-		self.parser.parse(headMultiInstance)
+		self.parser.parse(multipleHeadInstances)
 
-		self.assertIn(((1, 12), u'multiple-instance-singular-tag', {u'name': u'head'}), 
-			self.parser.errors, "First repeated instance of head tag not reported (single line).")
-		self.assertIn(((1, 18), u'multiple-instance-singular-tag', {u'name': u'head'}), 
-			self.parser.errors, "Second instance of head tag not reported (single line).")
-		self.assertIn(((1, 24), u'multiple-instance-singular-tag', {u'name': u'head'}), 
-			self.parser.errors, "Third instance of head tag not reported (single line).")
+		self.assertIn(((0, 5), u'expected-doctype-but-got-start-tag', {u'name': u'head'}),
+			self.parser.errors, "Failed to report missing DOCTYPE declaration.")
 
-	def test_singular_body(self):
+		self.parser.reset()
+		self.parser.parse(multipleBodyInstances)
+
+		self.assertIn(((0, 5), u'expected-doctype-but-got-start-tag', {u'name': u'body'}),
+			self.parser.errors, "Failed to report missing DOCTYPE declaration.")
+
+	
+	def test_closing_html(self):
 		"""
-		Test that a multiple-instance-singular-tag error is thrown
-		for cases where more than one instance of the body tag is included.
+		Test that a missing HTML closing tag is reported when none
+		are present in the document.
+
+		Input:
+		Nested blocks of singular tags (head, body).
+
+		Output:
+		Report whether the the closing HTML tag is present.
 		"""
-		bodySingleLine = "<body><body></body></body>"
-		bodyMultiLine = "<body>\n<body>\n</body>\n</body>"
-		bodyMultiInstance = "<body><body><body><body></body></body></body></body>"
+		multipleHeadInstances = "<head><head></head></head>"
+		multipleBodyInstances = "<body><body></body></body>"
 
-		self.parser.parse(bodySingleLine)
+		self.parser.parse(multipleHeadInstances);
 
-		self.assertIn(((1, 12), u'multiple-instance-singular-tag', {u'name': u'body'}), 
-			self.parser.errors, "Multiple instances of body tag not reported (single line).")
-
-		self.parser.reset()
-		self.parser.parse(bodyMultiLine)
-
-		self.assertIn(((2, 6), u'multiple-instance-singular-tag', {u'name': u'body'}), 
-			self.parser.errors, "Multiple instances of body tag not reported (multi line).")
+		self.assertIn(((-1, -1), u'no-closing-html-tag', {u'name': u'head'}),
+			self.parser.errors, "Failed to report missing closing HTML tag.")
 
 		self.parser.reset()
-		self.parser.parse(bodyMultiInstance)
+		self.parser.parse(multipleBodyInstances)
 
-		self.assertIn(((1, 12), u'multiple-instance-singular-tag', {u'name': u'body'}), 
-			self.parser.errors, "First repeated instance of body tag not reported (single line).")
-		self.assertIn(((1, 18), u'multiple-instance-singular-tag', {u'name': u'body'}), 
-			self.parser.errors, "Second instance of body tag not reported (single line).")
-		self.assertIn(((1, 24), u'multiple-instance-singular-tag', {u'name': u'body'}), 
-			self.parser.errors, "Third instance of body tag not reported (single line).")
+		self.assertIn(((-1, -1), u'no-closing-html-tag', {u'name': u'body'}),
+			self.parser.errors, "Failed to report missing closing HTML tag.")
+
+	def test_misplaced_tags_before_head(self):
+		"""
+		Test that both start and closing tags occuring before the head
+		section are reported as being misplaced.
+
+		Input:
+		A number of instances of start and closing tags being placed before
+		the head section.
+
+		Output:
+		Report whether or not the tags preceding the head section are reported
+		as being misplaced.
+		"""
+		misplacedHeadTags = "<body></body><head></head>"
+		misplacedLinkTags = "<a></a><head></head>"
+
+		self.parser.parse(misplacedHeadTags)
+
+		self.assertIn(((0, 5), u'incorrect-start-tag-placement-before-head', {u'name': u'body'}),
+			self.parser.errors, "Failed to report start body tag before head section.")
+
+		self.assertIn(((6, 12), u'incorrect-end-tag-placement-before-head', {u'name': u'body'}),
+			self.parser.errors, "Failed to report closing body tag before head section.")
+
+		self.parser.reset()
+		self.parser.parse(misplacedLinkTags)
+
+		self.assertIn(((0, 2), u'incorrect-start-tag-placement-before-head', {u'name': u'a'}),
+			self.parser.errors, "Failed to report start link (a) tag before head section.")
+
+		self.assertIn(((3, 6), u'incorrect-end-tag-placement-before-head', {u'name': u'a'}),
+			self.parser.errors, "Failed to report closing link (a) tag before head section.")
 
 if __name__ == '__main__':
 	unittest.main()
