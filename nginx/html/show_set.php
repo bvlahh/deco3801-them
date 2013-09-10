@@ -21,9 +21,19 @@ foreach( $set as $file ) {
     //${file["cached_parse"]}
     
     print <<<END
-        <a href="/show_file?file=${file["id"]}">${file["filename"]}</a><br />
+        <a href="/show_file?file=${file["id"]}">${file["filename"]}</a>
 END;
+
+	$parsed = json_decode($file["cached_parse"]);
+
+	if ( count($parsed) == 0 )
+	    draw_error_bar(0, 0, 0, 0, 1, 500, 10);
+	else
+	    draw_error_bar(0, 1, 0, 0, 0, 500, 10);
     
+    print <<<END
+    	<br />
+END;
 }
 
 draw_footer();

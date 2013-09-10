@@ -1,0 +1,27 @@
+Wednesday 12-2: Brendan, Shen and David
+Thursday 1-3: Shen, David and Scott
+Friday 12-2: Brendan, Robert and Scott
+
+Targeting students in DECO1800 and INFS1300
+
+------------
+
+Hi there, I'm Scott Heiner, and on behalf of THEM, I'd like to invite you to participate in user testing of our DECO3801 project, the Typed HTML5 Evaluation Machine. This web application allows you to upload HTML files and evaluate their validity. You would be required to fill out a short survey, and attempt to perform some basic scenarios of use. We would love some of you to help us test this system!
+
+We plan to hold three sessions, Wednesday 12pm-2pm, Thursday 1pm-3pm and Friday 12pm-2pm, in <location>. We'd especially like about 4-6 students who haven't taken DECO1400, as well as 4-6 masters students who have taken DECO1400 and 4-6 masters students who haven't taken DECO1400. If you would like to be a part of this user testing experience, send an email to scott.heiner@uqconnect.edu.au with your name and the time you would like to participate.
+
+------------
+
+-How long will it take?
+-Where is it?
+
+Hi! I'm Scott Heiner. On behalf of THEM, I'd like to invite you to participate in testing of our DECO3801 project - the Typed HTML5 Evaluation Machine. It's a tool to check HTML files and projects for validity. All we need you to do is work through some small excercises with HTML and a quick survey. You can even bring your own HTML web projects if you have some - we're happy to help validate them! It should take about 45 minutes to complete.
+
+We're holding 3 sessions:
+Wednesday 11/9 12pm-2pm (78-122)
+Thursday 12/9 1pm-3pm (78-208)
+Friday 13/9 1pm-3pm (78-208)
+
+We especially want students who haven't taken DECO1400, but anyone is welcome.
+
+If you're interested, email scott.heiner@uqconnect.edu.au with your name and the time you can come.

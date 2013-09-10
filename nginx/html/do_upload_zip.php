@@ -24,11 +24,6 @@ $zip = new ZipArchive();
 if (! $zip->open($file) )
     redirect("/upload_zip?upload_failed");
 
-$archive_name = $filename;
-$num_files = $zip->numFiles;
-
-$files = $num_files == 1 ? "file" : "files";
-
 /**
 * Generate an array of filenames contained within the zip.
 * Used by the parser to check for valid file referencing.

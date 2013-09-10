@@ -65,6 +65,12 @@ begin
     select * from uploaded_files where id = file;
 end //
 
+create procedure get_set(in set_id int)
+begin
+    call touch_set(set_id);
+    select id, filename, cached_parse from uploaded_files where upload_set = set_id;
+end //
+
 delimiter ;
 
 grant all on validator.* to ''@'localhost';

@@ -49,7 +49,7 @@ $error_lines = array();
 * The array of errors contains arrays of the form [error_number, starting_position, end_position]
 * where starting_position and end_position represent the start and end of the tag for which the
 * error applies to.
-*/ 
+*/
 foreach( $parsed as $parse ) {
     
     $err_no = $parse[0];
@@ -82,7 +82,7 @@ $num_lines = substr_count($input, "\n");
 
 $line_nos = "";
 
-// A string representation of the line count
+// A string of the line count
 for ($l=1; $l<$num_lines+2; $l++) {
     if (array_key_exists($l-1, $error_lines)) {
         //$bgc = ${error_lines[$l]};
