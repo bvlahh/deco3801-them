@@ -13,7 +13,7 @@ print <<<END
     
     function set_message(text) {
         
-        document.getElementById("infobox").innerHTML = text;
+        document.getElementById("infobox").innerHTML = htmlspecialchars(text);
         
     }
     
