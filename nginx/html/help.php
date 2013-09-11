@@ -1,6 +1,6 @@
 <?php
 
-// The help page. Currently a test bed for the error bars.
+// The help page. The page for the user to get the best information about the web app.
 
 require_once "php/header.php";
 require_once "php/footer.php";
@@ -13,6 +13,8 @@ print <<<END
     Help Section
     
 END;
+
+// include information about clicking tags to display errors and some other thing brendan mentioned??
 
 print <<<END
     
