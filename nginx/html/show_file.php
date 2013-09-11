@@ -76,7 +76,7 @@ foreach( $parsed as $parse ) {
         $current_index = $end_tag;
         
     } else {
-        $top_info = $top_info . "<span style=\"background-color: $err_colour;>" messagebox($err_no) . "</span><br />";
+        $top_info = $top_info . "<span style=\"background-color: $err_colour;>" . messagebox($err_no) . "</span><br />";
     } 
     
 }
