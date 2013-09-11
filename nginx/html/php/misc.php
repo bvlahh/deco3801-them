@@ -20,4 +20,20 @@ function redirect($url) {
     
 }
 
+/**
+* Rearrange the uploaded files to be indexed more sensibly
+* eg [name][0] to [0][name]
+*/
+function rearrange_files( $arr ){
+    
+    foreach( $arr as $key => $all ){
+        foreach( $all as $i => $val ){
+            $new[$i][$key] = $val;   
+        }   
+    }
+    
+    return $new;
+    
+}
+
 ?>

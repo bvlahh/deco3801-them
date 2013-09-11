@@ -14,14 +14,10 @@ require_once "php/files.php";
 $uploaded_files = array();
 $f = 0;
 
-while ( array_key_exists("file$f", $_FILES) ) {
-    
-    if ($_FILES["file$f"]["tmp_name"] != "")
-        $uploaded_files[] = $_FILES["file$f"];
-    
-    $f++;
-    
-}
+if (! array_key_exists("file", $_FILES) )
+    redirect("/upload_file");
+
+$uploaded_files = rearrange_files($_FILES["file"]);
 
 $num_files = count($uploaded_files);
 
