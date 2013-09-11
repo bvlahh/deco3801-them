@@ -40,6 +40,7 @@ $input = str_replace("\r", "", $input);
 // spans are inserted and content html escaped
 
 $escaped_document = "";
+$top_info = "";
 $current_index = 0;
 
 $error_lines = array();
@@ -57,21 +58,26 @@ foreach( $parsed as $parse ) {
     $start_tag = $parse[1];
     $end_tag = $parse[2] + 1; // substr takes in end-index exclusive
     
-    $start_span = "<span style=\"background-color: $err_colour;\" onclick=\"messagebox($err_no);\">";
-    $end_span = "</span>";
-    
-    //$error_lines[] = array(substr_count(substr($input, 0, $start_tag), "\n"), $err_colour);
-    $error_lines[substr_count(substr($input, 0, $start_tag), "\n")] = $err_colour;
-    
-    /**
-    * Generates a formatted version of the original HTML document containing all errors 
-    * by inserting the spans representing the errors found in the document into the original
-    * string representation of the HTML document.
-    */
-    $escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, $start_tag - $current_index)) . 
-        $start_span . htmlspecialchars(substr($input, $start_tag, $end_tag - $start_tag)) . $end_span;  
-    
-    $current_index = $end_tag;
+    if ($start_tag >= 0) {
+        $start_span = "<span style=\"background-color: $err_colour;\" onclick=\"messagebox($err_no);\">";
+        $end_span = "</span>";
+        
+        //$error_lines[] = array(substr_count(substr($input, 0, $start_tag), "\n"), $err_colour);
+        $error_lines[substr_count(substr($input, 0, $start_tag), "\n")] = $err_colour;
+        
+        /**
+        * Generates a formatted version of the original HTML document containing all errors 
+        * by inserting the spans representing the errors found in the document into the original
+        * string representation of the HTML document.
+        */
+        $escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, $start_tag - $current_index)) . 
+            $start_span . htmlspecialchars(substr($input, $start_tag, $end_tag - $start_tag)) . $end_span;
+
+        $current_index = $end_tag;
+        
+    } else {
+        $top_info = $top_info . "<span style=\"background-color: $err_colour;>" messagebox($err_no) . "</span><br />";
+    } 
     
 }
 
@@ -100,6 +106,8 @@ else
     draw_error_bar(0, 1, 0, 0, 0, 500, 10);
 
 print <<<END
+
+<div class="infobox" id="top_infobox">$top_info</div>
 
 <div class="file" style="float: left; margin-top: 10px">
     
