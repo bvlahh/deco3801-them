@@ -103,12 +103,30 @@ for ($l=1; $l<$num_lines+2; $l++) {
     }
 }
 
+$set = $file["upload_set"];
+$count_files = count(get_set($set));
+
 draw_header("THEM prototype - $filename");
+
+$upload_set = "";
+
+if ($count_files > 1)
+$upload_set = <<<END
+<a href="show_set?set=$set">
+Uploaded Files
+</a>
+END;
 
 print <<<END
 
-<div style="font-size: 140%;">
+<div>
+
+<span style="font-size: 140%;">
 $filename
+</span>
+
+$upload_set
+
 </div>
 
 <div style="margin-bottom: 10px;">
