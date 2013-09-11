@@ -306,3 +306,17 @@ a:hover {
     background-color: #ffffff;
     
 }
+
+.top_infobox {
+    
+    float: left;
+    border: 1px solid #DDDDDD;
+    margin: 10px;
+    padding: 5px;
+    
+    width: 100%;
+    min-height: 200px;
+    background-color: #ffffff;
+    overflow: auto;
+    
+}

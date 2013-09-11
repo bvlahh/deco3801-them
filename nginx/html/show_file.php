@@ -107,7 +107,7 @@ else
 
 print <<<END
 
-<div class="infobox" id="top_infobox">$top_info</div>
+<div class="top_infobox" id="top_infobox">$top_info</div>
 
 <div class="file" style="float: left; margin-top: 10px">
     
