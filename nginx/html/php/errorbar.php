@@ -52,7 +52,7 @@ function draw_error_bar($blue, $red, $orange, $yellow, $green, $total_wide, $tot
     }
     
     print <<<END
-        <div style="width: ${total_wide}px; border: 1px solid #DDDDDD; margin: 10px;">
+        <div style="width: ${total_wide}px; border: 1px solid #DDDDDD;">
             <div style="float: left; width: ${blue_wide}px; background-color: #7f7fff; text-align: center; height: ${total_height}px; font-size: ${total_height}px;">${blue}</div>
             <div style="float: left; width: ${red_wide}px; background-color: #ff7f7f; text-align: center; height: ${total_height}px; font-size: ${total_height}px;">${red}</div>
             <div style="float: left; width: ${orange_wide}px; background-color: #ffbb77; text-align: center; height: ${total_height}px; font-size: ${total_height}px;">${orange}</div>

@@ -24,10 +24,12 @@ END;
 
 foreach ( Errors::$error_strings as $err_number => $err_message ) {
     
+    $escaped_message = htmlspecialchars($err_message);
+    
     print <<<END
         
         if (number == $err_number)
-            set_message("$err_message");
+            set_message("$escaped_message");
         
 END;
     

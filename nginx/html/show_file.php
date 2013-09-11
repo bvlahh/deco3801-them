@@ -77,11 +77,11 @@ foreach( $parsed as $parse ) {
         $current_index = $end_tag;
         
     } else {
-        foreach ( Errors::$error_strings as $err_number => $err_message ) {
-            if ($err_no == $err_number)
-                $err_message_output = $err_message;
-        }
-        $top_info = $top_info . "<span style=\"background-color: $err_colour;\">" . $err_message_output . "</span><br />";
+        
+        $err_message_output = htmlspecialchars( Errors::errorString($err_no) );
+        
+        $top_info .= $err_message_output . "<br />";
+        
     }
     
 }
@@ -105,12 +105,20 @@ for ($l=1; $l<$num_lines+2; $l++) {
 
 draw_header("THEM prototype - $filename");
 
+print <<<END
+
+<div style="margin-bottom: 10px;">
+
+END;
+
 if ( count($parsed) == 0 )
-    draw_error_bar(0, 0, 0, 0, 1, 500, 10);
+    draw_error_bar(0, 0, 0, 0, 1, 1010, 10);
 else
-    draw_error_bar(0, 1, 0, 0, 0, 500, 10);
+    draw_error_bar(0, 1, 0, 0, 0, 1010, 10);
 
 print <<<END
+
+</div>
 
 <div class="top_infobox" id="top_infobox">$top_info</div>
 
