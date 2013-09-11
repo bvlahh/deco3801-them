@@ -309,7 +309,7 @@ a:hover {
 
 .top_infobox {
     
-    float: left;
+    float: top;
     border: 1px solid #DDDDDD;
     margin: 10px;
     padding: 5px;
