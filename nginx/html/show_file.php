@@ -41,6 +41,7 @@ $input = str_replace("\r", "", $input);
 
 $escaped_document = "";
 $top_info = "";
+$err_message = "";
 $current_index = 0;
 
 $error_lines = array();
@@ -76,7 +77,10 @@ foreach( $parsed as $parse ) {
         $current_index = $end_tag;
         
     } else {
-        $top_info = $top_info . "<span style=\"background-color: $err_colour;>" . messagebox($err_no) . "</span><br />";
+        foreach ( Errors::$error_strings as $err_number => $err_message ) {
+        if ($err_no == $err_number)
+           $err_message_output = $err_message
+        $top_info = $top_info . "<span style=\"background-color: $err_colour;>" . $err_message . "</span><br />";
     } 
     
 }
