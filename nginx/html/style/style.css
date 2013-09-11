@@ -256,15 +256,16 @@ a:hover {
 }
 
 .file {
-	
-	border: 1px solid #DDDDDD;
+    
+    border: 1px solid #DDDDDD;
+    background-color: #FFFFFF;
     
     height: 500px;
     overflow-y: scroll;
     
     width: 500px;
     overflow-x: scroll;
-	
+    
 }
 
 .file_lines {
@@ -314,8 +315,8 @@ a:hover {
     margin: 10px;
     padding: 5px;
     
-    width: 500px;
-    min-height: 200px;
+    width: 800px;
+    min-height: 75px;
     background-color: #ffffff;
     overflow: auto;
     
