@@ -7,7 +7,7 @@ class Errors
     */
     static $error_strings = array(
         
-        1 => "No valid doctype was found. HTML files should start with &lt;!DOCTYPE html&gt;.",
+        1 => "No valid doctype was found. HTML files should start with <!DOCTYPE html>.",
         2 => "Multiple instance of a singular tag.",
         3 => "A singular start tag was placed in the wrong location.",
         4 => "A singular closing tag was placed in the wrong location.",
@@ -27,15 +27,15 @@ class Errors
         18 => "A closing angled bracket was found instead of a tag name.",
         19 => "A question mark was found instead of a tag name.",
         20 => "A closing tag cannot contain a self closing solidus symbol '/'.",
-        21 => "This tag is not a self closing void tag type. It should have a closing tag, &lt;/tagname&gt;, and not be written as &lt;tagname /&gt;.",
-        22 => "Br tags are self closing and don't require a closing tag. Instead of &lt;br&gt;&lt;/br&gt;, you just need to use &lt;br /&gt;.",
-        23 => "A void tag is missing the self closing backslash symbol. For example, &lt;br&gt; instead of &lt;br /&gt;, or &lt;img src='img.png'&gt; instead of &lt;img src='img.png'/>",
-        24 => "One or more attributes were found in a closing tag. A closing tag should just be &lt;/tagname&gt;.",
+        21 => "This tag is not a self closing void tag type. It should have a closing tag, </tagname>, and not be written as <tagname />.",
+        22 => "Br tags are self closing and don't require a closing tag. Instead of <br></br>, you just need to use <br />.",
+        23 => "A void tag is missing the self closing backslash symbol. For example, <br> instead of <br />, or <img src='img.png'> instead of <img src='img.png'/>",
+        24 => "One or more attributes were found in a closing tag. A closing tag should just be </tagname>.",
         25 => "Closing HTML tag found before the head phase. Misplaced closing HTML tag or missing head and body sections.",
         26 => "Closing HTML tag found in head phase. Misplaced closing HTML tag or missing closing head tag.",
         27 => "Closing HTML tag found before body phase. Misplaced closing HTML tag or missing body tags.",
         28 => "Closing HTML tag found in the body phase. Misplaced closing HTML tag or missing closing body tag.",
-        29 => "This start tag is of a tag type which belongs within the head section. Move it to before the &lt;/head&gt; closing tag!",
+        29 => "This start tag is of a tag type which belongs within the head section. Move it to before the </head> closing tag!",
         30 => "Found a start tag after the head phase and before the body phase, implying that it is misplaced.",
         31 => "Found a closing tag after the head phase and before the body phase, implying that it is misplaced.",
     );
