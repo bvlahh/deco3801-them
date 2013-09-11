@@ -78,8 +78,9 @@ foreach( $parsed as $parse ) {
         
     } else {
         foreach ( Errors::$error_strings as $err_number => $err_message ) {
-        if ($err_no == $err_number)
-           $err_message_output = $err_message
+            if ($err_no == $err_number)
+                $err_message_output = $err_message
+        }
         $top_info = $top_info . "<span style=\"background-color: $err_colour;>" . $err_message . "</span><br />";
     } 
     
