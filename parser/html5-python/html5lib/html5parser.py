@@ -158,7 +158,6 @@ class HTMLParser(object):
     def parseErrors(self):
         formattedErrors = []
         for error in self.errors:
-            print error
             if not (errorCodes.get(error[1]) == None):
                 formattedErrors.append([errorCodes.get(error[1]),
                     error[0][0], error[0][1], error[2]])

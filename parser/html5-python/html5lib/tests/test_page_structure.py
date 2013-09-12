@@ -64,7 +64,7 @@ class TestPageStructure(unittest.TestCase):
 	def test_missing_doctype(self):
 		"""
 		Test that the expected-doctype-but-got-start-tag error is thrown
-		for cases no DOCTYPE is declared.
+		for cases where no DOCTYPE is declared.
 
 		Inputs:
 		Nested blocks of singular tags (html, body, head), all of which
