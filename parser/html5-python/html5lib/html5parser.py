@@ -242,7 +242,24 @@ class HTMLParser(object):
         # DECO3801 - Check for closing html tag
         if "html" not in self.singularEndTags:
            self.parseError("no-closing-html-tag", {"name": token["name"]});
-        
+
+        if "html" not in self.singular:
+            self.parseError("no-starting-html-tag", {"name": token["name"]})
+
+        # DECO3801 - Check that a valid closing head tag exists in the document.
+        if "head" not in self.singular:
+            self.parseError("head-start-tag-missing", {"name": token["name"]})
+
+        if "head" not in self.singularEndTags:
+            self.parseError("head-end-tag-missing", {"name": token["name"]})
+
+        # DECO3801 - Check that the document contains a valid
+        # body section.
+        if "body" not in self.singular:
+            self.parseError("body-start-tag-missing", {"name": token["name"]})
+
+        if "body" not in self.singularEndTags:
+            self.parseError("body-end-tag-missing", {"name": token["name"]})
 
         # When the loop finishes it's EOF
         reprocess = True
@@ -674,6 +691,10 @@ def getPhases(debug):
             return True
 
     class BeforeHtmlPhase(Phase):
+        # DECO3801 TODO - Restructure phase to match others
+        # to allow for proper error checking for tokens occuring
+        # before the starting HTML tag.
+        
         # helper methods
         def insertHtmlElement(self):
             self.tree.insertRoot(impliedTagToken("html", "StartTag"))
@@ -697,6 +718,9 @@ def getPhases(debug):
         def processStartTag(self, token):
             if token["name"] == "html":
                 self.parser.firstStartTag = True
+                # DECO3801 - Affirm that a starting HTML tag has been
+                # found.
+                self.parser.singular.append(token["name"])
             self.insertHtmlElement()
             return token
 
@@ -740,6 +764,7 @@ def getPhases(debug):
             return self.parser.phases["inBody"].processStartTag(token)
 
         def startTagHead(self, token):
+            self.parser.singular.append(token["name"])
             self.tree.insertElement(token)
             self.tree.headPointer = self.tree.openElements[-1]
             self.parser.phase = self.parser.phases["inHead"]
@@ -760,8 +785,8 @@ def getPhases(debug):
             else:
                 self.parser.parseError("head-start-tag-missing",
                                    {"name": token["name"]})
-                self.startTagHead(impliedTagToken("head", "StartTag")) 
-                self.parser.phases["inHead"].endTagHead(impliedTagToken("head"))
+                #self.startTagHead(impliedTagToken("head", "StartTag")) 
+                #self.parser.phases["inHead"].endTagHead(impliedTagToken("head"))
                 self.parser.phase = self.parser.phases["afterHead"]
                 return token
             
@@ -792,7 +817,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -915,6 +940,7 @@ def getPhases(debug):
                 return token
 
         def endTagHead(self, token):
+            self.parser.singularEndTags.append(token["name"])
             node = self.parser.tree.openElements.pop()
             assert node.name == "head", "Expected head got %s" % node.name
             self.parser.phase = self.parser.phases["afterHead"]
@@ -924,7 +950,7 @@ def getPhases(debug):
             return token
 
         def endTagOther(self, token):
-            self.parser.parseError("unexpected-end-tag", {"name": token["name"]})
+            self.parser.parseError("incorrect-end-tag-placement-in-head", {"name": token["name"]})
 
         def anythingElse(self):
             self.endTagHead(impliedTagToken("head"))
@@ -942,7 +968,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -996,7 +1022,7 @@ def getPhases(debug):
             # self.anythingElse()
             # return token
             # TODO: Correct the error message.
-            self.parser.parseError("placeholder-type", {"name": token["name"]})
+            self.parser.parseError("placeholder-type")
 
         def startTagHtml(self, token):
             # DECO3801 - Replaced shift to in-body phase with correct
@@ -1009,6 +1035,7 @@ def getPhases(debug):
         def startTagBody(self, token):
             self.parser.framesetOK = False
             self.tree.insertElement(token)
+            self.parser.singular.append(token["name"])
             self.parser.phase = self.parser.phases["inBody"]
 
         def startTagFrameset(self, token):
@@ -1072,7 +1099,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -1579,6 +1606,7 @@ def getPhases(debug):
                             "expected-one-end-tag-but-got-another",
                             {"expectedName": "body", "gotName": node.name})
                         break
+            self.parser.singularEndTags.append(token["name"])
             self.parser.phase = self.parser.phases["afterBody"]
 
         # DECO3801 - Error checking for a closing HTML tag occuring before
@@ -1594,7 +1622,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -2795,8 +2823,9 @@ def getPhases(debug):
             if not token["name"] == 'body':
                 self.parser.parseError("unexpected-start-tag-after-body",
                                    {"name": token["name"]})
-            self.parser.phase = self.parser.phases["inBody"]
-            return token
+            # DECO3801 - Old implementation.    
+            #self.parser.phase = self.parser.phases["inBody"]
+            #return token
 
         def endTagHtml(self, name):
             # DECO3801 - Error checking for the closing HTML tag.
@@ -2809,8 +2838,9 @@ def getPhases(debug):
         def endTagOther(self, token):
             self.parser.parseError("unexpected-end-tag-after-body",
                                    {"name": token["name"]})
-            self.parser.phase = self.parser.phases["inBody"]
-            return token
+            # DECO3801 - Old implementation.
+            #self.parser.phase = self.parser.phases["inBody"]
+            #return token
 
     class InFramesetPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-frameset

@@ -28,7 +28,7 @@ errorCodes = {
     "incorrect-end-tag-placement-in-head": 8,
     "head-start-tag-missing": 9,
     "head-end-tag-missing": 10,
-    "unexpected-html-end-tag-before-body-close": 11,
+    "incorrect-placement-html-end-tag": 11,
     "expected-eof-but-got-start-tag": 12,
     "expected-eof-but-got-end-tag": 13,
     "unexpected-end-tag": 14,
@@ -46,6 +46,12 @@ errorCodes = {
     "early-termination-in-head": 26,
     "early-termination-before-body": 27,
     "early-termination-in-body": 28,
+    "unexpected-start-tag-out-of-my-head": 29,
+    "start-tag-before-body-after-head": 30,
+    "end-tag-before-body-after-head": 31,
+    "body-start-tag-missing": 32,
+    "body-end-tag-missing": 33,
+    "no-starting-html-tag": 34,
 }
 
 E = {
@@ -360,6 +366,10 @@ E = {
         _("The closing HTML tag occured before the body phase implying incorrect placement."),
     "early-termination-in-body":
         _("The closing HTML tag occured in the body phase implying incorrect placement."),
+    "start-tag-before-body-after-head":
+        _("Found a start tag after the head phase and before the body phase, implying that it is misplaced."),
+    "end-tag-before-body-after-head":
+        _("Found a closing tag after the head phase and before the body phase, implying that it is misplaced."),
 }
 
 namespaces = {

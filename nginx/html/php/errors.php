@@ -15,9 +15,9 @@ class Errors
         6 => "A closing tag was placed before the head section.",
         7 => "This starting tag is not valid within the head section. It should probably go in the body section instead, along with its closing tag!",
         8 => "This closing tag is not valid within the head section. It should probably go in the body section instead, along with its starting tag!",
-        9 => "No start head tag was found in the document.",
-        10 => "No closing head tag was found in the document.",
-        11 => "A closing HTML tag was found before the closing body tag. Closing the HTML tag is usually the final line of the webpage.",
+        9 => "No start head tag was found in the expected context, implying that no head section exists.",
+        10 => "No closing head tag was found in the expected context, implying that the head section doesn't exist or that it wasn't closed correctly.",
+        11 => "A closing HTML tag was found in an unexpected location. Closing the HTML tag is usually the final line of the webpage.",
         12 => "A start tag was found after the expected closing HTML tag.",
         13 => "A closing tag was found after the expected closing HTML tag.",
         14 => "This closing tag is missing a matching start tag.",
@@ -38,6 +38,9 @@ class Errors
         29 => "This start tag is of a tag type which belongs within the head section. Move it to before the </head> closing tag!",
         30 => "Found a start tag after the head phase and before the body phase, implying that it is misplaced.",
         31 => "Found a closing tag after the head phase and before the body phase, implying that it is misplaced.",
+        32 => "No starting body tag was found in the expected context, implying that no body section exists.",
+        33 => "No closing body tag was found in the expected context, implying that no body section exists or it wasn't closed properly.",
+        34 => "The document is missing a starting HTML tag.",
     );
     
     /**
