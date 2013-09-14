@@ -370,5 +370,24 @@ class TestPageStructure(unittest.TestCase):
 		self.assertIn(((22, 25), u'end-tag-before-body-after-head', {u'name': u'a'}),
 			self.parser.errors, "Failed to report closing tag after head phase but before body phase.")
 
+	def test_missing_starting_html_tag(self):
+		"""
+		Test that a missing starting HTML tag is reported as an error.
+
+		Input:
+		A HTML fragment missing a starting HTML tag.
+
+		Expected Results:
+		An error should be thrown indicating that the fragment doesn't
+		contain a starting HTML tag.
+		"""
+
+		inputFragment = "<head></head><body></body></html>"
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((-1, -1), u'no-starting-html-tag', {u'name': u'html'}),
+			self.parser.errors, "Failed to report missing starting HTML tag.")
+
 if __name__ == '__main__':
 	unittest.main()

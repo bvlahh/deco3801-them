@@ -4,7 +4,7 @@ from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-fragment = '<html><a></a src="blah"></html>'
+fragment = '<head></head><body></body></html>'
 
 minidom_document = parser.parse(fragment)
 # <html><html><body><body></body></body></html></html>

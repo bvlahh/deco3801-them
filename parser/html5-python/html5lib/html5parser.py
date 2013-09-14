@@ -691,18 +691,29 @@ def getPhases(debug):
             return True
 
     class BeforeHtmlPhase(Phase):
-        # DECO3801 TODO - Restructure phase to match others
-        # to allow for proper error checking for tokens occuring
-        # before the starting HTML tag.
+        # DECO3801 - Restructured the phase to comply with the 
+        # format used for other phases. Added start and end tag
+        # handler methods to detect invalid tags before the starting
+        # HTML tag.
+        def __init__(self, parser, tree):
+            Phase.__init__(self, parser, tree)
+
+            self.startTagHandler = utils.MethodDispatcher([
+                ("html", self.startTagHtml)
+            ])
+            self.startTagHandler.default = self.startTagOther
+
+            self.endTagHandler = utils.MethodDispatcher([])
+            self.endTagHandler.default = self.endTagOther
         
         # helper methods
         def insertHtmlElement(self):
-            self.tree.insertRoot(impliedTagToken("html", "StartTag"))
+            self.tree.insertRoot(impliedTagToken("root", "StartTag"))
             self.parser.phase = self.parser.phases["beforeHead"]
 
         # other
         def processEOF(self):
-            self.insertHtmlElement()
+            #self.insertHtmlElement()
             return True
 
         def processComment(self, token):
@@ -712,17 +723,29 @@ def getPhases(debug):
             pass
 
         def processCharacters(self, token):
-            self.insertHtmlElement()
-            return token
+            #self.insertHtmlElement()
+            #return token
+            pass
+
+        # DECO3801 - Starting HTML tag handler method.
+        def startTagHtml(self, token):
+            self.parser.firstStartTag = True
+            self.parser.singular.append(token["name"])
+            self.parser.phase = self.parser.phases["beforeHead"]
+
+        # DECO3801 - Start tag handler method.
+        def startTagOther(self, token):
+            self.parse.parseError("start-tag-before-starting-html", {"name": token["name"]})
 
         def processStartTag(self, token):
             if token["name"] == "html":
                 self.parser.firstStartTag = True
-                # DECO3801 - Affirm that a starting HTML tag has been
-                # found.
-                self.parser.singular.append(token["name"])
             self.insertHtmlElement()
             return token
+
+        # DECO3801 - Closing tag hangler method.
+        def endTagOther(self, token):
+            self.parse.parseError("end-tag-before-starting-html", {"name": token["name"]})
 
         def processEndTag(self, token):
             if token["name"] not in ("head", "body", "html", "br"):
@@ -750,15 +773,16 @@ def getPhases(debug):
             self.endTagHandler.default = self.endTagOther
 
         def processEOF(self):
-            self.startTagHead(impliedTagToken("head", "StartTag"))
+            #self.startTagHead(impliedTagToken("head", "StartTag"))
             return True
 
         def processSpaceCharacters(self, token):
             pass
 
         def processCharacters(self, token):
-            self.startTagHead(impliedTagToken("head", "StartTag"))
-            return token
+            #self.startTagHead(impliedTagToken("head", "StartTag"))
+            #return token
+            pass
 
         def startTagHtml(self, token):
             return self.parser.phases["inBody"].processStartTag(token)
