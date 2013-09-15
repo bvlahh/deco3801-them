@@ -144,11 +144,21 @@ foreach ( $in_document_errors as $in_document_error ) {
     for ( $error_chunk = $start_chunk + 1; $error_chunk <= $end_chunk; $error_chunk++ )
         $chunks[$error_chunk]["errors"][] = $in_document_error[0];
     
-    // mark the line for line number highlighting
-    $error_lines[substr_count($input, "\n", 0, $in_document_error[1])] = Errors::errorColour($in_document_error[0]);
+}
+
+$top_info = "";
+
+foreach ( $general_document_errors as $general_document_error ) {
+    
+    $err_no = $general_document_error[0];
+    
+    $err_message_output = htmlspecialchars( Errors::errorString($err_no) );
+    
+    $top_info .= $err_message_output . "<br />";
     
 }
 
+$error_lines = array();
 $escaped_document = "";
 
 foreach ( $chunks as $chunk ) {
@@ -157,11 +167,17 @@ foreach ( $chunks as $chunk ) {
     $end_span = "";
     
     if ( count($chunk["errors"]) != 0 ) {
+        
         $err_no = min($chunk["errors"]);
         $err_nos = htmlspecialchars(json_encode($chunk["errors"]));
         $err_colour = Errors::errorColour($err_no);
-        $start_span = "<span style=\"background-color: $err_colour; border-left: 1px solid #fbfbfb; border-right: 1px solid #fbfbfb;\" onclick=\"messagebox(&quot;$err_nos&quot;);\">";
-        $end_span = "</span>";
+        
+        $start_span = "<a href=\"#\" style=\"background-color: $err_colour; text-decoration: none; border-left: 1px solid #fbfbfb; border: 1px solid #fbfbfb;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
+        $end_span = "</a>";
+        
+        // mark the line for line number highlighting
+        $error_lines[ $chunk["start"] > 0 ? substr_count($input, "\n", 0, $chunk["start"]) : 0] = $err_colour;
+        
     }
     
     $escaped_document .= $start_span . htmlspecialchars($chunk["text"]) . $end_span;
@@ -213,7 +229,7 @@ $upload_set
 
 END;
 
-if ( count($parsed) == 0 )
+if ( count($parsed_errors) == 0 )
     draw_error_bar(0, 0, 0, 0, 1, 1010, 10);
 else
     draw_error_bar(0, 1, 0, 0, 0, 1010, 10);

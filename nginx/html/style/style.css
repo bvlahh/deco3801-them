@@ -286,6 +286,12 @@ a:hover {
     
 }
 
+.file_body a:hover {
+    
+    color: inherit;
+    
+}
+
 .filepicker {
     
     display: block;
