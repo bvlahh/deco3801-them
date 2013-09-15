@@ -1,11 +1,11 @@
-\documentclass[12pt]{article}
+\documentclass[10pt]{article}
 
 \pagestyle{plain}
 
-\setlength{\textwidth}{5.7truein}
+\setlength{\textwidth}{5.9truein}
 \setlength{\textheight}{8.7truein}
-\setlength{\oddsidemargin}{3.0mm}
-\setlength{\evensidemargin}{3.0mm}
+\setlength{\oddsidemargin}{2.0mm}
+\setlength{\evensidemargin}{2.0mm}
 \setlength{\topmargin}{-20.5truemm}
 \setlength{\parindent}{0.0truemm}
 \parskip=1mm
@@ -21,12 +21,30 @@
 
 \section*{Functional Test Plan}
 
+\subsection*{Testing Strategy}
+
+There are three major testable components of the Typed HTML5 Evaluation Machine, our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented.
+
+\subsection*{Test Case Transcript}
+
+% just put the excel stuff here
+
+\subsection*{Implications of Functional Testing}
+
+Our functional testing highlighted some issues with all aspects of our application.
+
+%can talk about unimplemented tests here
+
+\newpage
+
 \section*{User Experience Goals}
 
 - very surgical, ambient, passive
 - the tool should give users immediate insight into the issues with their html / websites and the user can then go and fix it
 - user shouldn't get invested in the system, nor get frustrated by the errors
 - it is meant to be a program you just ``touch", that is, upload your file you want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process. priorities are on quick and easy use, which is why everything is instantly accessible and requires very few clicks to navigate.
+
+\newpage
 
 \section*{User Testing Plan}
 
