@@ -13,8 +13,12 @@ function draw_header($title, $selected_tab=0) {
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-		<title>$title</title>
+		
+        <title>$title</title>
+        
+        <link rel="icon" type="image/svg+xml" href="/images/HTML5_Badge.svg" />
 		<link rel="stylesheet" type="text/css" href="/style/style.css" />
+        
     </head>
 	
 	<body>
