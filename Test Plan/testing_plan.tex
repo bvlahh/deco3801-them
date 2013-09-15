@@ -23,7 +23,7 @@
 
 \subsection*{Testing Strategy}
 
-There are three major testable components of the Typed HTML5 Evaluation Machine, our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented.
+There are three major testable components of the Typed HTML5 Evaluation Machine, our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented, or when fixing one error creates another error.
 
 \subsection*{Test Case Transcript}
 
@@ -39,14 +39,19 @@ Our functional testing highlighted some issues with all aspects of our applicati
 
 \section*{User Experience Goals}
 
-- very surgical, ambient, passive
-- the tool should give users immediate insight into the issues with their html / websites and the user can then go and fix it
+We had a clear user experience in mind while developing this website. Through its ease of use and minimal effort on the part of the user, we have aimed to create a very surgical, ambient, passive experience. The tool should give users immediate insight into the issues with their HTML and websites. This is where the user's experience with our tool ends, for this session. The user now can go and fix their file externally, return to our program and almost instantly receive another assessment on their code.
+
 - user shouldn't get invested in the system, nor get frustrated by the errors
 - it is meant to be a program you just ``touch", that is, upload your file you want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process. priorities are on quick and easy use, which is why everything is instantly accessible and requires very few clicks to navigate.
 
 \newpage
 
 \section*{User Testing Plan}
+
+- poor initial consideration due to highly targeted user base - DECO1400 students
+- primarily focused on students who hadn't done deco1400 as these represent students ``new" to deco1400
+- also focused on masters students who had done deco7140, both for their opinions of the tool and whether it would be relevant to the course
+- attempted to get undergraduated students who had done deco1400 before, but poor communication and initial consideration (mentioned above) on our part lead to us getting very few in this user category
 
 - user groups
   - undergraduate students who have already done DECO1400
