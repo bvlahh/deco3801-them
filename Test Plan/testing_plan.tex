@@ -104,6 +104,8 @@ Our priorities are on quick and easy use, which is why everything is instantly a
 
 \section*{User Testing Plan}
 
+\subsection*{User Testing Strategy}
+
 Our web application will eventually be utilised by two user groups - students of DECO1400, and students of DECO7140. As such, we determined four major user testing groups:
 
 \begin{itemize}
@@ -113,21 +115,51 @@ Our web application will eventually be utilised by two user groups - students of
 \item Masters students who have not already completed DECO7140
 \end{itemize}
 
-However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who hadn't done DECO1400, as these students represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to get a feel for people who had previously done the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from ten users - five were undergraduates who had not done DECO1400, one was an undergradute who had done DECO1400 and four were masters students who had done DECO7140.
+However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who hadn't done DECO1400, as these students represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to get a feel for people who had previously done the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from ten users - five were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
 
-- in general, users had no trouble navigating the system
-- the result of the validation (i.e. highlighted tags) was not well understood by users
+We formulated six key scenarios for our users to undertake. Storyboards for each of them can be found in the separately submitted Appendix B.
+
+\begin{itemize}
+\item Getting started by reading the help page (First Encounter Scenario)
+\item Validating HTML via Direct Input
+\item Validating HTML via uploading a file
+\item Validating websites or multiple HTML files via uploading a zip
+\item Fixing a file based on the error suggestions, resubmitting and getting a valid file
+\item Attempting to upload a non-HTML file (Fringe Case Scenario)
+\end{itemize}
+
+We focused on the metrics of time taken to complete each scenario, and, in keeping with our surgical user experience, number of clicks required to complete each scenario. As we also wanted to create an enjoyable environment for the users, we also made note of any particular emotions and reactions of the users as they undertook the scenarios. Our primary strategy for user testing was as follows:
+
+\begin{enumerate}
+\item Prepare / lay out materials for the participant so that everything is ready.
+\item Introduce ourselves to the participant and give them a high-level idea of what they will be doing in their tasks today.
+\item Ask participant to fill in and sign consent form. The test conductor will fill in their parts too.
+\item Give the participant more detailed instructions about the task they are to do (i.e. access the website, upload file and validate). Ask them to think out loud or to make comments as they work. See if there are any questions from the participants before we get started, and answer these where appropriate.
+\item When participant is ready, ask the participant to start on the task. Start the timer. Be prepared to count the number of clicks they required to complete the task. Take hand notes as the participant works, according to the arrangements you have worked out amongst the non-participant group. If the participant goes a bit quiet, ask “what are you thinking now?” or “what are you working on now?”
+\item When they complete the first scenario, move them onto the next one, and so on.
+\item After completing all six scenarios, ask the participant to fill in the questionnaire. Clarify as necessary.
+\item When the participant has finished filling in the questionnaire, check over the responses to make sure that all parts have been filled out, and that the answers are legible.
+\item Tell the participant that the session is at an end. Thank the participant for their time.
+\end{enumerate}
+
+\subsection*{User Test Results}
 
 Summarise the results of your tests. 
 For each scenario-based test: 
 • tabulate your metric results against each task 
-• describe or present your users’ feedback during/after the test 
+• describe or present your users' feedback during / after the test 
+
+\subsection*{Implications of User Testing}
+
+- in general, users had no trouble navigating the system
+- the result of the validation (i.e. highlighted tags) was not well understood by users
+
 Close with a general discussion that: 
 • summarises the issues raised 
 • identifies areas for improvement and design suggestions 
 • outlines any redefinition of functional and user test plans for final 
 prototype 
-(We don’t care whether your prototype ‘passes’ the tests. What is 
+(We don’t care whether your prototype passes the tests. What is 
 important is that your prototype is sufficiently broad to validate your test 
 plan for the final product.)
 
@@ -144,5 +176,11 @@ plan for the final product.)
 \subsection*{Page Structure Tests}
 
 \lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/deco3801-tests/test_page_structure.py}
+
+\newpage
+
+\subsection*{JSON-RPC Server Tests}
+
+\lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/src/tests/test_json_rpc_server.py}
 
 \end{document}
