@@ -139,7 +139,7 @@ foreach ( $in_document_errors as $in_document_error ) {
         "errors" => $orig_end_chunk["errors"]
     );
     
-    // mark all the chunks between the outer new chunks as having the new error
+    // mark all the chunks between the outer new chunks (exclusive) as having the new error
     
     for ( $error_chunk = $start_chunk + 1; $error_chunk <= $end_chunk; $error_chunk++ )
         $chunks[$error_chunk]["errors"][] = $in_document_error[0];
