@@ -3,6 +3,7 @@
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{color}
+\usepackage{hyperref}
 
 \pagestyle{plain}
 
@@ -13,6 +14,11 @@
 \setlength{\topmargin}{-20.5truemm}
 \setlength{\parindent}{0.0truemm}
 \parskip=1mm
+
+\hypersetup{
+	colorlinks=true,
+	urlcolor=blue
+}
 
 %Python colouring from http://widerin.org/blog/syntax-highlighting-for-python-scripts-in-latex-documents
 \definecolor{Code}{rgb}{0,0,0}
@@ -76,15 +82,185 @@ emphstyle={\color{self}\slshape},
 
 \subsection*{Testing Strategy}
 
-There are three major testable components of the Typed HTML5 Evaluation Machine, our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented, or when fixing one error creates another error.
+There are three major testable components of the our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented, or when fixing one error creates another error.
 
-In terms of the parser,
-- talk about error tests being added periodically
-- add code for error tests that are currently implemented into appendix.
+The test cases we are running on the parser can be found in Appendix A within this document. This gives an indication of the tests we have currently implemented in the system. More tests are being added periodically, as different types of HTML5 errors are added to the parser. Each HTML5 error will have its own associated test. Other parser related tests are also contained in Appendix A, including the JSON-RPC server tests. These test for concurrency (can the parser handle 5 concurrent requests?) as well as correctness of JSON-RPC input and output.
 
 \subsection*{Test Case Transcript}
 
-% just put the excel stuff here
+{\bf Python Parser Tests}
+
+\begin{table}[h]
+    \begin{tabular}{lllll}
+    Test Number & Test Description & Inputs  & Expected Output / Resulting Action & Pass / Fail + How to Fix \\
+    1                                      
+    & Testing that a specific error is being reported correctly, given a particular fragment of HTML as the input. Since not all of the error checks have been or can be defined in advance, the implementation of this test case is reactionary and will be continually updated to include new error checks as they are added. The existing tests will have to be run each time a new error check is implemented to ensure that all existing functionality still works as intended. 
+    & A tailored fragment of HTML that should cause a specific error to be reported. eg. ``\verb'<head><head></head></head>'" => Testing for the duplicate set of head tags. & Confirmation that the expected error and associated error code is being returned for the given HTML fragment, in the expected character position of the input fragment.
+    & Pass / Ongoing. The usage of this test case is currently being implemented after each error type is implemented. These tests are passing for the error checks we have implemented so far. \\
+    2
+    & Test that the JSON-RPC server is running and can respond to a remote function call.
+    & A single client making a function call to the server.
+    & The function call should be processed without an error being raised, implying the server is currently running.
+    & Pass \\
+    3
+    & Testing that the JSON-RPC server is able to handle up to a maximum of 5 concurrent remote function calls.
+    & Five concurrent function calls are made to the server.
+    & The test case records the time that each response is received by each of the client instances. The function being called has an internal sleep delay of 2 seconds, so the recorded time for each client should be slightly over 2 seconds, implying all 5 calls were made and processed at the same time.
+    & Pass \\
+    4
+    & Testing that a 6th concurrent connection (1 connection over the maximum of 5 concurrent connections) to the JSON-RPC server results in a delayed response.
+    & Six concurrent function calls are made to the server.
+    & As above, the time the response is received is compared to the time the call was made. The first 5 connections should behave as above, receiving a response in just over 2 seconds. The 6th call will receive a response after 4 seconds, 2 seconds after the server is able to respond after the first 5 connections have been responded to.
+    & Pass \\
+    5
+    & Testing the parser's response to a case where input of an empty string is supplied.
+    & An empty string.
+    & The parser should respond with a general error stating that the input is empty, preventing other general errors such a missing closing HTML tags or page structure sections (head, body, footer).
+    & Failed. This check will have to be performed at the start of the main parsing loop, preventing the general structural errors from being reported. \\
+    6
+    & Testing the parser's response when the input string doesn't contain any valid HTML.
+    & A garbage string which doesn't contain any HTML tags or tag like elements eg. <blah>
+    & The parser should respond with a general error stating that the input doesn't contain any valid HTML.
+    & Failed. The parser will have to check the tokenizer for the existence of any valid tags. If none are found and the input string isn't empty, an error will be thrown stating that no valid HTML was found in the input. \\
+    7
+    & Testing that a correctly formed JSON-RPC 2.0 request is handled by the server, which should respond with the correct response.
+    & A JSON-RPC 2.0 request containing a small HTML code fragment to be parsed.
+    & A JSON-RPC 2.0 response containing an array of errors related to the given request. The response should also contain the same ID value as the one passed to it with the request.
+    & Pass \\
+    8
+    & Testing that a malformed JSON-RPC 2.0 request containing incorrect parameters for a particular function call causes the server to return an error.
+    & A JSON-RPC 2.0 request containing an invalid parameters array for the function call \verb'parse_html'.
+    & A JSON-RPC 2.0 error response with a message of ``Invalid parameters".
+    & Pass \\
+    9
+    & Testing that a JSON-RPC 2.0 request calling a function that isn't registered on the server causes the server to send an error response.
+    & A JSON-RPC 2.0 request containing a function name that hasn't been registered on the server.
+    & A JSON-RPC 2.0 error response with a message of ``".
+    & Pass \\
+    10
+    & Testing the parser response when a tag with a URL attribute is supplied with an valid relative file path.
+    & Html fragment: \verb'"<img src="../image.jpg"><img src="directory2/image2.jpg">"'. File list: \verb'["image.jpg", "directory/", "directory/current.html", "directory/directory2/image2.jpg"]'. Current file: \verb'"directory/current.html"'
+    & The parser response should NOT contain an error indicating an invalid file path.
+    & Pass \\
+    11
+    & Testing the parser response when a tag with a URL attribute is supplied with an nonexistent relative file path.
+    & Html fragment: \verb'"<img src=../../image.jpg><img src=directory2/image2.jpg>"'. File list: \verb'["directory/", "directory/current.html"]'. Current file: \verb'"directory/current.html"'
+    & The parser reponse should contain two errors indicating invalid filepaths, associated with the src attributes of the img tags.
+    & Pass \\
+    12
+    & Testing the parser response when a tag with a URL attribute is supplied with an nonexistent files in existing relative filepaths.
+    & Html fragment: \verb'"<img src=../image.jpg><img src=directory2/image2.jpg>"'. File list: \verb'["directory/", "directory/current.html", "directory/directory2/"]'. Current file: \verb'"directory/current.html"'
+    & The parser reponse should contain two errors indicating invalid filepaths, associated with the src attributes of the img tags.
+    & Pass \\
+    13
+    & Testing the parser response when a tag with a URL attribute is supplied with an valid absolute file path.
+    & Html fragment: \verb'"<img src=/image.jpg><img src=/directory/directory2/image2.jpg>"'. File list: \verb'["directory/","/image.jpg", "directory/current.html", "directory/directory2/","directory/directory2/image2.jpg"]'. Current file: \verb'"directory/current.html"'
+    & The parser response should NOT contain an error indicating an invalid file path.
+    & Pass \\
+    14
+    & Testing the parser response when a tag with a URL attribute is supplied with an nonexistent absolute file path.
+    & Html fragment: \verb'"<img src=/directory3/image.jpg>"'. File list: \verb'["directory/", "directory/current.html"]'. Current file: \verb'"directory/current.html"'
+    & The parser reponse should contain an error indicating invalid filepaths, associated with the src attributes of the img tag.
+    & Pass \\
+    15
+    & Testing the parser response when a tag with a URL attribute is supplied with nonexistent files in existing relative filepaths.
+    & Html fragment: \verb'"<img src=/directory/image2.jpg>"'. File list: \verb'["directory/", "directory/current.html"]'. Current file: \verb'"directory/current.html"'
+    & The parser reponse should contain one errors indicating invalid filepaths, associated with the src attributes of the img tags.
+    & Pass \\
+	\end{tabular}
+\end{table}
+
+{\bf Website and Server Tests}
+
+\begin{table}[h]
+    \begin{tabular}{lllll}
+    Test Number & Test Description & Inputs  & Expected Output / Resulting Action & Pass / Fail + How to Fix \\
+    1
+    & View Home page
+    & Go to URL, or click link from any page
+    & The home page is displayed.
+    & Pass \\
+    2
+    & View Help page
+    & Click link from any page
+    & The user is sent to the help page.
+    & Pass \\
+    3
+    & View Direct Input page
+    & Click link from any page
+    & The user is sent to the direct input page.
+    & Pass \\
+    4
+    & Validate direct input
+    & The user types their input into the textfield on the Direct Input page and clicks Validate.
+    & The input text is saved in a new set with a single file in it. The user is redirected to the Show File page.
+    & Pass \\
+    5
+    & View Upload File(s) page
+    & Click link from any page
+    & The user is sent to the Upload File page.
+    & Pass \\
+    6
+    & Upload single HTML file
+    & The user selects a file and then clicks Validate.
+    & The file is saved in a new set with a single file in it. The user is redirected to the Show File page.
+    & Pass \\
+    7
+    & Upload multiple HTML files individually
+    & The user clicks the Add File button the required number of times, then selects a file for each field. They then click Validate.
+    & Files are saved in a new set, user is redirected to uploaded set page
+    & Pass \\
+    8
+    & Upload multiple HTML files together from one dialogue
+    & The user selects multple files in the dialogue box, then clicks Validate.
+    & Files are saved in a new set, user is redirected to uploaded set page
+    & Pass \\
+    9
+    & Upload multiple HTML files, some individually and some from one dialogue box
+    & The user performs a combination of multiple Add Files and selecting multiple files in the dialogue boxes. They then click validate.
+    & Files are saved in a new set, user is redirected to uploaded set page
+    & Pass \\
+    10
+    & Upload non-HTML file
+    & The user attempts to upload a file which is not HTML.
+    & The user is redirected to the same page and shown a information box informing them that the file chosen is not a HTML file.
+    & Failed. Currently it parses all uploaded files for HTML. Fix by checking mime type before sending to parser \\
+    11
+    & No file selected on upload
+    & The user attempts to upload a file when no file is selected.
+    & Redirect to upload file page with a helpful error message
+    & Failed. Currently an empty file is shown \\
+    12
+    & View Upload Zip page
+    & Click link from any page
+    & The user is sent to the Upload Zip page.
+    & Pass \\
+    13
+    & Upload zip file
+    & Zip file selected on previous page, user clicked validate
+    & Zip archive is unpacked, files are saved in a new set, user is redirected to uploaded set page
+    & Pass \\
+    14
+    & View Uploaded Set page
+    & User either uploads multiple files, or uploads a zip archive
+    & The user is shown the list of files uploaded in this set, with corresponding error bars.
+    & Pass, except in the case of a single file in a set or zip, in which case the user is redirected directly to the show file page \\
+    15
+    & View Uploaded File page
+    & User either selects a file on the Uploaded Set page, or uploads a single file, or validates by direct input
+    & The user is shown their uploaded file, with corresponding error bar, general error information, and uploaded text with error highlighting.& Pass \\
+    16
+    & Remove file after certain period of being untouched in the server
+    & A file should be removed from the server after a period of inactivity.
+    & The files are removed from the database after a time. (3 hours)
+    & Failed. Currently, files stay in database. The cron job, which cleans up a file after it is left untouched for a time, is written and tested, but not installed on the development server \\
+    17
+    & User attempts to access files they have not uploaded
+    & The user manually attempts to alter the URL to view a file they have not uploaded.
+    & The user is redirected to the home page.
+    & Failed. Currently no security checking exists. The field exists in the data structure, but is not populated and validated against a php session id \\
+    \end{tabular}
+\end{table}
 
 \subsection*{Implications of Functional Testing}
 
@@ -111,21 +287,57 @@ Our web application will eventually be utilised by two user groups - students of
 \begin{itemize}
 \item Undergraduate students who have already completed DECO1400
 \item Undergraduate students who have not completed DECO1400 but have worked with computers
-\item Masters students who have already completed DECO7140
-\item Masters students who have not already completed DECO7140
+\item Masters students who have already completed DECO7140; and
+\item Masters students who have not already completed DECO7140.
 \end{itemize}
 
-However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who hadn't done DECO1400, as these students represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to get a feel for people who had previously done the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from ten users - five were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
+However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who had not done DECO1400, as these users represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to understand the needs of users who had previously completed the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from ten users - five were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
 
-We formulated six key scenarios for our users to undertake. Storyboards for each of them can be found in the separately submitted Appendix B.
+We formulated six key scenarios for our users to undertake. Each scenario was performed on the live prototype at \underline{\url{http://underwaterfall.com}}. Storyboards for each of them can be found in the separately submitted Appendix B.
 
 \begin{itemize}
-\item Getting started by reading the help page (First Encounter Scenario)
-\item Validating HTML via Direct Input
-\item Validating HTML via uploading a file
-\item Validating websites or multiple HTML files via uploading a zip
-\item Fixing a file based on the error suggestions, resubmitting and getting a valid file
-\item Attempting to upload a non-HTML file (Fringe Case Scenario)
+\item Getting started by reading the help page (First Encounter Scenario) \\
+\begin{tabular}{l p{3.5in}}
+Actor: & New User \\
+Goal: & To understand how the website works, and understand the feedback it provides. \\
+Necessity of Scenario: & This scenario is required for first time users to understand how to use and interact with the program. \\
+Preconditions: & User has not previously visited the webpage. \\
+\end{tabular}
+\item Validating HTML via Direct Input \\
+\begin{tabular}{l p{3.5in}}
+Actor: & User \\
+Goal: & To check the validity of a piece of copied or typed HTML. \\
+Necessity of Scenario: & This scenario represents one of the key ways users can get insight into how to program using HTML5. \\
+Preconditions: & User has a clear understanding of the validation the website provides from the help page. \\
+\end{tabular}
+\item Validating HTML via uploading a file \\
+\begin{tabular}{l p{3.5in}}
+Actor: & User \\
+Goal: & To check the validity of a HTML file. \\
+Necessity of Scenario: & This scenario represents one of the key ways users can get insight into how to program using HTML5. \\
+Preconditions: & User has a clear understanding of the validation the website provides from the help page. \\
+\end{tabular}
+\item Validating websites or multiple HTML files via uploading a zip \\
+\begin{tabular}{l p{3.5in}}
+Actor: & User \\
+Goal: & To check the validity of a zip file of either website files or HTML. \\
+Necessity of Scenario: & This scenario represents one of the key ways users can get insight into how to program using HTML5. \\
+Preconditions: & User has a clear understanding of the validation the website provides from the help page. \\
+\end{tabular}
+\item Fixing a file based on the error suggestions, resubmitting and getting a valid file \\
+\begin{tabular}{l p{3.5in}}
+Actor: & User \\
+Goal: & To check the validity of a piece of copied or typed HTML. \\
+Necessity of Scenario: & This scenario is the primary point of the application - users learning to correct their HTML5 pages. \\
+Preconditions: & User has already uploaded a file and determined the errors relating to their webpage. \\
+\end{tabular}
+\item Attempting to upload a non-HTML file (Fringe Case Scenario) \\
+\begin{tabular}{l p{3.5in}}
+Actor: & User \\
+Goal: & To check the validity of a non-HTML file. \\
+Necessity of Scenario: & Users are fallible and can upload incorrect files. They may also believe the website is capable of evaluating other types of files, like Javascript or CSS. \\
+Preconditions: & N/A \\
+\end{tabular}
 \end{itemize}
 
 We focused on the metrics of time taken to complete each scenario, and, in keeping with our surgical user experience, number of clicks required to complete each scenario. As we also wanted to create an enjoyable environment for the users, we also made note of any particular emotions and reactions of the users as they undertook the scenarios. Our primary strategy for user testing was as follows:
@@ -165,7 +377,7 @@ plan for the final product.)
 
 \newpage
 
-\section*{Appendix - Python Test Code}
+\section*{Appendix A - Python Test Code}
 
 \subsection*{Syntax Tests}
 
