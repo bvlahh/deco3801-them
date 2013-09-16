@@ -1,5 +1,9 @@
 \documentclass[10pt]{article}
 
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{color}
+
 \pagestyle{plain}
 
 \setlength{\textwidth}{5.9truein}
@@ -9,6 +13,55 @@
 \setlength{\topmargin}{-20.5truemm}
 \setlength{\parindent}{0.0truemm}
 \parskip=1mm
+
+%Python colouring from http://widerin.org/blog/syntax-highlighting-for-python-scripts-in-latex-documents
+\definecolor{Code}{rgb}{0,0,0}
+\definecolor{Decorators}{rgb}{0.5,0.5,0.5}
+\definecolor{Numbers}{rgb}{0.5,0,0}
+\definecolor{MatchingBrackets}{rgb}{0.25,0.5,0.5}
+\definecolor{Keywords}{rgb}{0,0,1}
+\definecolor{self}{rgb}{0,0,0}
+\definecolor{Strings}{rgb}{0,0.63,0}
+\definecolor{Comments}{rgb}{0,0.63,1}
+\definecolor{Backquotes}{rgb}{0,0,0}
+\definecolor{Classname}{rgb}{0,0,0}
+\definecolor{FunctionName}{rgb}{0,0,0}
+\definecolor{Operators}{rgb}{0,0,0}
+\definecolor{Background}{rgb}{0.98,0.98,0.98}
+
+\lstset{
+numbers=left,
+numberstyle=\footnotesize,
+numbersep=1em,
+xleftmargin=1em,
+framextopmargin=2em,
+framexbottommargin=2em,
+showspaces=false,
+showtabs=false,
+showstringspaces=false,
+frame=l,
+tabsize=4,
+breaklines=true,
+% Basic
+basicstyle=\ttfamily\small\setstretch{1},
+backgroundcolor=\color{Background},
+language=Python,
+% Comments
+commentstyle=\color{Comments}\slshape,
+% Strings
+stringstyle=\color{Strings},
+morecomment=[s][\color{Strings}]{"""}{"""},
+morecomment=[s][\color{Strings}]{'''}{'''},
+% keywords
+morekeywords={import,from,class,def,for,while,if,is,in,elif,else,not,and,or,print,break,continue,return,True,False,None,access,as,,del,except,exec,finally,global,import,lambda,pass,print,raise,try,assert},
+keywordstyle={\color{Keywords}\bfseries},
+% additional keywords
+morekeywords={[2]@invariant},
+keywordstyle={[2]\color{Decorators}\slshape},
+emph={self},
+emphstyle={\color{self}\slshape},
+%
+}
 
 \title{\bf DECO3801 Test Plan Document}
 \author{\normalsize THEM - Typed HTML5 Evaluation Machine \\ \normalsize Carl Hattenfels, Scott Heiner, Shen Yong Lau, Robert Meyer, Brendan Miller, David Uebergang}
@@ -25,6 +78,10 @@
 
 There are three major testable components of the Typed HTML5 Evaluation Machine, our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented, or when fixing one error creates another error.
 
+In terms of the parser,
+- talk about error tests being added periodically
+- add code for error tests that are currently implemented into appendix.
+
 \subsection*{Test Case Transcript}
 
 % just put the excel stuff here
@@ -39,25 +96,24 @@ Our functional testing highlighted some issues with all aspects of our applicati
 
 \section*{User Experience Goals}
 
-We had a clear user experience in mind while developing this website. Through its ease of use and minimal effort on the part of the user, we have aimed to create a very surgical, ambient, passive experience. The tool should give users immediate insight into the issues with their HTML and websites. This is where the user's experience with our tool ends, for this session. The user now can go and fix their file externally, return to our program and almost instantly receive another assessment on their code.
+We had a clear user experience in mind while developing this website. Through its ease of use and minimal effort on the part of the user, we have aimed to create a very surgical, ambient, passive experience. The tool should give users immediate insight into the issues with their HTML and websites. This is where the user's experience with our tool ends, for this session. The user now can go and fix their file externally, return to our program and almost instantly receive another assessment of their code's validity. We do not aim to get the user invested in our system. However, we wish to create a reliable and worthwhile experience, brief as it is. The user should not be frustrated by the errors the program reveals, with the focus on helping the user learn and develop better web practices. It is meant to be a program that a user just ``touches", that is, they upload their file they want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process.
 
-- user shouldn't get invested in the system, nor get frustrated by the errors
-- it is meant to be a program you just ``touch", that is, upload your file you want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process. priorities are on quick and easy use, which is why everything is instantly accessible and requires very few clicks to navigate.
+Our priorities are on quick and easy use, which is why everything is instantly accessible and requires very few clicks to navigate. We have designed the website to require as few as five clicks to access the primary functionality of the system. %include images of the website showcasing this here
 
 \newpage
 
 \section*{User Testing Plan}
 
-- poor initial consideration due to highly targeted user base - DECO1400 students
-- primarily focused on students who hadn't done deco1400 as these represent students ``new" to deco1400
-- also focused on masters students who had done deco7140, both for their opinions of the tool and whether it would be relevant to the course
-- attempted to get undergraduated students who had done deco1400 before, but poor communication and initial consideration (mentioned above) on our part lead to us getting very few in this user category
+Our web application will eventually be utilised by two user groups - students of DECO1400, and students of DECO7140. As such, we determined four major user testing groups:
 
-- user groups
-  - undergraduate students who have already done DECO1400
-  - undergraduate students who haven't done DECO1400 but have worked with computers
-  - masters students who have already done DECO7140
-  - masters students who have not already done DECO7140
+\begin{itemize}
+\item Undergraduate students who have already completed DECO1400
+\item Undergraduate students who have not completed DECO1400 but have worked with computers
+\item Masters students who have already completed DECO7140
+\item Masters students who have not already completed DECO7140
+\end{itemize}
+
+However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who hadn't done DECO1400, as these students represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to get a feel for people who had previously done the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from ten users - five were undergraduates who had not done DECO1400, one was an undergradute who had done DECO1400 and four were masters students who had done DECO7140.
 
 - in general, users had no trouble navigating the system
 - the result of the validation (i.e. highlighted tags) was not well understood by users
@@ -74,5 +130,19 @@ prototype
 (We don’t care whether your prototype ‘passes’ the tests. What is 
 important is that your prototype is sufficiently broad to validate your test 
 plan for the final product.)
+
+\newpage
+
+\section*{Appendix - Python Test Code}
+
+\subsection*{Syntax Tests}
+
+\lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/deco3801-tests/test_syntax.py}
+
+\newpage
+
+\subsection*{Page Structure Tests}
+
+\lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/deco3801-tests/test_page_structure.py}
 
 \end{document}
