@@ -52,6 +52,10 @@ errorCodes = {
     "body-start-tag-missing": 32,
     "body-end-tag-missing": 33,
     "no-starting-html-tag": 34,
+    "unknown-doctype": 35,
+    "need-space-after-doctype": 36,
+    "expected-doctype-but-got-end-tag": 37,
+    "expected-doctype-but-got-eof": 38,
 }
 
 E = {
