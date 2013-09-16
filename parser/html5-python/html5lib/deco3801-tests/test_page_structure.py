@@ -28,8 +28,8 @@ class TestPageStructure(unittest.TestCase):
 		the start and closing tags for each of the three singular tags.
 		"""
 		multipleHTMLInstances = "<html><html></html></html>"
-		multipleHeadInstances = "<head><head></head></head>"
-		multipleBodyInstances = "<body><body></body></body>"
+		multipleHeadInstances = "<html><head><head></head></head><body></body></html>"
+		multipleBodyInstances = "<html><head></head><body><body></body></body></html>"
 
 		self.parser.parse(multipleHTMLInstances)
 
@@ -42,19 +42,19 @@ class TestPageStructure(unittest.TestCase):
 		self.parser.reset()
 		self.parser.parse(multipleHeadInstances)
 
-		self.assertIn(((6, 11), u'multiple-instance-singular-tag', {u'name': u'head'}), 
+		self.assertIn(((12, 17), u'multiple-instance-singular-tag', {u'name': u'head'}), 
 			self.parser.errors, "Multiple instances of starting HTML tag not reported.")
 
-		self.assertIn(((19, 25), u'incorrect-placement-singular-end-tag', {u'name': u'head'}),
+		self.assertIn(((25, 31), u'incorrect-placement-singular-end-tag', {u'name': u'head'}),
 			self.parser.errors, "Multiple instances of closing head tag not reported.")
 
 		self.parser.reset()
 		self.parser.parse(multipleBodyInstances)
 
-		self.assertIn(((6, 11), u'multiple-instance-singular-tag', {u'name': u'body'}), 
+		self.assertIn(((25, 30), u'multiple-instance-singular-tag', {u'name': u'body'}), 
 			self.parser.errors, "Multiple instances of starting HTML tag not reported.")
 
-		self.assertIn(((19, 25), u'unexpected-end-tag-after-body', {u'name': u'body'}),
+		self.assertIn(((38, 44), u'unexpected-end-tag-after-body', {u'name': u'body'}),
 			self.parser.errors, "Multiple instances of closing body tag not reported.")
 
 	def test_missing_doctype(self):
@@ -108,13 +108,13 @@ class TestPageStructure(unittest.TestCase):
 
 		self.parser.parse(multipleHeadInstances);
 
-		self.assertIn(((-1, -1), u'no-closing-html-tag', {u'name': u'head'}),
+		self.assertIn(((-1, -1), u'no-closing-html-tag', {}),
 			self.parser.errors, "Failed to report missing closing HTML tag.")
 
 		self.parser.reset()
 		self.parser.parse(multipleBodyInstances)
 
-		self.assertIn(((-1, -1), u'no-closing-html-tag', {u'name': u'body'}),
+		self.assertIn(((-1, -1), u'no-closing-html-tag', {}),
 			self.parser.errors, "Failed to report missing closing HTML tag.")
 
 	def test_misplaced_tags_before_head(self):
@@ -130,24 +130,24 @@ class TestPageStructure(unittest.TestCase):
 		Report whether or not the tags preceding the head section are reported
 		as being misplaced.
 		"""
-		misplacedHeadTags = "<body></body><head></head>"
-		misplacedLinkTags = "<a></a><head></head>"
+		misplacedHeadTags = "<html><body></body><head></head></html>"
+		misplacedLinkTags = "<html><a></a><head></head><body></body></html>"
 
 		self.parser.parse(misplacedHeadTags)
 
-		self.assertIn(((0, 5), u'incorrect-start-tag-placement-before-head', {u'name': u'body'}),
+		self.assertIn(((6, 11), u'incorrect-start-tag-placement-before-head', {u'name': u'body'}),
 			self.parser.errors, "Failed to report start body tag before head section.")
 
-		self.assertIn(((6, 12), u'incorrect-end-tag-placement-before-head', {u'name': u'body'}),
+		self.assertIn(((12, 18), u'incorrect-end-tag-placement-before-head', {u'name': u'body'}),
 			self.parser.errors, "Failed to report closing body tag before head section.")
 
 		self.parser.reset()
 		self.parser.parse(misplacedLinkTags)
 
-		self.assertIn(((0, 2), u'incorrect-start-tag-placement-before-head', {u'name': u'a'}),
+		self.assertIn(((6, 8), u'incorrect-start-tag-placement-before-head', {u'name': u'a'}),
 			self.parser.errors, "Failed to report start link (a) tag before head section.")
 
-		self.assertIn(((3, 6), u'incorrect-end-tag-placement-before-head', {u'name': u'a'}),
+		self.assertIn(((9, 12), u'incorrect-end-tag-placement-before-head', {u'name': u'a'}),
 			self.parser.errors, "Failed to report closing link (a) tag before head section.")
 
 	def test_incorrect_tags_in_head(self):
@@ -259,7 +259,7 @@ class TestPageStructure(unittest.TestCase):
 
 		self.parser.parse(inputFragment)
 
-		self.assertIn(((-1, -1), u'no-closing-html-tag', {u'name': u'body'}),
+		self.assertIn(((-1, -1), u'no-closing-html-tag', {}),
 			self.parser.errors, "Failed to report missing closing HTML tag.")
 
 	def test_early_termination_before_head(self):
@@ -386,7 +386,7 @@ class TestPageStructure(unittest.TestCase):
 
 		self.parser.parse(inputFragment)
 
-		self.assertIn(((-1, -1), u'no-starting-html-tag', {u'name': u'html'}),
+		self.assertIn(((-1, -1), u'no-starting-html-tag', {}),
 			self.parser.errors, "Failed to report missing starting HTML tag.")
 
 if __name__ == '__main__':

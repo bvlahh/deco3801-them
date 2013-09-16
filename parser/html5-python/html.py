@@ -1,10 +1,13 @@
+#coding=utf-8
 import html5lib
 from html5lib import treewalkers
 from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-fragment = '<head></head><body></body></html>'
+blah = """<html><a></a><head></head><body></body></html>"""
+
+fragment = blah.decode("utf-8")
 
 minidom_document = parser.parse(fragment)
 # <html><html><body><body></body></body></html></html>

@@ -38,6 +38,13 @@ class Errors
         29 => "This start tag is of a tag type which belongs within the head section. Move it to before the </head> closing tag!",
         30 => "Found a start tag after the head phase and before the body phase, implying that it is misplaced.",
         31 => "Found a closing tag after the head phase and before the body phase, implying that it is misplaced.",
+        32 => "No starting body tag was found in the expected context, implying that no body section exists.",
+        33 => "No closing body tag was found in the expected context, implying that no body section exists or it wasn't closed properly.",
+        34 => "The document is missing a starting HTML tag.",
+        35 => "Unknown DOCTYPE. HTML5 uses <!DOCTYPE html>.",
+        36 => "There is a missing space after the doctype declaration. Correct form: <!DOCTYPE html>.",
+        37 => "No valid doctype was found. HTML files should start with <!DOCTYPE html>.",
+        38 => "The document is empty.",
     );
     
     /**
