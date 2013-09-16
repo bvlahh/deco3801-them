@@ -70,26 +70,26 @@ class TestPageStructure(unittest.TestCase):
 		Expected Results:
 		All test cases should report a missing DOCTYPE declaration.
 		"""
-		multipleHTMLInstances = "<html><html></html></html>"
-		multipleHeadInstances = "<head><head></head></head>"
-		multipleBodyInstances = "<body><body></body></body>"
+		startTagBeforeDoctype = "<html><html></html></html>"
+		endTagBeforeDoctype = "</head></head>"
+		eofBeforeDoctype = ""
 
-		self.parser.parse(multipleHTMLInstances)
+		self.parser.parse(startTagBeforeDoctype)
 		
 		self.assertIn(((0, 5), u'expected-doctype-but-got-start-tag', {u'name': u'html'}),
-			self.parser.errors, "Failed to report missing DOCTYPE declaration.")
+			self.parser.errors, "Failed to report missing DOCTYPE declaration (start tag before doctype.")
 
 		self.parser.reset()
-		self.parser.parse(multipleHeadInstances)
+		self.parser.parse(endTagBeforeDoctype)
 
-		self.assertIn(((0, 5), u'expected-doctype-but-got-start-tag', {u'name': u'head'}),
-			self.parser.errors, "Failed to report missing DOCTYPE declaration.")
+		self.assertIn(((0, 6), u'expected-doctype-but-got-end-tag', {u'name': u'head'}),
+			self.parser.errors, "Failed to report missing DOCTYPE declaration (closing tag before doctype.")
 
 		self.parser.reset()
-		self.parser.parse(multipleBodyInstances)
+		self.parser.parse(eofBeforeDoctype)
 
-		self.assertIn(((0, 5), u'expected-doctype-but-got-start-tag', {u'name': u'body'}),
-			self.parser.errors, "Failed to report missing DOCTYPE declaration.")
+		self.assertIn(((-1, -1), u'expected-doctype-but-got-eof', {}),
+			self.parser.errors, "Failed to report missing DOCTYPE declaration (EOF before doctype.")
 
 	
 	def test_closing_html(self):
@@ -388,6 +388,46 @@ class TestPageStructure(unittest.TestCase):
 
 		self.assertIn(((-1, -1), u'no-starting-html-tag', {}),
 			self.parser.errors, "Failed to report missing starting HTML tag.")
+
+	def test_unknown_doctype(self):
+		"""
+		Test that a doctype with an invalid name is reported as being
+		an unknown doctype.
+
+		Input:
+		A HTML fragment containing an invalid doctype name.
+
+		Expected Results:
+		An error should be thrown reporting that the doctype name is invalid.
+		"""
+
+		inputFragment = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((0, 89), u'unknown-doctype', {}),
+			self.parser.errors, "Failed to report unknown doctype.")
+
+	def test_space_after_doctype(self):
+		"""
+		Test that a doctype tag has a space between the doctype declaration
+		and the doctype name.
+
+		Input:
+		A HTML fragment containing a doctype with no space between the doctype
+		declaration and the doctype name.
+
+		Expected Results:
+		An error should be thrown reporting that there is no space between
+		the doctype declaration and the doctype name.
+		"""
+
+		inputFragment = '<!DOCTYPEhtml>'
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((0, 8), u'need-space-after-doctype', {}),
+			self.parser.errors, "Failed to report missing space after the doctype declaration.")
 
 if __name__ == '__main__':
 	unittest.main()

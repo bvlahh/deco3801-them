@@ -92,11 +92,11 @@ class TestSyntax(unittest.TestCase):
 		reported as an error.
 
 		Input:
-		A HTML fragment containing a a closing tag which contains
+		A HTML fragment containing a closing tag which contains
 		at least one attribute.
 
 		Expected Results:
-		An error should be thrown reporting the closing tag shouldn't contain
+		An error should be thrown reporting that the closing tag shouldn't contain
 		attributes.
 		"""
 
@@ -106,8 +106,6 @@ class TestSyntax(unittest.TestCase):
 
 		self.assertIn(((9, 23), u'attributes-in-end-tag', {}),
 			self.parser.errors, "Failed to report attributes in closing tag.")
-
-
 
 if __name__ == '__main__':
 	unittest.main()
