@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, unicode_literals
 from six import with_metaclass
 
+import os
 import types
 
 from . import inputstream
@@ -86,7 +87,7 @@ class HTMLParser(object):
                             getPhases(debug).items()])
 
     def _parse(self, stream, innerHTML=False, container="div",
-               encoding=None, parseMeta=True, useChardet=True, **kwargs):
+               encoding=None, parseMeta=True, useChardet=True, files=None, filename=None, **kwargs):
 
         self.innerHTMLMode = innerHTML
         self.container = container
@@ -103,6 +104,14 @@ class HTMLParser(object):
                                               parseMeta=parseMeta,
                                               useChardet=useChardet,
                                               parser=self, **kwargs)
+        # DECO3801 - List of files and directories
+        self.files = files
+        # DECO3801 - The full file name of the file currently being parsed
+        self.cwd = ""
+
+        if filename is not None:
+            self.cwd = filename.split(os.sep)[:-1]
+
         self.reset()
 
         while True:
@@ -195,6 +204,9 @@ class HTMLParser(object):
             # list of tokens which have yet to be processed.
             self.remainingTokens.pop(0)
 
+            if self.files is not None and token is not None and token["name"] in ['img', 'a', 'link', 'script', 'object', 'applet', 'input', 'form']:
+                self.checkURL(new_token)
+
             while new_token is not None:
                 currentNode = self.tree.openElements[-1] if self.tree.openElements else None
                 currentNodeNamespace = currentNode.namespace if currentNode else None
@@ -220,7 +232,7 @@ class HTMLParser(object):
                         phase = self.phase
                     else:
                         phase = self.phases["inForeignContent"]
-
+                    
                     if type == CharactersToken:
                         new_token = phase.processCharacters(new_token)
                     elif type == SpaceCharactersToken:
@@ -270,6 +282,41 @@ class HTMLParser(object):
             if reprocess:
                 assert self.phase not in phases
 
+    # DECO3801 - Checks local URLs for validity. This function works for both absolute and relative
+    # local file paths. Checks all html5 tags for which the specification indicates a URL attribute,
+    # i.e. the 'src' attribute of an img tag, the 'href' attribute of an 'a' tag, or the 'data' attribute
+    # of an 'object' tag.
+    def checkURL(self, token):
+        attrURLMap = {'video':['src','poster'], 'img':['src'], 'a':['href'], 'link':['href'], 'script':['src'], 'object':['data'], 'embed':['src'], 'form':['action'], 'input':['formaction', 'src'], 'source':['src']}
+
+        
+        data = token.get("data")
+
+        for urlAttr in attrURLMap[token.get("name")]:
+            url = data.get(urlAttr)
+            if "http://" in url or "https://" in url: # We ignore Web urls
+                continue
+
+            if url.find("/") == 0: # the path was lead by a "/", meaning the path is absolute.
+                if url[1:] not in self.files: # slice the leading "/" as our directory structure removes this
+                    self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                continue
+
+            # split url into directories (and the final filename
+            url = url.split(os.sep)
+            
+            upDirs = url.count('..')
+            # If the '..' directory command is used
+            if upDirs > len(self.cwd):
+                self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                continue
+            elif upDirs is not 0:
+                abUrl = os.sep.join(self.cwd[:-upDirs] + url[upDirs:])
+            else:
+                abUrl = os.sep.join(self.cwd + url)
+
+            if abUrl not in self.files:
+                self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
 
 
     def normalizedTokens(self):
@@ -283,7 +330,7 @@ class HTMLParser(object):
         for token in self.tokenizerRemaining:
             self.remainingTokens.append(token)
 
-    def parse(self, stream, encoding=None, parseMeta=True, useChardet=True):
+    def parse(self, stream, encoding=None, parseMeta=True, useChardet=True, files=None, filename=None):
         """Parse a HTML document into a well-formed tree
 
         stream - a filelike object or string containing the HTML to be parsed
@@ -294,7 +341,7 @@ class HTMLParser(object):
         element)
         """
         self._parse(stream, innerHTML=False, encoding=encoding,
-                    parseMeta=parseMeta, useChardet=useChardet)
+                    parseMeta=parseMeta, useChardet=useChardet, files=files, filename=filename)
         return self.tree.getDocument()
 
     def parseFragment(self, stream, container="div", encoding=None,

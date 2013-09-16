@@ -52,6 +52,7 @@ errorCodes = {
     "body-start-tag-missing": 32,
     "body-end-tag-missing": 33,
     "no-starting-html-tag": 34,
+    "invalid-url-attrib": 35,
 }
 
 E = {
