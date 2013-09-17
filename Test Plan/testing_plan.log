@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  17 SEP 2013 10:25
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.2.4)  17 SEP 2013 12:21
 entering extended mode
 **testing_plan
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Test Plan\testing_plan.tex"
@@ -327,23 +327,23 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 27.
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Test Plan\testing_plan.aux")
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
 \c@lstlisting=\count122
 \AtBeginShipoutBox=\box37
-Package hyperref Info: Link coloring ON on input line 83.
+Package hyperref Info: Link coloring ON on input line 85.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -353,9 +353,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count123
 )
-LaTeX Info: Redefining \ref on input line 83.
-LaTeX Info: Redefining \pageref on input line 83.
-LaTeX Info: Redefining \nameref on input line 83.
+LaTeX Info: Redefining \ref on input line 85.
+LaTeX Info: Redefining \pageref on input line 85.
+LaTeX Info: Redefining \nameref on input line 85.
 
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Test Plan\testing_plan.out")
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Test Plan\testing_plan.out")
@@ -396,13 +396,13 @@ LaTeX Info: Redefining \nameref on input line 83.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 86.
+(Font)              <12> on input line 88.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 86.
+(Font)              <8> on input line 88.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 86.
+(Font)              <6> on input line 88.
 
-Overfull \hbox (7.52489pt too wide) in paragraph at lines 86--86
+Overfull \hbox (7.52489pt too wide) in paragraph at lines 88--88
  [][] 
  []
 
@@ -443,227 +443,232 @@ Overfull \hbox (7.52489pt too wide) in paragraph at lines 86--86
 
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omlcmr.fd")
-Underfull \hbox (badness 3386) in paragraph at lines 186--186
+Underfull \hbox (badness 8189) in paragraph at lines 202--202
+[]\OT1/cmr/m/n/10 Expected Out-put / Re-sult-ing
+ []
+
+
+Underfull \hbox (badness 3386) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 cessed with-out an er-ror be-ing
  []
 
 
-Underfull \hbox (badness 1092) in paragraph at lines 186--186
+Underfull \hbox (badness 1092) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 The test case records the time
  []
 
 
-Underfull \hbox (badness 2103) in paragraph at lines 186--186
+Underfull \hbox (badness 2103) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 nec-tion (1 con-nec-tion over the
  []
 
 
-Underfull \hbox (badness 1005) in paragraph at lines 186--186
+Underfull \hbox (badness 1005) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 A garbage string which doesn't
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
+\OT1/cmr/m/n/10 with a mes-sage of ``In-valid
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 Html frag-ment: \OT1/cmtt/m/n/10 ``<img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=``../image.jpg"><img
  []
 
 
-Overfull \hbox (9.32782pt too wide) in paragraph at lines 186--186
+Overfull \hbox (9.32782pt too wide) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=``directory2/image2.jpg">"\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 File list: \OT1/cmtt/m/n/10 [``image.jpg",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/current.html",
  []
 
 
-Overfull \hbox (35.57759pt too wide) in paragraph at lines 186--186
+Overfull \hbox (35.57759pt too wide) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/directory2/image2.jpg"]\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 Cur-rent file:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 Html frag-ment: \OT1/cmtt/m/n/10 ``<img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=../../image.jpg><img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=directory2/image2.jpg>"\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 File list: \OT1/cmtt/m/n/10 [``directory/",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/current.html"]\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 Cur-rent file:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 Html frag-ment: \OT1/cmtt/m/n/10 ``<img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=../image.jpg><img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=directory2/image2.jpg>"\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 File list: \OT1/cmtt/m/n/10 [``directory/",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/current.html",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/directory2/"]\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 Cur-rent file:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 Html frag-ment: \OT1/cmtt/m/n/10 ``<img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=/image.jpg><img
  []
 
 
-Overfull \hbox (51.32745pt too wide) in paragraph at lines 186--186
+Overfull \hbox (51.32745pt too wide) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=/directory/directory2/image2.jpg>"\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 File list: \OT1/cmtt/m/n/10 [``directory/",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``/image.jpg",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/current.html",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/directory2/",
  []
 
 
-Overfull \hbox (35.57759pt too wide) in paragraph at lines 186--186
+Overfull \hbox (35.57759pt too wide) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/directory2/image2.jpg"]\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 Cur-rent file:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 Html frag-ment: \OT1/cmtt/m/n/10 ``<img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=/directory3/image.jpg>"\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 File list: \OT1/cmtt/m/n/10 [``directory/",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/current.html"]\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 Cur-rent file:
  []
 
 
-Underfull \hbox (badness 1490) in paragraph at lines 186--186
-\OT1/cmr/m/n/10 tain an er-ror in-di-cat-ing in-valid
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 []\OT1/cmr/m/n/10 Html frag-ment: \OT1/cmtt/m/n/10 ``<img
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 src=/directory/image2.jpg>"\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 File list: \OT1/cmtt/m/n/10 [``directory/",
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmtt/m/n/10 ``directory/current.html"]\OT1/cmr/m/n/10 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--186
+Underfull \hbox (badness 10000) in paragraph at lines 202--202
 \OT1/cmr/m/n/10 Cur-rent file:
  []
 
@@ -671,31 +676,41 @@ Underfull \hbox (badness 10000) in paragraph at lines 186--186
 
 
 ] [3] [4]
-Underfull \hbox (badness 2384) in paragraph at lines 282--282
+Underfull \hbox (badness 8189) in paragraph at lines 316--316
+[]\OT1/cmr/m/n/10 Expected Out-put / Re-sult-ing
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 316--316
+[]\OT1/cmr/m/n/10 Upload mul-ti-ple HTML files
+ []
+
+
+Underfull \hbox (badness 3623) in paragraph at lines 316--316
+[]\OT1/cmr/m/n/10 The user se-lects mul-ti-ple files
+ []
+
+
+Underfull \hbox (badness 2384) in paragraph at lines 316--316
 []\OT1/cmr/m/n/10 Failed. Cur-rently no se-cu-rity
  []
 
 [5] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 294--295
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 294--295
+Underfull \hbox (badness 10000) in paragraph at lines 328--329
 
  []
 
 <click1.png, id=39, 803.0pt x 602.25pt>
 File: click1.png Graphic file (type png)
  <use click1.png>
-Package pdftex.def Info: click1.png used on input line 296.
-(pdftex.def)             Requested size: 321.1943pt x 240.89572pt.
+Package pdftex.def Info: click1.png used on input line 330.
+(pdftex.def)             Requested size: 401.49902pt x 301.12425pt.
 
 <click2.png, id=41, 803.0pt x 602.25pt>
 File: click2.png Graphic file (type png)
  <use click2.png>
-Package pdftex.def Info: click2.png used on input line 300.
-(pdftex.def)             Requested size: 321.1943pt x 240.89572pt.
+Package pdftex.def Info: click2.png used on input line 334.
+(pdftex.def)             Requested size: 401.49902pt x 301.12425pt.
  [7
 
 
@@ -703,32 +718,32 @@ Package pdftex.def Info: click2.png used on input line 300.
 <click3.png, id=49, 803.0pt x 602.25pt>
 File: click3.png Graphic file (type png)
  <use click3.png>
-Package pdftex.def Info: click3.png used on input line 304.
-(pdftex.def)             Requested size: 321.1943pt x 240.89572pt.
- [8 <C:/Users/Veritas/Documents/GitHub/deco3801-them/Test Plan/click2.png> <C:/
-Users/Veritas/Documents/GitHub/deco3801-them/Test Plan/click3.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 317.
+Package pdftex.def Info: click3.png used on input line 338.
+(pdftex.def)             Requested size: 401.49902pt x 301.12425pt.
+ [8 <C:/Users/Veritas/Documents/GitHub/deco3801-them/Test Plan/click2.png>] [9 
+<C:/Users/Veritas/Documents/GitHub/deco3801-them/Test Plan/click3.png>]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 351.
 
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 317.
- [9]
-Missing character: There is no ‚ in font cmr10!
-Missing character: There is no Ä in font cmr10!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no ‚ in font cmr10!
-Missing character: There is no Ä in font cmr10!
-Missing character: There is no ù in font cmr10!
-Missing character: There is no ‚ in font cmr10!
-Missing character: There is no Ä in font cmr10!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no ‚ in font cmr10!
-Missing character: There is no Ä in font cmr10!
-Missing character: There is no ù in font cmr10!
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 351.
  [10]
+Missing character: There is no ‚ in font cmr10!
+Missing character: There is no Ä in font cmr10!
+Missing character: There is no ú in font cmr10!
+Missing character: There is no ‚ in font cmr10!
+Missing character: There is no Ä in font cmr10!
+Missing character: There is no ù in font cmr10!
+Missing character: There is no ‚ in font cmr10!
+Missing character: There is no Ä in font cmr10!
+Missing character: There is no ú in font cmr10!
+Missing character: There is no ‚ in font cmr10!
+Missing character: There is no Ä in font cmr10!
+Missing character: There is no ù in font cmr10!
+ [11]
 Missing character: There is no ‚ in font cmr10!
 Missing character: There is no Ä in font cmr10!
 Missing character: There is no ¢ in font cmr10!
@@ -748,36 +763,36 @@ Missing character: There is no ‚ in font cmr10!
 Missing character: There is no Ä in font cmr10!
 Missing character: There is no ô in font cmr10!
 
-[11]
+[12]
 (C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/d
 eco3801-tests/test_syntax.py
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
- [12] [13]) [14]
+ [13] [14]) [15]
 (C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/d
-eco3801-tests/test_page_structure.py [15] [16] [17] [18] [19] [20] [21]
-[22]) [23]
+eco3801-tests/test_page_structure.py [16] [17] [18] [19] [20] [21] [22]
+[23]) [24]
 (C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/src/tests/test_json_rpc
-_server.py [24] [25] [26] [27] [28] [29] [30] [31])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 427.
- [32]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 427.
+_server.py [25] [26] [27] [28] [29] [30] [31] [32])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 463.
+ [33]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 463.
 
 ("C:\Users\Veritas\Documents\GitHub\deco3801-them\Test Plan\testing_plan.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 427.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 427.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 463.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 463.
 Package rerunfilecheck Info: File `testing_plan.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 427.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 463.
  ) 
 Here is how much of TeX's memory you used:
- 9118 strings out of 493921
- 136037 string characters out of 3144871
- 454935 words of memory out of 3000000
- 11304 multiletter control sequences out of 15000+200000
+ 9120 strings out of 493921
+ 136061 string characters out of 3144871
+ 455016 words of memory out of 3000000
+ 11305 multiletter control sequences out of 15000+200000
  9005 words of font info for 33 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 41i,11n,40p,1019b,1765s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,11n,40p,1117b,1765s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/
@@ -787,9 +802,9 @@ gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program
  Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program F
 iles (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Fil
 es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on testing_plan.pdf (32 pages, 707518 bytes).
+Output written on testing_plan.pdf (33 pages, 710509 bytes).
 PDF statistics:
- 1380 PDF objects out of 1440 (max. 8388607)
- 1023 named destinations out of 1200 (max. 500000)
+ 1384 PDF objects out of 1440 (max. 8388607)
+ 1024 named destinations out of 1200 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -26,6 +26,8 @@
 	urlcolor=blue
 }
 
+\definecolor{lightgreen}{RGB}{149,240,149}
+
 %Python colouring from http://widerin.org/blog/syntax-highlighting-for-python-scripts-in-latex-documents
 \definecolor{Code}{rgb}{0,0,0}
 \definecolor{Decorators}{rgb}{0.5,0.5,0.5}
@@ -94,7 +96,7 @@ The test cases we are running on the parser can be found in Appendix A within th
 
 \subsection*{Implications of Functional Testing}
 
-Our functional testing highlighted some issues with all aspects of our application. Primarily, there are several aspects of our functionality which are unimplemented at the moment but we hope to implement before the end of the project. However, we knew that these were issues. Instead, the interesting implications of the testing showed that we were mostly assured that we were programming our code correctly. We thought we had implemented an appropriate fix for the case of empty files (Website and Server Tests, 11) but our testing revealed this was an inadequate fix. Since we are still unsure of the implementation methods of each individual error check, many of the tests relating to errors are unimplemented. They will be periodically added as we introduce more error checks to the parser.
+Our functional testing highlighted some issues with all aspects of our application. Primarily, there are several aspects of our functionality which are unimplemented at the moment but we hope to implement before the end of the project. However, we knew that these were issues. Instead, the interesting implications of the testing showed that we were mostly assured that we were programming our code correctly. We thought we had implemented an appropriate fix for the case of empty files (Website and Server Tests, 11) but our testing revealed this was an inadequate fix. Since we are still unsure of the implementation methods of each individual error check, many of the tests relating to errors are unimplemented. They will be periodically added as we introduce more error checks to the parser. From here, the next version of our prototype will aim to implement all the remaining functionality that our tests cover, and include tests on the remaining error parsing.
 
 \newgeometry{margin=1cm}
 \begin{landscape}
@@ -104,83 +106,99 @@ Our functional testing highlighted some issues with all aspects of our applicati
 {\bf Python Parser Tests}
 
 \begin{center}
-\begin{longtabu} to 10in {l | X | X | X | X}
+\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | X<{\strut}}
 Test Number & Test Description & Inputs  & Expected Output / Resulting Action & Pass / Fail + How to Fix \\
+\hline
 \hline
 1
 & Testing that a specific error is being reported correctly, given a particular fragment of HTML as the input. Since not all of the error checks have been or can be defined in advance, the implementation of this test case is reactionary and will be continually updated to include new error checks as they are added. The existing tests will have to be run each time a new error check is implemented to ensure that all existing functionality still works as intended. 
 & A tailored fragment of HTML that should cause a specific error to be reported. eg. \texttt{``<head> <head> </head> </head>"} =\textgreater Testing for the duplicate set of head tags. & Confirmation that the expected error and associated error code is being returned for the given HTML fragment, in the expected character position of the input fragment.
-& \cellcolor{green} Pass / Ongoing. The usage of this test case is currently being implemented after each error type is implemented. These tests are passing for the error checks we have implemented so far. \\
+& \cellcolor{lightgreen} Pass / Ongoing. The usage of this test case is currently being implemented after each error type is implemented. These tests are passing for the error checks we have implemented so far. \\
+\hline
 2
 & Test that the JSON-RPC server is running and can respond to a remote function call.
 & A single client making a function call to the server.
 & The function call should be processed without an error being raised, implying the server is currently running.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 3
 & Testing that the JSON-RPC server is able to handle up to a maximum of 5 concurrent remote function calls.
 & Five concurrent function calls are made to the server.
 & The test case records the time that each response is received by each of the client instances. The function being called has an internal sleep delay of 2 seconds, so the recorded time for each client should be slightly over 2 seconds, implying all 5 calls were made and processed at the same time.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 4
 & Testing that a 6th concurrent connection (1 connection over the maximum of 5 concurrent connections) to the JSON-RPC server results in a delayed response.
 & Six concurrent function calls are made to the server.
 & As above, the time the response is received is compared to the time the call was made. The first 5 connections should behave as above, receiving a response in just over 2 seconds. The 6th call will receive a response after 4 seconds, 2 seconds after the server is able to respond after the first 5 connections have been responded to.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 5
 & Testing the parser's response to a case where input of an empty string is supplied.
 & An empty string.
 & The parser should respond with a general error stating that the input is empty, preventing other general errors such a missing closing HTML tags or page structure sections (head, body, footer).
 & \cellcolor{pink} Failed. This check will have to be performed at the start of the main parsing loop, preventing the general structural errors from being reported. \\
+\hline
 6
 & Testing the parser's response when the input string doesn't contain any valid HTML.
 & A garbage string which doesn't contain any HTML tags or tag like elements eg. <blah>
 & The parser should respond with a general error stating that the input doesn't contain any valid HTML.
 & \cellcolor{pink} Failed. The parser will have to check the tokenizer for the existence of any valid tags. If none are found and the input string isn't empty, an error will be thrown stating that no valid HTML was found in the input. \\
+\hline
 7
 & Testing that a correctly formed JSON-RPC 2.0 request is handled by the server, which should respond with the correct response.
 & A JSON-RPC 2.0 request containing a small HTML code fragment to be parsed.
 & A JSON-RPC 2.0 response containing an array of errors related to the given request. The response should also contain the same ID value as the one passed to it with the request.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 8
 & Testing that a malformed JSON-RPC 2.0 request containing incorrect parameters for a particular function call causes the server to return an error.
 & A JSON-RPC 2.0 request containing an invalid parameters array for the function call \texttt{parse\_html}.
 & A JSON-RPC 2.0 error response with a message of ``Invalid parameters".
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 9
 & Testing that a JSON-RPC 2.0 request calling a function that isn't registered on the server causes the server to send an error response.
 & A JSON-RPC 2.0 request containing a function name that hasn't been registered on the server.
 & A JSON-RPC 2.0 error response with a message of ``".
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 10
 & Testing the parser response when a tag with a URL attribute is supplied with an valid relative file path.
 & Html fragment: \texttt{``<img src=``../image.jpg"><img src=``directory2/image2.jpg">"}. File list: \texttt{[``image.jpg", ``directory/", ``directory/current.html", ``directory/directory2/image2.jpg"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should NOT contain an error indicating an invalid file path.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 11
 & Testing the parser response when a tag with a URL attribute is supplied with an non-existent relative file path.
 & Html fragment: \texttt{``<img src=../../image.jpg><img src=directory2/image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should contain two errors indicating invalid file paths, associated with the src attributes of the img tags.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 12
 & Testing the parser response when a tag with a URL attribute is supplied with an non-existent files in existing relative filepaths.
 & Html fragment: \texttt{``<img src=../image.jpg><img src=directory2/image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html", ``directory/directory2/"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should contain two errors indicating invalid file paths, associated with the src attributes of the img tags.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 13
 & Testing the parser response when a tag with a URL attribute is supplied with an valid absolute file path.
 & Html fragment: \texttt{``<img src=/image.jpg><img src=/directory/directory2/image2.jpg>"}. File list: \texttt{[``directory/", ``/image.jpg", ``directory/current.html", ``directory/directory2/", ``directory/directory2/image2.jpg"]}. Current file: \texttt{``directory/current.html"}.
 & The parser response should NOT contain an error indicating an invalid file path.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 14
 & Testing the parser response when a tag with a URL attribute is supplied with an non-existent absolute file path.
 & Html fragment: \texttt{``<img src=/directory3/image.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should contain an error indicating invalid file paths, associated with the src attributes of the img tag.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 15
 & Testing the parser response when a tag with a URL attribute is supplied with non-existent files in existing relative file paths.
 & Html fragment: \texttt{``<img src=/directory/image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}.
 & The parser response should contain one errors indicating invalid file paths, associated with the src attributes of the img tags.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 \end{longtabu}
 \end{center}
 
@@ -189,94 +207,112 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 {\bf Website and Server Tests}
 
 \begin{center}
-\begin{longtabu} to 10in {l | X | X | X | X}
+\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | X<{\strut}}
 Test Number & Test Description & Inputs  & Expected Output / Resulting Action & Pass / Fail + How to Fix \\
+\hline
 \hline
 1
 & View Home page
 & Go to URL, or click link from any page
 & The home page is displayed.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 2
 & View Help page
 & Click link from any page
 & The user is sent to the help page.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 3
 & View Direct Input page
 & Click link from any page
 & The user is sent to the direct input page.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 4
 & Validate direct input
 & The user types their input into the text field on the Direct Input page and clicks Validate.
 & The input text is saved in a new set with a single file in it. The user is redirected to the Show File page.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 5
 & View Upload File(s) page
 & Click link from any page
 & The user is sent to the Upload File page.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 6
 & Upload single HTML file
 & The user selects a file and then clicks Validate.
 & The file is saved in a new set with a single file in it. The user is redirected to the Show File page.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 7
 & Upload multiple HTML files individually
 & The user clicks the Add File button the required number of times, then selects a file for each field. They then click Validate.
 & Files are saved in a new set, user is redirected to uploaded set page
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 8
 & Upload multiple HTML files together from one dialogue
 & The user selects multiple files in the dialogue box, then clicks Validate.
 & Files are saved in a new set, user is redirected to uploaded set page
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 9
 & Upload multiple HTML files, some individually and some from one dialogue box
 & The user performs a combination of multiple Add Files and selecting multiple files in the dialogue boxes. They then click validate.
 & Files are saved in a new set, user is redirected to uploaded set page
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 10
 & Upload non-HTML file
 & The user attempts to upload a file which is not HTML.
 & The user is redirected to the same page and shown a information box informing them that the file chosen is not a HTML file.
 & \cellcolor{pink} Failed. Currently it parses all uploaded files for HTML. Fix by checking mime type before sending to parser \\
+\hline
 11
 & No file selected on upload
 & The user attempts to upload a file when no file is selected.
 & Redirect to upload file page with a helpful error message
 & \cellcolor{pink} Failed. Currently an empty file is shown \\
+\hline
 12
 & View Upload Zip page
 & Click link from any page
 & The user is sent to the Upload Zip page.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 13
 & Upload zip file
 & Zip file selected on previous page, user clicked validate
 & Zip archive is unpacked, files are saved in a new set, user is redirected to uploaded set page
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 14
 & View Uploaded Set page
 & User either uploads multiple files, or uploads a zip archive
 & The user is shown the list of files uploaded in this set, with corresponding error bars.
-& \cellcolor{green} Pass, except in the case of a single file in a set or zip, in which case the user is redirected directly to the show file page \\
+& \cellcolor{lightgreen} Pass, except in the case of a single file in a set or zip, in which case the user is redirected directly to the show file page \\
+\hline
 15
 & View Uploaded File page
 & User either selects a file on the Uploaded Set page, or uploads a single file, or validates by direct input
 & The user is shown their uploaded file, with corresponding error bar, general error information, and uploaded text with error highlighting.
-& \cellcolor{green} Pass \\
+& \cellcolor{lightgreen} Pass \\
+\hline
 16
 & Remove file after certain period of being untouched in the server
 & A file should be removed from the server after a period of inactivity.
 & The files are removed from the database after a time. (3 hours)
 & \cellcolor{pink} Failed. Currently, files stay in database. The cron job, which cleans up a file after it is left untouched for a time, is written and tested, but not installed on the development server \\
+\hline
 17
 & User attempts to access files they have not uploaded
 & The user manually attempts to alter the URL to view a file they have not uploaded.
 & The user is redirected to the home page.
 & \cellcolor{pink} Failed. Currently no security checking exists. The field exists in the data structure, but is not populated and validated against a php session id \\
+\hline
 \end{longtabu}
 \end{center}
 \end{landscape}
@@ -287,21 +323,21 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 
 \section*{User Experience Goals}
 
-We had a clear user experience in mind while developing this website. Through its ease of use and minimal effort on the part of the user, we have aimed to create a very surgical, ambient, passive experience. The tool should give users immediate insight into the issues with their HTML and websites. This is where the user's experience with our tool ends, for this session. The user now can go and fix their file externally, return to our program and almost instantly receive another assessment of their code's validity. We do not aim to get the user invested in our system. However, we wish to create a reliable and worthwhile experience, brief as it is. The user should not be frustrated by the errors the program reveals, with the focus on helping the user learn and develop better web practices. It is meant to be a program that a user just ``touches", that is, they upload their file they want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process.
+We had a clear user experience in mind while developing this website. Through its ease of use and minimal effort on the part of the user, we have aimed to create a very surgical, ambient, and passive experience. The tool should give users almost immediate insight into the issues with their HTML and websites. This is where the user's experience with our tool ends, for this session. The user now can go and fix their file externally, return to our program and almost instantly receive another assessment of their code's validity. We do not aim to get the user invested in our system, and be held on the website for long periods at a time. However, we wish to create a reliable and worthwhile experience, brief as it is. The user should not be frustrated by the errors the program reveals, with the focus instead on \textbf{helping} the user learn and develop better web practices. It is meant to be a program that a user just ``touches", that is, they upload their file they want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process.
 
-Our priorities are on quick and easy use, which is why everything is instantly accessible and requires very few clicks to navigate. We have designed the website to require as few as five clicks to access the primary functionality of the system. For example, the following images represent an average user's attempt to verify a file, after brief knowledge of the system's workings. \\ \\
+Our priorities are on quick and easy use, which is why all web pages are instantly accessible from all other web pages and users only need a few clicks to navigate. We have designed the website to require as few clicks as possible to access the primary functionality of the system. For example, the following images represent an average user's attempt to verify a file, after brief knowledge of the system's workings. \\
 
-\includegraphics[scale=0.4]{click1.png}
+\includegraphics[scale=0.5]{click1.png}
 
 The first click takes the user to the webpage.
 
-\includegraphics[scale=0.4]{click2.png}
+\includegraphics[scale=0.5]{click2.png}
 
-The second click chooses a file to verify.
+The second click chooses a file to verify. Other clicks may be employed here as the user navigates their file system to find the file they want to upload.
 
-\includegraphics[scale=0.4]{click3.png}
+\includegraphics[scale=0.5]{click3.png}
 
-The third click validates the selected file.
+The third click validates the selected file. In this way, the user quickly and easily travels from the opening page to viewing their validated HTML. All throughout the web application, we have aimed to create similar experiences where few clicks are required by the user, and they reach their end goal in minimal time.
 
 \newpage
 
@@ -382,6 +418,8 @@ We focused on the metrics of time taken to complete each scenario, and, in keepi
 \end{enumerate}
 
 \subsection*{User Test Results}
+
+
 
 Summarise the results of your tests. 
 For each scenario-based test: 
