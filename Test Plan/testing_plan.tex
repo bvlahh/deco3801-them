@@ -1,5 +1,7 @@
 \documentclass[10pt]{article}
 
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{color}
@@ -165,37 +167,37 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 \hline
 10
 & Testing the parser response when a tag with a URL attribute is supplied with an valid relative file path.
-& Html fragment: \texttt{``<img src=``../image.jpg"><img src=``directory2/image2.jpg">"}. File list: \texttt{[``image.jpg", ``directory/", ``directory/current.html", ``directory/directory2/image2.jpg"]}. Current file: \texttt{``directory/current.html"}
+& Html fragment: \texttt{``<img src=``../image.jpg"><img src=``directory2/ image2.jpg">"}. File list: \texttt{[``image.jpg", ``directory/", ``directory/current.html", ``directory/directory2/ image2.jpg"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should NOT contain an error indicating an invalid file path.
 & \cellcolor{lightgreen} Pass \\
 \hline
 11
 & Testing the parser response when a tag with a URL attribute is supplied with an non-existent relative file path.
-& Html fragment: \texttt{``<img src=../../image.jpg><img src=directory2/image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}
+& Html fragment: \texttt{``<img src=../../image.jpg><img src=directory2/ image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should contain two errors indicating invalid file paths, associated with the src attributes of the img tags.
 & \cellcolor{lightgreen} Pass \\
 \hline
 12
 & Testing the parser response when a tag with a URL attribute is supplied with an non-existent files in existing relative filepaths.
-& Html fragment: \texttt{``<img src=../image.jpg><img src=directory2/image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html", ``directory/directory2/"]}. Current file: \texttt{``directory/current.html"}
+& Html fragment: \texttt{``<img src=../image.jpg><img src=directory2/ image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html", ``directory/directory2/"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should contain two errors indicating invalid file paths, associated with the src attributes of the img tags.
 & \cellcolor{lightgreen} Pass \\
 \hline
 13
 & Testing the parser response when a tag with a URL attribute is supplied with an valid absolute file path.
-& Html fragment: \texttt{``<img src=/image.jpg><img src=/directory/directory2/image2.jpg>"}. File list: \texttt{[``directory/", ``/image.jpg", ``directory/current.html", ``directory/directory2/", ``directory/directory2/image2.jpg"]}. Current file: \texttt{``directory/current.html"}.
+& Html fragment: \texttt{``<img src=/image.jpg><img src=/directory/directory2/ image2.jpg>"}. File list: \texttt{[``directory/", ``/image.jpg", ``directory/current.html", ``directory/directory2/", ``directory/directory2/ image2.jpg"]}. Current file: \texttt{``directory/current.html"}.
 & The parser response should NOT contain an error indicating an invalid file path.
 & \cellcolor{lightgreen} Pass \\
 \hline
 14
 & Testing the parser response when a tag with a URL attribute is supplied with an non-existent absolute file path.
-& Html fragment: \texttt{``<img src=/directory3/image.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}
+& Html fragment: \texttt{``<img src=/directory3/ image.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}
 & The parser response should contain an error indicating invalid file paths, associated with the src attributes of the img tag.
 & \cellcolor{lightgreen} Pass \\
 \hline
 15
 & Testing the parser response when a tag with a URL attribute is supplied with non-existent files in existing relative file paths.
-& Html fragment: \texttt{``<img src=/directory/image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}.
+& Html fragment: \texttt{``<img src=/directory/ image2.jpg>"}. File list: \texttt{[``directory/", ``directory/current.html"]}. Current file: \texttt{``directory/current.html"}.
 & The parser response should contain one errors indicating invalid file paths, associated with the src attributes of the img tags.
 & \cellcolor{lightgreen} Pass \\
 \hline
@@ -204,7 +206,7 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 
 \newpage
 
-{\bf Website and Server Tests}
+\textbf{Website and Server Tests}
 
 \begin{center}
 \begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | X<{\strut}}
@@ -354,7 +356,7 @@ Our web application will eventually be utilised by two user groups - students of
 \item Masters students who have not already completed DECO7140.
 \end{itemize}
 
-However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who had not done DECO1400, as these users represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to understand the needs of users who had previously completed the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from ten users - five were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
+However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who had not done DECO1400, as these users represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to understand the needs of users who had previously completed the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part lead to us getting very few in this category. Ultimately, we got information from nine users - four were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
 
 We formulated six key scenarios for our users to undertake. Each scenario was performed on the live prototype at \underline{\url{http://underwaterfall.com}}. Storyboards for each of them can be found in the separately submitted Appendix B.
 
@@ -417,28 +419,111 @@ We focused on the metrics of time taken to complete each scenario, and, in keepi
 \item Tell the participant that the session is at an end. Thank the participant for their time.
 \end{enumerate}
 
-\subsection*{User Test Results}
-
-
-
-Summarise the results of your tests. 
-For each scenario-based test: 
-• tabulate your metric results against each task 
-• describe or present your users' feedback during / after the test 
+You can see the results of testing below, after the ``Implications of User Testing" section, as well as the Questionnaire we used for testing.
 
 \subsection*{Implications of User Testing}
 
-- in general, users had no trouble navigating the system
-- the result of the validation (i.e. highlighted tags) was not well understood by users
+In general, users had no trouble navigating the system. The average rating for how easy the system was to navigate was 4.78 / 5 on a Likert scale. We also clearly met our goal of the small number of clicks required for each operation. No user (from those who had click data registered) needed to click more than ten times. However, our system requires improvement in several key areas. On recommendation from the users, here is a key list of changes we plan to implement before the completion of this project:
 
-Close with a general discussion that: 
-• summarises the issues raised 
-• identifies areas for improvement and design suggestions 
-• outlines any redefinition of functional and user test plans for final 
-prototype 
-(We don’t care whether your prototype passes the tests. What is 
-important is that your prototype is sufficiently broad to validate your test 
-plan for the final product.)
+\begin{itemize}
+\item Invite the users to click on the error tags. Users often did not realise that they could click on the highlighted text to find out more about the error. We have already gone part way to completing this by changing the mouse from a text highlight symbol to a pointer finger commonly used with hyperlinks and buttons.
+\item Errors with non-HTML files. As part of our user testing, we asked users to upload a non-HTML file, a common action which could be performed by a user. Many were surprised that the file was actually parsed. We plan to check the mimetype of the uploaded file, and prevent the parser from being passed non-HTML code. The user will be presented with an error on the Upload File screen when they attempt to upload a non-HTML file. The good news is that for the most part, the website did not break, except when 
+\item Add multiple files via Add File button. Users noted that an attempt to add a second file via the Add File button after selecting the first file caused their previously selected file to be forgotten. This needs to be fixed. One user had trouble due to the similarity of the Validate and Add File buttons, and we may look into making these two differ. However, as we have already implemented selecting multiple files from the file explorer itself, we may simply regress to this option, and discussion with our client may be necessary in this regard.
+\item Blank file uploading. Users choosing no file in a file field of the form, along with some file fields being filled, were parsed as if they were files with no name. As such, they were sent to a set page showing bars with blank file names and error bars. These files should not be parsed, and if a user clicks Validate with no file selected, they should be redirected back to the user page and asked to upload a file.
+\end{itemize}
+
+We do not plan on redefining any test plans, but for future testing, we will likely work closer together to complete it. The differences between our methods of testing was obvious, and it lead us to getting less data than we could have gotten.
+
+All in all, we believe that our web application was well received, with many users who had experience with HTML5 stating they would find our tool beneficial to their studies. We receiving a rating 4.6 / 5 on the Likert scale for ``How likely would you use this tool to assist you in your study?" among those students who had previous experience with HTML5. Although the tool still requires a lot of work to reach completion, it is well on the way to being a fantastic tool for users to evaluate their HTML5.
+
+\newgeometry{margin=1cm}
+\begin{landscape}
+\pagestyle{empty}
+\subsection*{User Test Results}
+
+\textbf{Metric Results}
+
+\begin{center}
+\begin{longtabu} to 10in {l|l|X<{\strut}|X<{\strut}|X<{\strut}|X<{\strut}|X<{\strut}}
+~& Get Informed & Direct Input & Upload a File  & Fixing a File& Upload Zip  & Upload Non-HTML File  \\ \hline\hline
+Tester 1 - DECO1400  & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& ~& 49.03& 39.9   & 32.7 & 13.3& 6.03  \\ \hline
+Clicks   & ~& ~& ~  & ~& ~   & ~ \\ \hline
+Reaction & ~& Confused about the highlighting word, unsure it is clickable & Feel confused when add file buton cancel previous upload entry & Learn the error quickly, getting used to the system presentation & Feeling comfortable & Feeling surprised when the result is as expected  \\ \hline\hline
+Tester 2 - DECO7140  & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& ~& 56   & 22.3   & 27   & 11.2& 6.5   \\ \hline
+Clicks   & ~& ~& ~  & ~& ~   & ~ \\ \hline
+Reaction & ~& Unsure about what the error bar representing & Frustrated as keep mispressing add file instead of validate due to same colour button  & Learn the error quickly  & Feeling comfortable & Feeling surprised when the result is as expected  \\ \hline\hline
+Tester 3 - DECO7140  & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& ~& 43.5 & 19.2   & 23.3 & 9.9 & 6.9   \\ \hline
+Clicks   & ~& ~& ~  & ~& ~   & ~ \\ \hline
+Reaction & ~& Feeling unimpressed as the error is not validated correctly  & Feeling satisfied with the simple way to upload file   & Learn the error quickly and fixed it & Feeling comfortable & Feeling surprised when the result is as expected  \\ \hline\hline
+Tester 4 - DECO7140  & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& ~& 51.2 & 23.1   & 31.78& 11.67   & 8.3   \\ \hline
+Clicks   & ~& ~& ~  & ~& ~   & ~ \\ \hline
+Reaction & ~& Feeling that the presentation of errors is good  & Frustrating when trying to upload multiple file, the add file button cancel previous entry & Learn the error quickly, feeling good& Feeling comfortable & Feeling surprised when the result is as expected  \\ \hline\hline
+Tester 5 - DECO7140  & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& ~& 48.12& 17 & 20.1 & 10.8& 5.87  \\ \hline
+Clicks   & ~& ~& ~  & ~& ~   & ~ \\ \hline
+Reaction & ~& Unsure about the highlighting words are clickable& Feeling good as it is easy to upload single file   & Learn the error quickly  & Feeling comfortable & Feeling surprised when the result is as expected  \\ \hline\hline
+\newpage
+Tester 6 - Undergraduate & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& 7& 11   & 24.8   & 10   & 8   & N/A   \\ \hline
+Clicks:  & 1& 2& 6  & 5& 4   & 5 \\ \hline
+Reaction & ~& Didn't realise you could click on errors & ~  & Multiple files added but no files given - still shows the bars   & ~   & Powerpoint file uploaded - ``max\_allowed\_packets" error given \\ \hline\hline
+Tester 7 - Undergraduate & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& 2& 45   & 29 & 20   & 18  & 20 \\ \hline
+Clicks:  & 1& 5& 5  & 3& 5   & 5 \\ \hline
+Reaction & ~& ~& ~  & ~& ~   & Note, inf file still was parsed.  \\ \hline\hline
+Tester 8 - Undergraduate & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& 2& 41   & 14.8   & 63   & 22  & 13\\
+Clicks:  & 1& 3& 6  & 8& 7   & 5 \\ \hline
+Reaction & ~& ~& ~  & Backtracked to copy files, didn't get to put in entire tag   & ~   & ~ \\ \hline\hline
+Tester 9 - Undergraduate & ~& ~& ~  & ~& ~   & ~ \\ \hline\hline
+Time taken (secs)& 2& 60   & 28 & 211  & 9   & 15\\ \hline
+Clicks:  & 1& 5& 6  & 9& 4   & 3 \\ \hline
+Reaction & ~& ~& Clicked add file accidentally  & Not intuitive to click highlighted text  & ~   & ~ \\
+\end{longtabu}
+\end{center}
+
+\newpage
+
+\textbf{Questionnaire}
+
+\begin{center}
+\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | l | l | l | l | l | l | l | X[3]<{\strut}}
+Tester & Q1 & Q2 & Q3 & Q4 & Q5 & Q6 & Q7 & Q8 & Q9 & Q10 \\
+\hline
+\hline
+Tester 1 & Yes (DECO1400, Programming) & Yes (Java, Javascript, PHP, Python) & 4  & 5  & 4  & 3  & 5  & No  & Yes & If you upload a non-zip file to the upload zip no error message is shown. Selecting file then clicking add file clears previous additions. Upload invalid file to upload file (specifically provided zip) shows the file. Adding \texttt{``<!DOCTYPE html>."} (note full stop) causes errors to appear (raw output). Clicking add file then only uploading 1 file takes you to collections screen instead of the single file screen. Leaving uploads blank causes blank error bars to appear. \\
+\hline
+Tester 2 & Yes (DECO7140) & Yes (Python, Java, Actionscript)& 3  & 2  & 4  & 5  & 4  & No  & Yes & ~ \\
+\hline
+Tester 3 & Yes (DECO7140) & No  & 4  & 4  & 4  & 4  & 4  & Yes & Yes & ~ \\
+\hline
+Tester 4 & Yes (B InfTech)& Yes (Java, PHP, C$\sharp$, HTML5, CSS, Javascript, MYSQL, etc) & 5  & 4  & 4  & 3  & 5  & No  & No  & Confused about the ``upload" buttons. Color theme is nice. Single file -\textgreater upload file, multiple files -\textgreater zip it and upload. Highlight the code in the correction section will be more user friendly (Upload File). General instruction on the UI can be added. Maybe do more market research about existing validation tools. Line mumber is good to be placed in direct input. \\
+\hline
+Tester 5 & Yes (DECO7140) & Yes (Actionscript, Python)  & 3  & 5  & 4  & 5  & 5  & No  & No  & Simple \& clean layout, I would like if I could copy the text and paste the text again to modify it. \\
+\hline
+Tester 6 & No & Yes (Python)& 2  & 4  & 4  & 2  & 5  & Yes & Yes & ~ \\
+\hline
+Tester 7 & No & Yes (Python, Java, Matlab)  & 2  & 4  & 4  & 3  & 5  & Yes & No & No way to gauge the effects of the error based on the error message. Didn't initially realise you can click on highlighted text to see error notes nor which colours associated to errors (thought colour was gauging error intensity.) \\
+\hline
+Tester 8 & No & Yes (Python, Matlab)& 3  & 5  & 4  & 4  & 5  & Yes & No  & All good :) \\
+\hline
+Tester 9 & No (though did make website in primary school) & Yes (Python, Matlab)& 1  & 4  & 4  & 5  & 5  & Yes & Yes & It was fun. \\
+\end{longtabu}
+\end{center}
+\end{landscape}
+\restoregeometry
+\pagestyle{plain}
+
+\subsection*{User Test Document}
+\begin{center}
+$\underline{\hspace{5in}}$
+\end{center}
+
+\input{user_test_guide.tex}
 
 \newpage
 
