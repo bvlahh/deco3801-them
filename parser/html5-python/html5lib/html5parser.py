@@ -205,11 +205,12 @@ class HTMLParser(object):
             self.remainingTokens.pop(0)
 
             # DECO3801 - Check for deprecated tags.
-            if new_token is not None and new_token["name"] in deprecatedTags:
-                if new_token["name"] in ["frame", "frameset", "noframes"]:
-                    self.parseError("deprecated-frame-element", {"name": new_token["name"]})
-                else:
-                    self.parseError("deprecated-tag", {"name": new_token["name"]})
+            if new_token is not None and 'name' in new_token:
+                if new_token["name"] in deprecatedTags:
+                    if new_token["name"] in ["frame", "frameset", "noframes"]:
+                        self.parseError("deprecated-frame-element", {"name": new_token["name"]})
+                    else:
+                        self.parseError("deprecated-tag", {"name": new_token["name"]})
 
             # DECO3801 - File name attribute checking for zip file uploads.
             if self.files is not None and token is not None and token["name"] in ['img', 'a', 'link', 'script', 'object', 'applet', 'input', 'form']:
