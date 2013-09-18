@@ -1241,7 +1241,7 @@ def getPhases(debug):
                 (("option", "optgroup"), self.startTagOpt),
                 (("math"), self.startTagMath),
                 (("svg"), self.startTagSvg),
-                (("caption", "col", "colgroup", "frame",
+                (("caption", "col", "colgroup",
                   "tbody", "td", "tfoot", "th", "thead",
                   "tr"), self.startTagMisplaced),
                 # DECO3801 - Error check for head start tags found within the main
