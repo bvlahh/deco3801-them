@@ -45,6 +45,9 @@ class Errors
         36 => "There is a missing space after the doctype declaration. Correct form: <!DOCTYPE html>.",
         37 => "No valid doctype was found. HTML files should start with <!DOCTYPE html>.",
         38 => "The document is empty.",
+        39 => "The specified URL attribute doesn't match up with any of the filenames of the files contained within the given zip file.",
+        40 => "This tag is deprecated under the HTML 5 specification. It should be removed or replaced with an alternative tag.",
+        41 => "Frame elements are obsolete under the HTML 5 specification. They cause accessibility and usability issues."
     );
     
     /**

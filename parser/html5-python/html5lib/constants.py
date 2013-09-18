@@ -15,6 +15,24 @@ singularTags = [
     "footer",
 ]
 
+# DECO3801 - List of deprecated tags based on the list found at:
+# http://www.w3.org/TR/html5-diff/#obsolete-elements
+deprecatedTags = [
+    "acronym",
+    "applet",
+    "basefont",
+    "big",
+    "center",
+    "dir",
+    "font",
+    "frame",
+    "frameset",
+    "isindex",
+    "noframes",
+    "strike",
+    "tt",
+]
+
 # DECO3801 - A dictionary containing a mapping of html5lib error codes
 # to the error codes to be used for the front end section of THEM.
 errorCodes = {
@@ -56,7 +74,9 @@ errorCodes = {
     "need-space-after-doctype": 36,
     "expected-doctype-but-got-end-tag": 37,
     "expected-doctype-but-got-eof": 38,
-	"invalid-url-attrib": 39
+	"invalid-url-attrib": 39,
+    "deprecated-tag": 40,
+    "deprecated-frame-element": 41,
 }
 
 E = {
