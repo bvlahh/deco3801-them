@@ -22,6 +22,7 @@ from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 
 # DECO3801 - Imports
 from .constants import singularTags, errorCodes, deprecatedTags
+from .constants import formElements, formInputType
 
 def parse(doc, treebuilder="etree", encoding=None,
           namespaceHTMLElements=True):
@@ -82,6 +83,10 @@ class HTMLParser(object):
         self.singular = []
         self.singularEndTags = []
         self.remainingTokens = []
+
+        # DECO3801 - List of 'for' attributes for label tags associated
+        # with form input elements.
+        self.forLabels = []
 
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
@@ -221,6 +226,10 @@ class HTMLParser(object):
                 currentNodeNamespace = currentNode.namespace if currentNode else None
                 currentNodeName = currentNode.name if currentNode else None
 
+                if "name" in new_token:
+                    if new_token["name"] in formElements:
+                        self.checkFormElement(new_token)
+
                 type = new_token["type"]
 
                 if type == ParseErrorToken:
@@ -326,6 +335,58 @@ class HTMLParser(object):
 
             if abUrl not in self.files:
                 self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+
+    # DECO3801 - Checks form elements for proper formatting and that they
+    # are contained within a form element.
+    def checkFormElement(self, token):
+        
+        # DECO3801 - Check that form elements are contained within enclosing
+        # form tags.
+        openFormList = []
+
+        if self.tree.openElements:
+            for currentElement in self.tree.openElements:
+                if currentElement.name == "form":
+                    openFormList.append(currentElement)
+            if not openFormList:
+                self.parseError("form-element-not-in-form", {"name": token["name"]})
+        else:
+            self.parseError("form-element-not-in-form", {"name": token["name"]})
+
+        # DECO3801 - Check that input elements contain valid value, 
+        # name and type attributes.
+        if token["type"] == tokenTypes["StartTag"] and token["name"] == "input":
+            if not "type" in token["data"]:
+                self.parseError("input-element-missing-type-attribute", {"name": token["name"]})
+                
+                if not "value" in token["data"]:
+                    self.parseError("input-element-missing-value-attribute", {"name": token["name"]})
+            else:
+                
+                if not "value" in token["data"] and not token["data"]["type"] == "file":
+                    self.parseError("input-element-missing-value-attribute", {"name": token["name"]})
+                elif "value" in token["data"] and token["data"]["type"] == "file":
+                    self.parseError("illegal-file-input-element-value-attribute", {"name": token["name"]})
+
+                if token["data"]["type"] not in formInputType:
+                    self.parseError("invalid-input-element-type-attribute", {"attr": token["data"]["type"]})
+
+            if not "name" in token["data"]:
+                self.parseError("input-element-missing-name-attribute", {"name": token["name"]})
+
+            # DECO3801 - Check that input elements have an associated label tag.
+            if "id" in token["data"]:
+                if not token["data"]["id"] in self.forLabels and not self.tree.openElements[-1].name == "label":
+                    self.parseError("input-element-missing-label", {"name": token["name"]})
+            else:
+                if not self.tree.openElements[-1].name == "label":
+                    self.parseError("input-element-missing-label", {"name": token["name"]})
+
+        # DECO3801 - Maintains a list of 'for' attributes which
+        # are used to tie label tags to matching input tag IDs.
+        if token["type"] == tokenTypes["StartTag"] and token["name"] == "label":
+            if "for" in token["data"]:
+                self.forLabels.append(token["data"]["for"])
 
     def normalizedTokens(self):
         for token in self.tokenizer:

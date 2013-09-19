@@ -47,7 +47,13 @@ class Errors
         38 => "The document is empty.",
         39 => "The specified URL attribute doesn't match up with any of the filenames of the files contained within the given zip file.",
         40 => "This tag is deprecated under the HTML 5 specification. It should be removed or replaced with an alternative tag.",
-        41 => "Frame elements are obsolete under the HTML 5 specification. They cause accessibility and usability issues."
+        41 => "Frame elements are obsolete under the HTML 5 specification. They cause accessibility and usability issues.",
+        42 => "A form element was found outside of required enclosing form tags.",
+        43 => "An input element is missing a required type attribute.",
+        44 => "An input element is missing a required value attribute.",
+        45 => "An input element is missing a required name attribute.",
+        46 => "Input elements with a type 'file' cannot have a value attribute as it is a potential security risk.",
+        47 => "An input element is missing an associated label tag. The input element must either have a label with a 'for' attribute matching the id of this input element or must be enclosed in label tags."
     );
     
     /**

@@ -33,6 +33,44 @@ deprecatedTags = [
     "tt",
 ]
 
+# DECO3801 - List of form elements.
+formElements = [
+    "datalist",
+    "fieldset",
+    "input",
+    "label",
+    "output",
+]
+
+
+# DECO3801 - List of allowed values for the type attribute
+# associated with the input form element.
+formInputType = [
+    "button",
+    "checkbox",
+    "color",
+    "date",
+    "datetime",
+    "datetime-local",
+    "email",
+    "file",
+    "hidden",
+    "image",
+    "month",
+    "number",
+    "password",
+    "radio",
+    "range",
+    "reset",
+    "search",
+    "submit",
+    "tel",
+    "text",
+    "time",
+    "url",
+    "week",
+]
+
 # DECO3801 - A dictionary containing a mapping of html5lib error codes
 # to the error codes to be used for the front end section of THEM.
 errorCodes = {
@@ -77,6 +115,12 @@ errorCodes = {
 	"invalid-url-attrib": 39,
     "deprecated-tag": 40,
     "deprecated-frame-element": 41,
+    "form-element-not-in-form": 42,
+    "input-element-missing-type-attribute": 43,
+    "input-element-missing-value-attribute": 44,
+    "input-element-missing-name-attribute": 45,
+    "illegal-file-input-element-value-attribute": 46,
+    "input-element-missing-label": 47,
 }
 
 E = {
