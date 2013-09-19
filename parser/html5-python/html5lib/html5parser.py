@@ -88,6 +88,10 @@ class HTMLParser(object):
         # with form input elements.
         self.forLabels = []
 
+        # DECO3801 - Dictionary of tag ID's used to check for 
+        # multiple tags using the same ID value.
+        self.idDict = {}
+
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
 
@@ -209,13 +213,26 @@ class HTMLParser(object):
             # list of tokens which have yet to be processed.
             self.remainingTokens.pop(0)
 
-            # DECO3801 - Check for deprecated tags.
+            
             if new_token is not None and 'name' in new_token:
+                # DECO3801 - Check for deprecated tags.
                 if new_token["name"] in deprecatedTags:
                     if new_token["name"] in ["frame", "frameset", "noframes"]:
                         self.parseError("deprecated-frame-element", {"name": new_token["name"]})
                     else:
                         self.parseError("deprecated-tag", {"name": new_token["name"]})
+
+                # DECO3801 - Updates the dictionary of ID's and tracks duplicate
+                # entries. Reports duplicate instances of the same ID being used.
+                if new_token["type"] == StartTagToken and "id" in new_token["data"]:
+                    if not new_token["data"]["id"] in self.idDict:
+                        self.idDict[new_token["data"]["id"]] = {"original": new_token, "duplicates": []}
+                    else:
+                        self.idDict[new_token["data"]["id"]]["duplicates"].append(new_token)
+                        # DECO3801 TODO: If we implement tag positions within the token information
+                        # we can update the error checking accordingly.
+                        self.parseError("duplicate-id-attribute", 
+                            {"name": new_token["name"], "original": self.idDict[new_token["data"]["id"]]["original"]["name"]})
 
             # DECO3801 - File name attribute checking for zip file uploads.
             if self.files is not None and token is not None and token["name"] in ['img', 'a', 'link', 'script', 'object', 'applet', 'input', 'form']:

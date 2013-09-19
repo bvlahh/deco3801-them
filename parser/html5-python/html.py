@@ -5,7 +5,7 @@ from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-blah = """<html><head></head><body><form><label></label><input id="test" value="3" type="image" name="test"></input></form></body></html>"""
+blah = """<html><head></head><body><form><label id="test"></label><input id="test" value="3" type="image" name="test"></input></form></body></html>"""
 
 fragment = blah.decode("utf-8")
 
