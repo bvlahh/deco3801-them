@@ -322,6 +322,14 @@ class HTMLParser(object):
         if "body" not in self.singularEndTags:
             self.parseError("body-end-tag-missing")
 
+        # DECO3801 - Check that the document contains a valid
+        # footer section.
+        if "footer" not in self.singular:
+            self.parseError("footer-start-tag-missing")
+
+        if "footer" not in self.singularEndTags:
+            self.parseError("footer-end-tag-missing")
+
         if not self.hasTitle:
             self.parseError("title-element-missing-from-head")
  
@@ -1484,6 +1492,9 @@ def getPhases(debug):
                 self.parser.parseError("multiple-instance-singular-tag", 
                     {"name": token["name"]})
             else:
+                if not self.parser.tree.openElements[-1].name == "body":
+                    self.parser.parseError("missing-end-tag-before-footer", {"name": self.parser.tree.openElements[-1].name})
+
                 self.tree.insertElement(token)
 
         def startTagPreListing(self, token):
@@ -1831,20 +1842,26 @@ def getPhases(debug):
         # DECO3801 - Handler method to check for excessive instances of
         # footer end tags.
         def endTagFooter(self, token):
+            hasClosingFooter = False
             self.parser.singularEndTags.append(token["name"])
-            if self.parser.singularEndTags.count(token["name"]) > 1:
-                self.parser.parseError("incorrect-placement-singular-end-tag", 
-                    {"name": token["name"]})
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "footer" and remaining.get('type') == tokenTypes["EndTag"]:
+                    hasClosingFooter = True
 
-            # DECO3801 TODO: Might need additional error reporting during this
-            # segment to account for removed tokens.inScope = self.tree.elementInScope(token["name"])
-            inScope = self.tree.elementInScope(token["name"])
-            if inScope:
-                self.tree.generateImpliedEndTags()
-            if self.tree.openElements[-1].name != token["name"]:
-                node = self.tree.openElements.pop()
-                while node.name != token["name"]:
-                    node = self.tree.openElements.pop()
+            if hasClosingFooter:
+                self.parser.parseError("incorrect-placement-singular-end-tag",
+                                   {"name": token["name"]})
+            else:
+                inScope = self.tree.elementInScope(token["name"])
+                if inScope:
+                    self.tree.generateImpliedEndTags()
+                    if self.tree.openElements[-1].name != token["name"]:
+                        node = self.tree.openElements.pop()
+                        while node.name != token["name"]:
+                            # DECO3801 - Report missing closing tags for any remaining open
+                            # tags in the footer section.
+                            self.parser.parseError("missing-closing-tags-in-footer", {"name": node.name})
+                            node = self.tree.openElements.pop()
 
         def endTagForm(self, token):
             node = self.tree.formPointer

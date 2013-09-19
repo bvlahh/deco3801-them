@@ -126,6 +126,8 @@ errorCodes = {
     "title-element-missing-from-head": 50,
     "img-element-missing-alt-attribute": 51,
     "img-alt-attribute-empty": 52,
+    "missing-end-tag-before-footer": 53,
+    "missing-closing-tags-in-footer": 54,
 }
 
 E = {

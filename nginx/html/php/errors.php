@@ -59,6 +59,8 @@ class Errors
         50 => "No title element was found in the head section. A HTML document requires a title so that it can be diplayed in the browser's title bar or tag title.",
         51 => "An img starting tag is missing a required 'alt' attribute. The 'alt' attribute is used by screen readers to provide a description of the image to the blind. It is an accessbility requirement.",
         52 => "The 'alt' attribute for this img start tag contains a blank string. Please enter a valid description of the image associated with this image tag.",
+        53 => "Found an open start tag before the footer section. Either a closing tag has been placed after the opening footer tag or it is missing.",
+        54 => "Found an open start tag within the footer section. Either a closing tag has been placed after the closing footer tag or it is missing.",
     );
     
     /**
