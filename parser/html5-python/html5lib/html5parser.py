@@ -238,6 +238,16 @@ class HTMLParser(object):
                         self.parseError("duplicate-id-attribute", 
                             {"name": new_token["name"], "original": self.idDict[new_token["data"]["id"]]["original"]["name"]})
 
+                # DECO3801 - Check img tags have a valid alt attribute.
+                if new_token["type"] == StartTagToken and new_token["name"] == "img":
+                    if not "alt" in new_token["data"]:
+                        self.parseError("img-element-missing-alt-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["alt"] == "":
+                            # DECO3801 TODO - Update with proper error check once attribute positions
+                            # are added to tokens.
+                            self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"]})
+
             # DECO3801 - File name attribute checking for zip file uploads.
             if self.files is not None and token is not None and token["name"] in ['img', 'a', 'link', 'script', 'object', 'applet', 'input', 'form']:
                 self.checkURL(new_token)

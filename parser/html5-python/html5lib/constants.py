@@ -124,6 +124,8 @@ errorCodes = {
     "duplicate-id-attribute": 48,
     "duplicate-title-in-head": 49,
     "title-element-missing-from-head": 50,
+    "img-element-missing-alt-attribute": 51,
+    "img-alt-attribute-empty": 52,
 }
 
 E = {

@@ -57,6 +57,8 @@ class Errors
         48 => "A previous starting tag uses this ID value. Please use a different ID value for this tag.",
         49 => "A duplicate title element was found in the head section. Only one title element is required.",
         50 => "No title element was found in the head section. A HTML document requires a title so that it can be diplayed in the browser's title bar or tag title.",
+        51 => "An img starting tag is missing a required 'alt' attribute. The 'alt' attribute is used by screen readers to provide a description of the image to the blind. It is an accessbility requirement.",
+        52 => "The 'alt' attribute for this img start tag contains a blank string. Please enter a valid description of the image associated with this image tag.",
     );
     
     /**
