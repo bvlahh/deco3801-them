@@ -478,6 +478,11 @@ class HTMLParser(object):
         if self.strict:
             raise ParseError
 
+    # DECO3801 - Raises a parse error using the position stored within the
+    # given token
+    def parseErrorWithPos(self, token, errorcode="XXX-undefined-error", datavars={}):
+        self.errors.append(((token["startPos"], token["endPos"]), errorcode, datavars))
+
     def normalizeToken(self, token):
         """ HTML5 specific normalizations to the token stream """
 
