@@ -92,6 +92,10 @@ class HTMLParser(object):
         # multiple tags using the same ID value.
         self.idDict = {}
 
+        # DECO3801 - Boolean flag used to check whether or not a HTML document
+        # contains a title within the head section or not.
+        self.hasTitle = False
+
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
 
@@ -307,6 +311,9 @@ class HTMLParser(object):
 
         if "body" not in self.singularEndTags:
             self.parseError("body-end-tag-missing")
+
+        if not self.hasTitle:
+            self.parseError("title-element-missing-from-head")
  
         # When the loop finishes it's EOF
         reprocess = True
@@ -1059,6 +1066,10 @@ def getPhases(debug):
                     self.parser.tokenizer.stream.changeEncoding(codec)
 
         def startTagTitle(self, token):
+            # DECO3801 - Check for multiple title tags appearing in the head section.
+            if self.parser.hasTitle:
+                self.parser.parseError("duplicate-title-in-head", {"name": token["name"]})
+            self.parser.hasTitle = True
             self.parser.parseRCDataRawtext(token, "RCDATA")
 
         def startTagNoScriptNoFramesStyle(self, token):

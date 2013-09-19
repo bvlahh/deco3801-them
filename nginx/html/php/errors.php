@@ -54,7 +54,9 @@ class Errors
         45 => "An input element is missing a required 'name' attribute.",
         46 => "Input elements with a type 'file' cannot have a value attribute as it is a potential security risk.",
         47 => "An input element is missing an associated label tag. The input element must either have a label with a 'for' attribute matching the id of this input element or must be enclosed in label tags.",
-        48 => "A previous starting tag uses this ID value. Please use a different ID value for this tag."
+        48 => "A previous starting tag uses this ID value. Please use a different ID value for this tag.",
+        49 => "A duplicate title element was found in the head section. Only one title element is required.",
+        50 => "No title element was found in the head section. A HTML document requires a title so that it can be diplayed in the browser's title bar or tag title.",
     );
     
     /**

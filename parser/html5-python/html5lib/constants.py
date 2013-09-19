@@ -122,6 +122,8 @@ errorCodes = {
     "illegal-file-input-element-value-attribute": 46,
     "input-element-missing-label": 47,
     "duplicate-id-attribute": 48,
+    "duplicate-title-in-head": 49,
+    "title-element-missing-from-head": 50,
 }
 
 E = {
