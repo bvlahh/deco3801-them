@@ -256,15 +256,16 @@ a:hover {
 }
 
 .file {
-	
-	border: 1px solid #DDDDDD;
+    
+    border: 1px solid #DDDDDD;
+    background-color: #FFFFFF;
     
     height: 500px;
     overflow-y: scroll;
     
     width: 500px;
     overflow-x: scroll;
-	
+    
 }
 
 .file_lines {
@@ -282,6 +283,12 @@ a:hover {
 	float: left;
     
     max-width: 0px;
+    
+}
+
+.file_body a:hover {
+    
+    color: inherit;
     
 }
 
@@ -304,5 +311,17 @@ a:hover {
     width: 490px;
     min-height: 490px;
     background-color: #ffffff;
+    
+}
+
+.top_infobox {
+    
+    border: 1px solid #DDDDDD;
+    padding: 5px;
+    
+    width: 1000px;
+    min-height: 75px;
+    background-color: #ffffff;
+    overflow: auto;
     
 }

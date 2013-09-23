@@ -14,6 +14,9 @@ $set = $_GET["set"];
 
 $set = get_set($set);
 
+if ( count($set) < 2 )
+    redirect("/show_file?file=" . $set[0]["id"]);
+
 draw_header("THEM prototype - Uploaded Files");
 
 foreach( $set as $file ) {

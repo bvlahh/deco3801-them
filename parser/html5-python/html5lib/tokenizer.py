@@ -50,6 +50,8 @@ class HTMLTokenizer(object):
         self.state = self.dataState
         self.escape = False
 
+        self.startPos = 0
+
         # The current token being created
         self.currentToken = None
         super(HTMLTokenizer, self).__init__()
@@ -233,6 +235,9 @@ class HTMLTokenizer(object):
         emitted.
         """
         token = self.currentToken
+        # DECO3801 - Appends the start and end positions to the current token.
+        token["startPos"] = self.startPos
+        token["endPos"] = self.stream.chunkOffset - 1
         # Add token to the queue to be yielded
         if (token["type"] in tagTokenTypes):
             if self.lowercaseElementName:
@@ -253,6 +258,9 @@ class HTMLTokenizer(object):
         if data == "&":
             self.state = self.entityDataState
         elif data == "<":
+            # DECO3801 - Update start position for the current tag
+            # based on the position of the starting '<' character.
+            self.startPos = self.stream.chunkOffset - 1
             self.state = self.tagOpenState
         elif data == "\u0000":
             self.tokenQueue.append({"type": tokenTypes["ParseError"],
@@ -852,6 +860,7 @@ class HTMLTokenizer(object):
         return True
 
     def beforeAttributeNameState(self):
+        print "Attr1: " + str(self.stream.chunkOffset - 1 ) + "\n"
         data = self.stream.char()
         if data in spaceCharacters:
             self.stream.charsUntil(spaceCharacters, True)
@@ -919,6 +928,9 @@ class HTMLTokenizer(object):
             self.currentToken["data"][-1][0] += data
             leavingThisState = False
 
+        print "Attr2: " + str(self.stream.chunkOffset) + "\n"
+        print "Attr: " + str(self.currentToken["data"]) + "\n"
+
         if leavingThisState:
             # Attributes are not dropped at this stage. That happens when the
             # start tag token is emitted so values can still be safely appended
@@ -932,6 +944,7 @@ class HTMLTokenizer(object):
                                             "duplicate-attribute"})
                     break
             # XXX Fix for above XXX
+
             if emitToken:
                 self.emitCurrentToken()
         return True

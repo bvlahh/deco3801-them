@@ -1,10 +1,15 @@
+#coding=utf-8
 import html5lib
 from html5lib import treewalkers
 from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-minidom_document = parser.parse('<html><html></html></html>')
+blah = """<html><head></head><body><img src="fake.jpg"><footer><big></big></footer></body></html>"""
+
+fragment = blah.decode("utf-8")
+
+minidom_document = parser.parse(fragment)
 # <html><html><body><body></body></body></html></html>
 # <html><html><head><head></head></head></html></html>
 # <html><html><footer><footer></footer></footer></html></html>
@@ -21,6 +26,12 @@ minidom_document = parser.parse('<html><html></html></html>')
 walker = treewalkers.getTreeWalker("etree")
 stream = walker(minidom_document)
 
+print '---------------------'
+
+print fragment
+
+print '---------------------'
+
 for error in parser.errors:
 	print error
 
@@ -28,8 +39,6 @@ print '---------------------'
 
 print parser.parseErrors()
 
-print '---------------------'
-print minidom_document
 print '---------------------'
 
 #for item in stream:

@@ -17,20 +17,34 @@ print <<<END
         
     }
     
-    function messagebox(number) {
+    function messagebox(data) {
         
+        var errors = JSON.parse(data);
         
+        var message = "";
+        
+        for ( var i=0; i<errors.length; i++ )
+            message += err_message(errors[i]) + "<br />";
+        
+        set_message(message);
+        
+    }
+    
+    function err_message(number) {
+    
 END;
 
 foreach ( Errors::$error_strings as $err_number => $err_message ) {
     
+    $escaped_message = htmlspecialchars($err_message);
+    
     print <<<END
         
         if (number == $err_number)
-            set_message("$err_message");
+            return "$escaped_message";
         
 END;
-    
+
 }
 
 print <<<END

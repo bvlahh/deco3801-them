@@ -30,52 +30,159 @@ if (! $file)
 
 $filename = $file["filename"];
 $input = base64_decode($file["document"]);
-$parsed = json_decode($file["cached_parse"]);
+$parsed_errors = json_decode($file["cached_parse"]);
 
 // remove the carrage return before inserting show error tags, to keep
 // the char indices correct
 $input = str_replace("\r", "", $input);
 
-// the issue that will crop up with this is indices changing when error
-// spans are inserted and content html escaped
+// chop it into chunks
+// structure of each chunk:
+// text (string), original start (int), original end (int), errors (list)
 
-$escaped_document = "";
-$current_index = 0;
+$general_document_errors = array();
+$in_document_errors = array();
 
-$error_lines = array();
-
-/**
-* Process each of the returned errors.
-* The array of errors contains arrays of the form [error_number, starting_position, end_position]
-* where starting_position and end_position represent the start and end of the tag for which the
-* error applies to.
-*/
-foreach( $parsed as $parse ) {
+foreach ( $parsed_errors as $parsed_error ) {
     
-    $err_no = $parse[0];
-    $err_colour = Errors::errorColor($err_no);
-    $start_tag = $parse[1];
-    $end_tag = $parse[2] + 1; // substr takes in end-index exclusive
-    
-    $start_span = "<span style=\"background-color: $err_colour;\" onclick=\"messagebox($err_no);\">";
-    $end_span = "</span>";
-    
-    //$error_lines[] = array(substr_count(substr($input, 0, $start_tag), "\n"), $err_colour);
-    $error_lines[substr_count(substr($input, 0, $start_tag), "\n")] = $err_colour;
-    
-    /**
-    * Generates a formatted version of the original HTML document containing all errors 
-    * by inserting the spans representing the errors found in the document into the original
-    * string representation of the HTML document.
-    */
-    $escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, $start_tag - $current_index)) . 
-        $start_span . htmlspecialchars(substr($input, $start_tag, $end_tag - $start_tag)) . $end_span;  
-    
-    $current_index = $end_tag;
+    if ( $parsed_error[1] == -1 )
+        $general_document_errors[] = $parsed_error;
+    else
+        $in_document_errors[] = $parsed_error;
     
 }
 
-$escaped_document = $escaped_document . htmlspecialchars(substr($input, $current_index, strlen($input) - $current_index));
+$chunks = array();
+
+$chunks[] = array(
+    "text" => $input,
+    "start" => 0,
+    "end" => strlen($input),
+    "errors" => array()
+    );
+
+foreach ( $in_document_errors as $in_document_error ) {
+    
+    // split the chunk that contains the start of the new error
+    
+    $start_chunk = 0;
+    
+    // find the chunk to start split
+    for ($ci = 0; $ci<count($chunks); $ci++)
+        if ( ($in_document_error[1] >= $chunks[$ci]["start"]) && ($in_document_error[1] <= $chunks[$ci]["end"]) ) {
+            $start_chunk = $ci;
+            break;
+        }
+    
+    // shove everything along to make room for the split
+    for ($ci=count($chunks)-1; $ci > $start_chunk; $ci--)
+        $chunks[$ci+1] = $chunks[$ci];
+    
+    // $orig_start_chunk is the start chunk to split
+    $orig_start_chunk = $chunks[$start_chunk];
+    
+    // chunk index to split at
+    $start_split_index = $in_document_error[1] - $orig_start_chunk["start"];
+    
+    // chunk is untouched
+    // chunk + 1 is the part with the new error
+    
+    $chunks[$start_chunk] = array(
+        "text" => substr($orig_start_chunk["text"], 0, $start_split_index),
+        "start" => $orig_start_chunk["start"],
+        "end" => $orig_start_chunk["start"] + $start_split_index,
+        "errors" => $orig_start_chunk["errors"]
+    );
+    
+    $chunks[$start_chunk+1] = array(
+        "text" => substr($orig_start_chunk["text"], $start_split_index, strlen($orig_start_chunk["text"]) - $start_split_index),
+        "start" => $orig_start_chunk["start"] + $start_split_index,
+        "end" => $orig_start_chunk["end"],
+        "errors" => $orig_start_chunk["errors"]
+    );
+    
+    // split the chunk that contains the end of the new error
+    
+    $end_chunk = 0;
+    
+    // find the chunk to end split
+    for ($ci = 0; $ci<count($chunks); $ci++)
+        if ( ($in_document_error[2] >= $chunks[$ci]["start"]) && ($in_document_error[2] <= $chunks[$ci]["end"]) ) {
+            $end_chunk = $ci;
+            break;
+        }
+    
+    // shove everything along to make room for the split
+    for ($ci=count($chunks)-1; $ci > $end_chunk; $ci--)
+        $chunks[$ci+1] = $chunks[$ci];
+    
+    // $orig_end_chunk is the end chunk to split
+    $orig_end_chunk = $chunks[$end_chunk];
+    
+    // chunk index to split at
+    $end_split_index = $in_document_error[2] - $orig_end_chunk["start"];
+    
+    // end_chunk is the part with the new error
+    // end_chunk + 1 is untouched
+    
+    $chunks[$end_chunk] = array(
+        "text" => substr($orig_end_chunk["text"], 0, $end_split_index),
+        "start" => $orig_end_chunk["start"],
+        "end" => $orig_end_chunk["start"] + $end_split_index,
+        "errors" => $orig_end_chunk["errors"]
+    );
+    
+    $chunks[$end_chunk+1] = array(
+        "text" => substr($orig_end_chunk["text"], $end_split_index, strlen($orig_end_chunk["text"]) - $end_split_index),
+        "start" => $orig_end_chunk["start"] + $end_split_index,
+        "end" => $orig_end_chunk["end"],
+        "errors" => $orig_end_chunk["errors"]
+    );
+    
+    // mark all the chunks between the outer new chunks (exclusive) as having the new error
+    
+    for ( $error_chunk = $start_chunk + 1; $error_chunk <= $end_chunk; $error_chunk++ )
+        $chunks[$error_chunk]["errors"][] = $in_document_error[0];
+    
+}
+
+$top_info = "";
+
+foreach ( $general_document_errors as $general_document_error ) {
+    
+    $err_no = $general_document_error[0];
+    
+    $err_message_output = htmlspecialchars( Errors::errorString($err_no) );
+    
+    $top_info .= $err_message_output . "<br />";
+    
+}
+
+$error_lines = array();
+$escaped_document = "";
+
+foreach ( $chunks as $chunk ) {
+    
+    $start_span = "";
+    $end_span = "";
+    
+    if ( count($chunk["errors"]) != 0 ) {
+        
+        $err_no = min($chunk["errors"]);
+        $err_nos = htmlspecialchars(json_encode($chunk["errors"]));
+        $err_colour = Errors::errorColour($err_no);
+        
+        $start_span = "<a href=\"#\" style=\"background-color: $err_colour; text-decoration: none; border-left: 1px solid #fbfbfb; border: 1px solid #fbfbfb;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
+        $end_span = "</a>";
+        
+        // mark the line for line number highlighting
+        $error_lines[ $chunk["start"] > 0 ? substr_count($input, "\n", 0, $chunk["start"]) : 0] = $err_colour;
+        
+    }
+    
+    $escaped_document .= $start_span . htmlspecialchars($chunk["text"]) . $end_span;
+    
+}
 
 // Generates a line count of the original HTML document.
 $num_lines = substr_count($input, "\n");
@@ -84,22 +191,54 @@ $line_nos = "";
 
 // A string of the line count
 for ($l=1; $l<$num_lines+2; $l++) {
-    if (array_key_exists($l-1, $error_lines)) {
-        //$bgc = ${error_lines[$l]};
+    
+    if (array_key_exists($l-1, $error_lines))
         $line_nos .= "<span style=\"background-color: ${error_lines[$l-1]};\">$l</span>\n";
-    } else {
+    else
         $line_nos .= "$l\n";
-    }
+    
 }
+
+$set = $file["upload_set"];
+$count_files = count(get_set($set));
 
 draw_header("THEM prototype - $filename");
 
-if ( count($parsed) == 0 )
-    draw_error_bar(0, 0, 0, 0, 1, 500, 10);
-else
-    draw_error_bar(0, 1, 0, 0, 0, 500, 10);
+$upload_set = "";
+
+if ($count_files > 1)
+$upload_set = <<<END
+<a href="show_set?set=$set">
+Uploaded Files
+</a>
+END;
 
 print <<<END
+
+<div>
+
+<span style="font-size: 140%;">
+$filename
+</span>
+
+$upload_set
+
+</div>
+
+<div style="margin-bottom: 10px;">
+
+END;
+
+if ( count($parsed_errors) == 0 )
+    draw_error_bar(0, 0, 0, 0, 1, 1010, 10);
+else
+    draw_error_bar(0, 1, 0, 0, 0, 1010, 10);
+
+print <<<END
+
+</div>
+
+<div class="top_infobox" id="top_infobox">$top_info</div>
 
 <div class="file" style="float: left; margin-top: 10px">
     

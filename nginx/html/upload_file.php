@@ -15,7 +15,7 @@ print <<<END
         Upload HTML File
         <form action="do_upload_file" method="post" enctype="multipart/form-data" >
             <div id="files">
-                <input type="file" name="file0" class="filepicker" />
+                <input type="file" name="file[]" class="filepicker" multiple="multiple" />
             </div>
             <div>
                 <div style="float: left;">
@@ -33,12 +33,10 @@ print <<<END
     //<![CDATA[
         
         var fileDiv = document.getElementById("files");
-        var fileCount = 1;
         
         function addFileUpload() {
             
-            fileDiv.innerHTML += '<input type="file" name="file'+ fileCount + '" class="filepicker" />';
-            fileCount++;
+            fileDiv.innerHTML += '<input type="file" name="file[]" class="filepicker" multiple="multiple" />';
             
         }
         

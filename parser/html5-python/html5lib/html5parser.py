@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, unicode_literals
 from six import with_metaclass
 
+import os
 import types
 
 from . import inputstream
@@ -20,7 +21,8 @@ from .constants import htmlIntegrationPointElements, mathmlTextIntegrationPointE
 from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 
 # DECO3801 - Imports
-from .constants import singularTags, errorCodes
+from .constants import singularTags, errorCodes, deprecatedTags
+from .constants import formElements, formInputType
 
 def parse(doc, treebuilder="etree", encoding=None,
           namespaceHTMLElements=True):
@@ -82,11 +84,23 @@ class HTMLParser(object):
         self.singularEndTags = []
         self.remainingTokens = []
 
+        # DECO3801 - List of 'for' attributes for label tags associated
+        # with form input elements.
+        self.forLabels = []
+
+        # DECO3801 - Dictionary of tag ID's used to check for 
+        # multiple tags using the same ID value.
+        self.idDict = {}
+
+        # DECO3801 - Boolean flag used to check whether or not a HTML document
+        # contains a title within the head section or not.
+        self.hasTitle = False
+
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
 
     def _parse(self, stream, innerHTML=False, container="div",
-               encoding=None, parseMeta=True, useChardet=True, **kwargs):
+               encoding=None, parseMeta=True, useChardet=True, files=None, filename=None, **kwargs):
 
         self.innerHTMLMode = innerHTML
         self.container = container
@@ -103,6 +117,14 @@ class HTMLParser(object):
                                               parseMeta=parseMeta,
                                               useChardet=useChardet,
                                               parser=self, **kwargs)
+        # DECO3801 - List of files and directories
+        self.files = files
+        # DECO3801 - The full file name of the file currently being parsed
+        self.cwd = ""
+
+        if filename is not None:
+            self.cwd = filename.split(os.sep)[:-1]
+
         self.reset()
 
         while True:
@@ -158,7 +180,6 @@ class HTMLParser(object):
     def parseErrors(self):
         formattedErrors = []
         for error in self.errors:
-            print error
             if not (errorCodes.get(error[1]) == None):
                 formattedErrors.append([errorCodes.get(error[1]),
                     error[0][0], error[0][1], error[2]])
@@ -196,10 +217,50 @@ class HTMLParser(object):
             # list of tokens which have yet to be processed.
             self.remainingTokens.pop(0)
 
+            
+            if new_token is not None and 'name' in new_token:
+                # DECO3801 - Check for deprecated tags.
+                if new_token["name"] in deprecatedTags:
+                    if new_token["name"] in ["frame", "frameset", "noframes"]:
+                        self.parseError("deprecated-frame-element", {"name": new_token["name"]})
+                    else:
+                        self.parseError("deprecated-tag", {"name": new_token["name"]})
+
+                # DECO3801 - Updates the dictionary of ID's and tracks duplicate
+                # entries. Reports duplicate instances of the same ID being used.
+                if new_token["type"] == StartTagToken and "id" in new_token["data"]:
+                    if not new_token["data"]["id"] in self.idDict:
+                        self.idDict[new_token["data"]["id"]] = {"original": new_token, "duplicates": []}
+                    else:
+                        self.idDict[new_token["data"]["id"]]["duplicates"].append(new_token)
+                        # DECO3801 TODO: If we implement tag positions within the token information
+                        # we can update the error checking accordingly.
+                        self.parseError("duplicate-id-attribute", 
+                            {"name": new_token["name"], "original": self.idDict[new_token["data"]["id"]]["original"]["name"]})
+
+                # DECO3801 - Check img tags have a valid alt attribute.
+                if new_token["type"] == StartTagToken and new_token["name"] == "img":
+                    if not "alt" in new_token["data"]:
+                        self.parseError("img-element-missing-alt-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["alt"] == "":
+                            # DECO3801 TODO - Update with proper error check once attribute positions
+                            # are added to tokens.
+                            self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"]})
+
+            # DECO3801 - File name attribute checking for zip file uploads.
+            if self.files is not None and token is not None \
+                    and token["name"] in ['img', 'a', 'link', 'script', 'object', 'applet', 'input', 'form']:
+                self.checkURL(new_token)
+
             while new_token is not None:
                 currentNode = self.tree.openElements[-1] if self.tree.openElements else None
                 currentNodeNamespace = currentNode.namespace if currentNode else None
                 currentNodeName = currentNode.name if currentNode else None
+
+                if "name" in new_token:
+                    if new_token["name"] in formElements:
+                        self.checkFormElement(new_token)
 
                 type = new_token["type"]
 
@@ -221,7 +282,7 @@ class HTMLParser(object):
                         phase = self.phase
                     else:
                         phase = self.phases["inForeignContent"]
-
+                    
                     if type == CharactersToken:
                         new_token = phase.processCharacters(new_token)
                     elif type == SpaceCharactersToken:
@@ -240,10 +301,39 @@ class HTMLParser(object):
                 self.parseError("non-void-element-with-trailing-solidus",
                                 {"name": token["name"]})
         
-        ## DECO3801 Check for closing html tag
-        if "html" not in self.remainingTokens:
-            self.parseError("no-closing-html-tag", {"name": "html"});
+        # DECO3801 - Check for closing html tag
+        if "html" not in self.singularEndTags:
+           self.parseError("no-closing-html-tag");
 
+        if "html" not in self.singular:
+            self.parseError("no-starting-html-tag")
+
+        # DECO3801 - Check that a valid closing head tag exists in the document.
+        if "head" not in self.singular:
+            self.parseError("head-start-tag-missing")
+
+        if "head" not in self.singularEndTags:
+            self.parseError("head-end-tag-missing")
+
+        # DECO3801 - Check that the document contains a valid
+        # body section.
+        if "body" not in self.singular:
+            self.parseError("body-start-tag-missing")
+
+        if "body" not in self.singularEndTags:
+            self.parseError("body-end-tag-missing")
+
+        # DECO3801 - Check that the document contains a valid
+        # footer section.
+        if "footer" not in self.singular:
+            self.parseError("footer-start-tag-missing")
+
+        if "footer" not in self.singularEndTags:
+            self.parseError("footer-end-tag-missing")
+
+        if not self.hasTitle:
+            self.parseError("title-element-missing-from-head")
+ 
         # When the loop finishes it's EOF
         reprocess = True
         phases = []
@@ -253,7 +343,93 @@ class HTMLParser(object):
             if reprocess:
                 assert self.phase not in phases
 
+    # DECO3801 - Checks local URLs for validity. This function works for both absolute and relative
+    # local file paths. Checks all html5 tags for which the specification indicates a URL attribute,
+    # i.e. the 'src' attribute of an img tag, the 'href' attribute of an 'a' tag, or the 'data' attribute
+    # of an 'object' tag.
+    def checkURL(self, token):
+        attrURLMap = {'video':['src','poster'], 'img':['src'], 'a':['href'], 'link':['href'], 'script':['src'], 'object':['data'], 'embed':['src'], 'form':['action'], 'input':['formaction', 'src'], 'source':['src']}
 
+        
+        data = token.get("data")
+
+        for urlAttr in attrURLMap[token.get("name")]:
+            url = data.get(urlAttr)
+            if "http://" in url or "https://" in url: # We ignore Web urls
+                continue
+
+            if url.find("/") == 0: # the path was lead by a "/", meaning the path is absolute.
+                if url[1:] not in self.files: # slice the leading "/" as our directory structure removes this
+                    self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                continue
+
+            # split url into directories (and the final filename
+            url = url.split(os.sep)
+            
+            upDirs = url.count('..')
+            # If the '..' directory command is used
+            if upDirs > len(self.cwd):
+                self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                continue
+            elif upDirs is not 0:
+                abUrl = os.sep.join(self.cwd[:-upDirs] + url[upDirs:])
+            else:
+                abUrl = os.sep.join(self.cwd + url)
+
+            if abUrl not in self.files:
+                self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+
+    # DECO3801 - Checks form elements for proper formatting and that they
+    # are contained within a form element.
+    def checkFormElement(self, token):
+        
+        # DECO3801 - Check that form elements are contained within enclosing
+        # form tags.
+        openFormList = []
+
+        if self.tree.openElements:
+            for currentElement in self.tree.openElements:
+                if currentElement.name == "form":
+                    openFormList.append(currentElement)
+            if not openFormList:
+                self.parseError("form-element-not-in-form", {"name": token["name"]})
+        else:
+            self.parseError("form-element-not-in-form", {"name": token["name"]})
+
+        # DECO3801 - Check that input elements contain valid value, 
+        # name and type attributes.
+        if token["type"] == tokenTypes["StartTag"] and token["name"] == "input":
+            if not "type" in token["data"]:
+                self.parseError("input-element-missing-type-attribute", {"name": token["name"]})
+                
+                if not "value" in token["data"]:
+                    self.parseError("input-element-missing-value-attribute", {"name": token["name"]})
+            else:
+                
+                if not "value" in token["data"] and not token["data"]["type"] == "file":
+                    self.parseError("input-element-missing-value-attribute", {"name": token["name"]})
+                elif "value" in token["data"] and token["data"]["type"] == "file":
+                    self.parseError("illegal-file-input-element-value-attribute", {"name": token["name"]})
+
+                if token["data"]["type"] not in formInputType:
+                    self.parseError("invalid-input-element-type-attribute", {"attr": token["data"]["type"]})
+
+            if not "name" in token["data"]:
+                self.parseError("input-element-missing-name-attribute", {"name": token["name"]})
+
+            # DECO3801 - Check that input elements have an associated label tag.
+            if "id" in token["data"]:
+                if not token["data"]["id"] in self.forLabels and not self.tree.openElements[-1].name == "label":
+                    self.parseError("input-element-missing-label", {"name": token["name"]})
+            else:
+                if not self.tree.openElements[-1].name == "label":
+                    self.parseError("input-element-missing-label", {"name": token["name"]})
+
+        # DECO3801 - Maintains a list of 'for' attributes which
+        # are used to tie label tags to matching input tag IDs.
+        if token["type"] == tokenTypes["StartTag"] and token["name"] == "label":
+            if "for" in token["data"]:
+                self.forLabels.append(token["data"]["for"])
 
     def normalizedTokens(self):
         for token in self.tokenizer:
@@ -266,7 +442,7 @@ class HTMLParser(object):
         for token in self.tokenizerRemaining:
             self.remainingTokens.append(token)
 
-    def parse(self, stream, encoding=None, parseMeta=True, useChardet=True):
+    def parse(self, stream, encoding=None, parseMeta=True, useChardet=True, files=None, filename=None):
         """Parse a HTML document into a well-formed tree
 
         stream - a filelike object or string containing the HTML to be parsed
@@ -277,7 +453,7 @@ class HTMLParser(object):
         element)
         """
         self._parse(stream, innerHTML=False, encoding=encoding,
-                    parseMeta=parseMeta, useChardet=useChardet)
+                    parseMeta=parseMeta, useChardet=useChardet, files=files, filename=filename)
         return self.tree.getDocument()
 
     def parseFragment(self, stream, container="div", encoding=None,
@@ -302,6 +478,11 @@ class HTMLParser(object):
         self.errors.append((self.tokenizer.stream.position(), errorcode, datavars))
         if self.strict:
             raise ParseError
+
+    # DECO3801 - Raises a parse error using the position stored within the
+    # given token
+    def parseErrorWithPos(self, token, errorcode="XXX-undefined-error", datavars={}):
+        self.errors.append(((token["startPos"], token["endPos"]), errorcode, datavars))
 
     def normalizeToken(self, token):
         """ HTML5 specific normalizations to the token stream """
@@ -674,6 +855,21 @@ def getPhases(debug):
             return True
 
     class BeforeHtmlPhase(Phase):
+        # DECO3801 - Restructured the phase to comply with the 
+        # format used for other phases. Added start and end tag
+        # handler methods to detect invalid tags before the starting
+        # HTML tag.
+        def __init__(self, parser, tree):
+            Phase.__init__(self, parser, tree)
+
+            self.startTagHandler = utils.MethodDispatcher([
+                ("html", self.startTagHtml)
+            ])
+            self.startTagHandler.default = self.startTagOther
+
+            self.endTagHandler = utils.MethodDispatcher([])
+            self.endTagHandler.default = self.endTagOther
+        
         # helper methods
         def insertHtmlElement(self):
             self.tree.insertRoot(impliedTagToken("html", "StartTag"))
@@ -681,8 +877,8 @@ def getPhases(debug):
 
         # other
         def processEOF(self):
-            self.insertHtmlElement()
-            return True
+            #self.insertHtmlElement()
+            return False
 
         def processComment(self, token):
             self.tree.insertComment(token, self.tree.document)
@@ -691,22 +887,40 @@ def getPhases(debug):
             pass
 
         def processCharacters(self, token):
-            self.insertHtmlElement()
-            return token
+            #self.insertHtmlElement()
+            #return token
+            pass
 
-        def processStartTag(self, token):
-            if token["name"] == "html":
-                self.parser.firstStartTag = True
-            self.insertHtmlElement()
-            return token
+        # DECO3801 - Starting HTML tag handler method.
+        def startTagHtml(self, token):
+            self.parser.firstStartTag = True
+            self.tree.insertRoot(token)
+            self.parser.singular.append(token["name"])
+            self.parser.phase = self.parser.phases["beforeHead"]
 
-        def processEndTag(self, token):
-            if token["name"] not in ("head", "body", "html", "br"):
-                self.parser.parseError("unexpected-end-tag-before-html",
-                                       {"name": token["name"]})
-            else:
-                self.insertHtmlElement()
-                return token
+        # DECO3801 - Start tag handler method.
+        def startTagOther(self, token):
+            self.parser.parseError("start-tag-before-starting-html", {"name": token["name"]})
+
+        # DECO3801 - Replaced with proper start tag checking.
+        #def processStartTag(self, token):
+        #    if token["name"] == "html":
+        #        self.parser.firstStartTag = True
+        #    self.insertHtmlElement()
+        #    return token
+
+        # DECO3801 - Closing tag hangler method.
+        def endTagOther(self, token):
+            self.parser.parseError("end-tag-before-starting-html", {"name": token["name"]})
+
+        # DECO3801 - Replaced with proper closing tag checking.
+        #def processEndTag(self, token):
+        #    if token["name"] not in ("head", "body", "html", "br"):
+        #        self.parser.parseError("unexpected-end-tag-before-html",
+        #                               {"name": token["name"]})
+        #    else:
+        #        self.insertHtmlElement()
+        #        return token
 
     class BeforeHeadPhase(Phase):
         def __init__(self, parser, tree):
@@ -726,20 +940,22 @@ def getPhases(debug):
             self.endTagHandler.default = self.endTagOther
 
         def processEOF(self):
-            self.startTagHead(impliedTagToken("head", "StartTag"))
-            return True
+            #self.startTagHead(impliedTagToken("head", "StartTag"))
+            return False
 
         def processSpaceCharacters(self, token):
             pass
 
         def processCharacters(self, token):
-            self.startTagHead(impliedTagToken("head", "StartTag"))
-            return token
+            #self.startTagHead(impliedTagToken("head", "StartTag"))
+            #return token
+            pass
 
         def startTagHtml(self, token):
             return self.parser.phases["inBody"].processStartTag(token)
 
         def startTagHead(self, token):
+            self.parser.singular.append(token["name"])
             self.tree.insertElement(token)
             self.tree.headPointer = self.tree.openElements[-1]
             self.parser.phase = self.parser.phases["inHead"]
@@ -760,8 +976,8 @@ def getPhases(debug):
             else:
                 self.parser.parseError("head-start-tag-missing",
                                    {"name": token["name"]})
-                self.startTagHead(impliedTagToken("head", "StartTag")) 
-                self.parser.phases["inHead"].endTagHead(impliedTagToken("head"))
+                #self.startTagHead(impliedTagToken("head", "StartTag")) 
+                #self.parser.phases["inHead"].endTagHead(impliedTagToken("head"))
                 self.parser.phase = self.parser.phases["afterHead"]
                 return token
             
@@ -792,7 +1008,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -874,6 +1090,10 @@ def getPhases(debug):
                     self.parser.tokenizer.stream.changeEncoding(codec)
 
         def startTagTitle(self, token):
+            # DECO3801 - Check for multiple title tags appearing in the head section.
+            if self.parser.hasTitle:
+                self.parser.parseError("duplicate-title-in-head", {"name": token["name"]})
+            self.parser.hasTitle = True
             self.parser.parseRCDataRawtext(token, "RCDATA")
 
         def startTagNoScriptNoFramesStyle(self, token):
@@ -915,6 +1135,7 @@ def getPhases(debug):
                 return token
 
         def endTagHead(self, token):
+            self.parser.singularEndTags.append(token["name"])
             node = self.parser.tree.openElements.pop()
             assert node.name == "head", "Expected head got %s" % node.name
             self.parser.phase = self.parser.phases["afterHead"]
@@ -924,7 +1145,7 @@ def getPhases(debug):
             return token
 
         def endTagOther(self, token):
-            self.parser.parseError("unexpected-end-tag", {"name": token["name"]})
+            self.parser.parseError("incorrect-end-tag-placement-in-head", {"name": token["name"]})
 
         def anythingElse(self):
             self.endTagHead(impliedTagToken("head"))
@@ -942,7 +1163,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -996,7 +1217,7 @@ def getPhases(debug):
             # self.anythingElse()
             # return token
             # TODO: Correct the error message.
-            self.parser.parseError("placeholder-type", {"name": token["name"]})
+            self.parser.parseError("placeholder-type")
 
         def startTagHtml(self, token):
             # DECO3801 - Replaced shift to in-body phase with correct
@@ -1009,6 +1230,7 @@ def getPhases(debug):
         def startTagBody(self, token):
             self.parser.framesetOK = False
             self.tree.insertElement(token)
+            self.parser.singular.append(token["name"])
             self.parser.phase = self.parser.phases["inBody"]
 
         def startTagFrameset(self, token):
@@ -1072,7 +1294,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -1132,7 +1354,7 @@ def getPhases(debug):
                 (("option", "optgroup"), self.startTagOpt),
                 (("math"), self.startTagMath),
                 (("svg"), self.startTagSvg),
-                (("caption", "col", "colgroup", "frame",
+                (("caption", "col", "colgroup",
                   "tbody", "td", "tfoot", "th", "thead",
                   "tr"), self.startTagMisplaced),
                 # DECO3801 - Error check for head start tags found within the main
@@ -1276,6 +1498,9 @@ def getPhases(debug):
                 self.parser.parseError("multiple-instance-singular-tag", 
                     {"name": token["name"]})
             else:
+                if not self.parser.tree.openElements[-1].name == "body":
+                    self.parser.parseError("missing-end-tag-before-footer", {"name": self.parser.tree.openElements[-1].name})
+
                 self.tree.insertElement(token)
 
         def startTagPreListing(self, token):
@@ -1390,12 +1615,6 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["inTable"]
 
         def startTagVoidFormatting(self, token):
-            # DECO3801 - Check that the void start tag contains a self closing 
-            # backslash symbol. Raises an error if the token isn't seen as 
-            # self closing.
-            if not token["selfClosing"]:
-                self.parser.parseError("void-token-not-self-closing", 
-                        {"name": token["name"]})
             self.tree.reconstructActiveFormattingElements()
             self.tree.insertElement(token)
             self.tree.openElements.pop()
@@ -1579,6 +1798,7 @@ def getPhases(debug):
                             "expected-one-end-tag-but-got-another",
                             {"expectedName": "body", "gotName": node.name})
                         break
+            self.parser.singularEndTags.append(token["name"])
             self.parser.phase = self.parser.phases["afterBody"]
 
         # DECO3801 - Error checking for a closing HTML tag occuring before
@@ -1594,7 +1814,7 @@ def getPhases(debug):
                     hasClosingHtml = True
 
             if hasClosingHtml:
-                self.parser.parseError("incorrect-placement-singular-end-tag",
+                self.parser.parseError("incorrect-placement-html-end-tag",
                                    {"name": token["name"]})
             else:
                 # DECO3801 - Redirects to the after body phase, causing all
@@ -1628,20 +1848,26 @@ def getPhases(debug):
         # DECO3801 - Handler method to check for excessive instances of
         # footer end tags.
         def endTagFooter(self, token):
+            hasClosingFooter = False
             self.parser.singularEndTags.append(token["name"])
-            if self.parser.singularEndTags.count(token["name"]) > 1:
-                self.parser.parseError("incorrect-placement-singular-end-tag", 
-                    {"name": token["name"]})
+            for remaining in self.parser.remainingTokens:
+                if remaining.get('name') == "footer" and remaining.get('type') == tokenTypes["EndTag"]:
+                    hasClosingFooter = True
 
-            # DECO3801 TODO: Might need additional error reporting during this
-            # segment to account for removed tokens.inScope = self.tree.elementInScope(token["name"])
-            inScope = self.tree.elementInScope(token["name"])
-            if inScope:
-                self.tree.generateImpliedEndTags()
-            if self.tree.openElements[-1].name != token["name"]:
-                node = self.tree.openElements.pop()
-                while node.name != token["name"]:
-                    node = self.tree.openElements.pop()
+            if hasClosingFooter:
+                self.parser.parseError("incorrect-placement-singular-end-tag",
+                                   {"name": token["name"]})
+            else:
+                inScope = self.tree.elementInScope(token["name"])
+                if inScope:
+                    self.tree.generateImpliedEndTags()
+                    if self.tree.openElements[-1].name != token["name"]:
+                        node = self.tree.openElements.pop()
+                        while node.name != token["name"]:
+                            # DECO3801 - Report missing closing tags for any remaining open
+                            # tags in the footer section.
+                            self.parser.parseError("missing-closing-tags-in-footer", {"name": node.name})
+                            node = self.tree.openElements.pop()
 
         def endTagForm(self, token):
             node = self.tree.formPointer
@@ -2795,8 +3021,9 @@ def getPhases(debug):
             if not token["name"] == 'body':
                 self.parser.parseError("unexpected-start-tag-after-body",
                                    {"name": token["name"]})
-            self.parser.phase = self.parser.phases["inBody"]
-            return token
+            # DECO3801 - Old implementation.    
+            #self.parser.phase = self.parser.phases["inBody"]
+            #return token
 
         def endTagHtml(self, name):
             # DECO3801 - Error checking for the closing HTML tag.
@@ -2809,8 +3036,9 @@ def getPhases(debug):
         def endTagOther(self, token):
             self.parser.parseError("unexpected-end-tag-after-body",
                                    {"name": token["name"]})
-            self.parser.phase = self.parser.phases["inBody"]
-            return token
+            # DECO3801 - Old implementation.
+            #self.parser.phase = self.parser.phases["inBody"]
+            #return token
 
     class InFramesetPhase(Phase):
         # http://www.whatwg.org/specs/web-apps/current-work/#in-frameset

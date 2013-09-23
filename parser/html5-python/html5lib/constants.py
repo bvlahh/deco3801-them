@@ -15,6 +15,62 @@ singularTags = [
     "footer",
 ]
 
+# DECO3801 - List of deprecated tags based on the list found at:
+# http://www.w3.org/TR/html5-diff/#obsolete-elements
+deprecatedTags = [
+    "acronym",
+    "applet",
+    "basefont",
+    "big",
+    "center",
+    "dir",
+    "font",
+    "frame",
+    "frameset",
+    "isindex",
+    "noframes",
+    "strike",
+    "tt",
+]
+
+# DECO3801 - List of form elements.
+formElements = [
+    "datalist",
+    "fieldset",
+    "input",
+    "label",
+    "output",
+]
+
+
+# DECO3801 - List of allowed values for the type attribute
+# associated with the input form element.
+formInputType = [
+    "button",
+    "checkbox",
+    "color",
+    "date",
+    "datetime",
+    "datetime-local",
+    "email",
+    "file",
+    "hidden",
+    "image",
+    "month",
+    "number",
+    "password",
+    "radio",
+    "range",
+    "reset",
+    "search",
+    "submit",
+    "tel",
+    "text",
+    "time",
+    "url",
+    "week",
+]
+
 # DECO3801 - A dictionary containing a mapping of html5lib error codes
 # to the error codes to be used for the front end section of THEM.
 errorCodes = {
@@ -28,7 +84,7 @@ errorCodes = {
     "incorrect-end-tag-placement-in-head": 8,
     "head-start-tag-missing": 9,
     "head-end-tag-missing": 10,
-    "unexpected-html-end-tag-before-body-close": 11,
+    "incorrect-placement-html-end-tag": 11,
     "expected-eof-but-got-start-tag": 12,
     "expected-eof-but-got-end-tag": 13,
     "unexpected-end-tag": 14,
@@ -46,6 +102,32 @@ errorCodes = {
     "early-termination-in-head": 26,
     "early-termination-before-body": 27,
     "early-termination-in-body": 28,
+    "unexpected-start-tag-out-of-my-head": 29,
+    "start-tag-before-body-after-head": 30,
+    "end-tag-before-body-after-head": 31,
+    "body-start-tag-missing": 32,
+    "body-end-tag-missing": 33,
+    "no-starting-html-tag": 34,
+    "unknown-doctype": 35,
+    "need-space-after-doctype": 36,
+    "expected-doctype-but-got-end-tag": 37,
+    "expected-doctype-but-got-eof": 38,
+	"invalid-url-attrib": 39,
+    "deprecated-tag": 40,
+    "deprecated-frame-element": 41,
+    "form-element-not-in-form": 42,
+    "input-element-missing-type-attribute": 43,
+    "input-element-missing-value-attribute": 44,
+    "input-element-missing-name-attribute": 45,
+    "illegal-file-input-element-value-attribute": 46,
+    "input-element-missing-label": 47,
+    "duplicate-id-attribute": 48,
+    "duplicate-title-in-head": 49,
+    "title-element-missing-from-head": 50,
+    "img-element-missing-alt-attribute": 51,
+    "img-alt-attribute-empty": 52,
+    "missing-end-tag-before-footer": 53,
+    "missing-closing-tags-in-footer": 54,
 }
 
 E = {
@@ -360,6 +442,10 @@ E = {
         _("The closing HTML tag occured before the body phase implying incorrect placement."),
     "early-termination-in-body":
         _("The closing HTML tag occured in the body phase implying incorrect placement."),
+    "start-tag-before-body-after-head":
+        _("Found a start tag after the head phase and before the body phase, implying that it is misplaced."),
+    "end-tag-before-body-after-head":
+        _("Found a closing tag after the head phase and before the body phase, implying that it is misplaced."),
 }
 
 namespaces = {
