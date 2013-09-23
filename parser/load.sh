@@ -33,6 +33,7 @@ mv -f ./temp1/ $app_dir;
 rm -rf ./temp1;
 rm -f ./temp1.tar;
 
-supervisorctl restart parser
-";
+cd /root/parser/html5-python;
+python setup.py install;
 
+supervisorctl restart parser"
