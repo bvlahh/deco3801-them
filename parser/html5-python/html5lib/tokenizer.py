@@ -51,6 +51,7 @@ class HTMLTokenizer(object):
         self.escape = False
 
         self.startPos = 0
+        self.attrStartPos = 0
 
         # The current token being created
         self.currentToken = None
@@ -860,7 +861,8 @@ class HTMLTokenizer(object):
         return True
 
     def beforeAttributeNameState(self):
-        print "Attr1: " + str(self.stream.chunkOffset - 1 ) + "\n"
+        self.attrStartPos = self.stream.chunkOffset
+
         data = self.stream.char()
         if data in spaceCharacters:
             self.stream.charsUntil(spaceCharacters, True)
@@ -927,9 +929,6 @@ class HTMLTokenizer(object):
         else:
             self.currentToken["data"][-1][0] += data
             leavingThisState = False
-
-        print "Attr2: " + str(self.stream.chunkOffset) + "\n"
-        print "Attr: " + str(self.currentToken["data"]) + "\n"
 
         if leavingThisState:
             # Attributes are not dropped at this stage. That happens when the
@@ -1079,6 +1078,8 @@ class HTMLTokenizer(object):
         return True
 
     def afterAttributeValueState(self):
+        self.currentToken["data"][-1][1] = (self.currentToken["data"][-1][1], (self.attrStartPos, self.stream.chunkOffset))
+
         data = self.stream.char()
         if data in spaceCharacters:
             self.state = self.beforeAttributeNameState

@@ -5,11 +5,14 @@ from html5lib import treebuilders
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
+files = ""
+filename = ""
+
 blah = """<html><head></head><body><img src="fake.jpg"><footer><big></big></footer></body></html>"""
 
 fragment = blah.decode("utf-8")
 
-minidom_document = parser.parse(fragment)
+minidom_document = parser.parse(fragment, files=files, filename=filename)
 # <html><html><body><body></body></body></html></html>
 # <html><html><head><head></head></head></html></html>
 # <html><html><footer><footer></footer></footer></html></html>

@@ -56,7 +56,7 @@ class TestTagAttributes(unittest.TestCase):
 
         invalidPaths = [span for span,name,_ in self.parser.errors if name == "invalid-url-attrib"]
 
-        self.assertEqual(invalidPaths, [(0,23), (24, 56)], "Failed to report invalid relative file path attribute url.") 
+        self.assertEqual(invalidPaths, [(5,23), (29, 56)], "Failed to report invalid relative file path attribute url.") 
 
     def test_nonexistent_relative_filepath(self):
         """
@@ -79,7 +79,7 @@ class TestTagAttributes(unittest.TestCase):
 
         invalidPaths = [span for (span,name,_) in self.parser.errors if name == "invalid-url-attrib"]
 
-        self.assertEqual(invalidPaths, [(0,26), (27, 70)], "Failed to correctly report invalid relative file path attribute url.") 
+        self.assertEqual(invalidPaths, [(5,26), (32, 70)], "Failed to correctly report invalid relative file path attribute url.") 
 
     def test_valid_absolute_filepath(self):
         """
@@ -123,7 +123,7 @@ class TestTagAttributes(unittest.TestCase):
 
         invalidPaths = [span for (span,name,_) in self.parser.errors if name == "invalid-url-attrib"]
 
-        self.assertEqual(invalidPaths, [(0,22), (23, 66)], "Failed to report invalid absolute file path attribute url.") 
+        self.assertEqual(invalidPaths, [(5,22), (28, 66)], "Failed to report invalid absolute file path attribute url.") 
 
     def test_nonexistent_absolute_filepath(self):
         """
@@ -145,7 +145,7 @@ class TestTagAttributes(unittest.TestCase):
 
         invalidPaths = [span for (span,name,_) in self.parser.errors if name == "invalid-url-attrib"]
 
-        self.assertEqual(invalidPaths, [(0,32)] , "Failed to correctly report invalid absolute file path attribute url.") 
+        self.assertEqual(invalidPaths, [(5,32)] , "Failed to correctly report invalid absolute file path attribute url.") 
 
 if __name__ == '__main__':
     unittest.main()

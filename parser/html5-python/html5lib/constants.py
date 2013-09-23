@@ -15,6 +15,32 @@ singularTags = [
     "footer",
 ]
 
+# DECO3801 - List of tags which contain a URL attribute of some type
+urlTags = [
+    'img', 
+    'a', 
+    'link', 
+    'script', 
+    'object', 
+    'applet', 
+    'input', 
+    'form',
+]
+
+# DECO3801 - Map from tag name to URL type attributes of that tag
+urlTagMap = {
+    'video':['src','poster'], 
+    'img':['src'], 
+    'a':['href'], 
+    'link':['href'], 
+    'script':['src'], 
+    'object':['data'], 
+    'embed':['src'], 
+    'form':['action'], 
+    'input':['formaction', 'src'], 
+    'source':['src']
+}
+
 # DECO3801 - List of deprecated tags based on the list found at:
 # http://www.w3.org/TR/html5-diff/#obsolete-elements
 deprecatedTags = [

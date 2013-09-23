@@ -21,7 +21,7 @@ from .constants import htmlIntegrationPointElements, mathmlTextIntegrationPointE
 from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 
 # DECO3801 - Imports
-from .constants import singularTags, errorCodes, deprecatedTags
+from .constants import singularTags, errorCodes, deprecatedTags, urlTags, urlTagMap
 from .constants import formElements, formInputType
 
 def parse(doc, treebuilder="etree", encoding=None,
@@ -217,7 +217,6 @@ class HTMLParser(object):
             # list of tokens which have yet to be processed.
             self.remainingTokens.pop(0)
 
-            
             if new_token is not None and 'name' in new_token:
                 # DECO3801 - Check for deprecated tags.
                 if new_token["name"] in deprecatedTags:
@@ -248,10 +247,9 @@ class HTMLParser(object):
                             # are added to tokens.
                             self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"]})
 
-            # DECO3801 - File name attribute checking for zip file uploads.
-            if self.files is not None and token is not None \
-                    and token["name"] in ['img', 'a', 'link', 'script', 'object', 'applet', 'input', 'form']:
-                self.checkURL(new_token)
+                # DECO3801 - File name attribute checking for zip file uploads.
+                if self.files is not None and new_token.get("name") in urlTags:
+                    self.checkURL(new_token)
 
             while new_token is not None:
                 currentNode = self.tree.openElements[-1] if self.tree.openElements else None
@@ -348,19 +346,16 @@ class HTMLParser(object):
     # i.e. the 'src' attribute of an img tag, the 'href' attribute of an 'a' tag, or the 'data' attribute
     # of an 'object' tag.
     def checkURL(self, token):
-        attrURLMap = {'video':['src','poster'], 'img':['src'], 'a':['href'], 'link':['href'], 'script':['src'], 'object':['data'], 'embed':['src'], 'form':['action'], 'input':['formaction', 'src'], 'source':['src']}
-
-        
         data = token.get("data")
 
-        for urlAttr in attrURLMap[token.get("name")]:
-            url = data.get(urlAttr)
+        for urlAttr in urlTagMap[token.get("name")]:
+            url, pos = data.get(urlAttr)
             if "http://" in url or "https://" in url: # We ignore Web urls
                 continue
 
             if url.find("/") == 0: # the path was lead by a "/", meaning the path is absolute.
                 if url[1:] not in self.files: # slice the leading "/" as our directory structure removes this
-                    self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                    self.parseErrorWithPos(pos, "invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
                 continue
 
             # split url into directories (and the final filename
@@ -369,7 +364,7 @@ class HTMLParser(object):
             upDirs = url.count('..')
             # If the '..' directory command is used
             if upDirs > len(self.cwd):
-                self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                self.parseErrorWithPos(pos, "invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
                 continue
             elif upDirs is not 0:
                 abUrl = os.sep.join(self.cwd[:-upDirs] + url[upDirs:])
@@ -377,7 +372,7 @@ class HTMLParser(object):
                 abUrl = os.sep.join(self.cwd + url)
 
             if abUrl not in self.files:
-                self.parseError("invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
+                self.parseErrorWithPos(pos, "invalid-url-attrib", {"name": token["name"], "attr": urlAttr})
 
     # DECO3801 - Checks form elements for proper formatting and that they
     # are contained within a form element.
@@ -481,8 +476,8 @@ class HTMLParser(object):
 
     # DECO3801 - Raises a parse error using the position stored within the
     # given token
-    def parseErrorWithPos(self, token, errorcode="XXX-undefined-error", datavars={}):
-        self.errors.append(((token["startPos"], token["endPos"]), errorcode, datavars))
+    def parseErrorWithPos(self, position, errorcode="XXX-undefined-error", datavars={}):
+        self.errors.append((position, errorcode, datavars))
 
     def normalizeToken(self, token):
         """ HTML5 specific normalizations to the token stream """
