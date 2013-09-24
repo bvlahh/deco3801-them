@@ -322,6 +322,6 @@ a:hover {
     width: 1000px;
     min-height: 75px;
     background-color: #ffffff;
-    overflow: auto;
+    overflow: scroll;
     
 }

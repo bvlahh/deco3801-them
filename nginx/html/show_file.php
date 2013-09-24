@@ -238,6 +238,8 @@ print <<<END
 
 </div>
 
+<div>Click on highlighted text for more information.</div>
+
 <div class="top_infobox" id="top_infobox">$top_info</div>
 
 <div class="file" style="float: left; margin-top: 10px">
