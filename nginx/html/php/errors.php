@@ -7,7 +7,7 @@ class Errors
     */
     static $error_strings = array(
         
-        1 => "No valid doctype was found. HTML files should start with <!DOCTYPE html>.",
+        1 => "No valid doctype was found. HTML files should start with <!DOCTYPE html>.", //
         2 => "Multiple instance of a singular tag.",
         3 => "A singular start tag was placed in the wrong location.",
         4 => "A singular closing tag was placed in the wrong location.",
@@ -81,11 +81,19 @@ class Errors
     */
     static function errorColour($error_number) {
         
-        // hacked testing
-        /*if ($error_number == 1)
-            return "#7f7fff";*/
-        
-        return "#ff7f7f";
+        if (in_array(error_number, [48])) {
+            /* poor practice */
+            return "ffff7f";
+        } else if (in_array($error_number, [47, 51]) {
+            /* accessibiity */
+            return "#7f7fff";
+        } else if (in_array($error_number, [40, 41])) {
+            /* deprecated tags */
+            return "ffbb77";
+        } else {
+            /* syntax, semantics */
+            return "#ff7f7f";
+        }
         
     }
     
