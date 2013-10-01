@@ -81,13 +81,13 @@ class Errors
     */
     static function errorColour($error_number) {
         
-        if (in_array(error_number, [48])) {
+        if (in_array($error_number, array(48))) {
             /* poor practice */
             return "ffff7f";
-        } else if (in_array($error_number, [47, 51]) {
+        } else if (in_array($error_number, array(47, 51))) {
             /* accessibiity */
             return "#7f7fff";
-        } else if (in_array($error_number, [40, 41])) {
+        } else if (in_array($error_number, array(40, 41))) {
             /* deprecated tags */
             return "ffbb77";
         } else {
