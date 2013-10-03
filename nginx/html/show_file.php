@@ -63,6 +63,9 @@ $chunks[] = array(
 
 foreach ( $in_document_errors as $in_document_error ) {
     
+    // the end index from the parser is the last char inclusive
+    $in_document_error[2]++;
+    
     // split the chunk that contains the start of the new error
     
     $start_chunk = 0;
