@@ -83,13 +83,13 @@ class Errors
         
         if (in_array($error_number, array(48))) {
             /* poor practice */
-            return "ffff7f";
+            return "#ffff7f";
         } else if (in_array($error_number, array(47, 51))) {
             /* accessibiity */
             return "#7f7fff";
         } else if (in_array($error_number, array(40, 41))) {
             /* deprecated tags */
-            return "ffbb77";
+            return "#ffbb77";
         } else {
             /* syntax, semantics */
             return "#ff7f7f";
