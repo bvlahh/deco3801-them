@@ -61,6 +61,7 @@ class Errors
         52 => "The 'alt' attribute for this img start tag contains a blank string. Please enter a valid description of the image associated with this image tag.",
         53 => "Found an open start tag before the footer section. Either a closing tag has been placed after the opening footer tag or it is missing.",
         54 => "Found an open start tag within the footer section. Either a closing tag has been placed after the closing footer tag or it is missing.",
+        55 => "This tag does not contain a valid tag name and therefore isn't valid HTML.",
     );
     
     /**

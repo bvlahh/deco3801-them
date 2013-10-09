@@ -22,7 +22,7 @@ from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 
 # DECO3801 - Imports
 from .constants import singularTags, errorCodes, deprecatedTags, urlTags, urlTagMap
-from .constants import formElements, formInputType
+from .constants import formElements, formInputType, allowedElementNames
 
 def parse(doc, treebuilder="etree", encoding=None,
           namespaceHTMLElements=True):
@@ -218,6 +218,9 @@ class HTMLParser(object):
             self.remainingTokens.pop(0)
 
             if new_token is not None and 'name' in new_token:
+                # DECO3801 - Check tag contains a valid tag name.
+                if new_token["name"] not in allowedElementNames:
+                    self.parseError("invalid-element-name", {"name": new_token["name"]})
                 # DECO3801 - Check for deprecated tags.
                 if new_token["name"] in deprecatedTags:
                     if new_token["name"] in ["frame", "frameset", "noframes"]:
