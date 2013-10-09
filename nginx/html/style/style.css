@@ -325,3 +325,74 @@ a:hover {
     overflow: scroll;
     
 }
+
+.files_folder {
+    
+    clear: both;
+    
+    border: 1px solid #BBBBBB;
+    margin: 10px;
+    float: left;
+    
+}
+
+.files_folder_title {
+    
+    background-color: #EEEEEE;
+    padding: 10px;
+    
+}
+
+.files_folder_contents {
+    
+    padding: 10px;
+    
+}
+
+.files_file {
+    
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
+    
+    padding: 10px;
+    margin: 10px;
+    
+    display: block;
+    float: left;
+    
+    text-align: center;
+    
+}
+
+.files_file:hover {
+    
+    background-color: #e44d26;
+    color: #FFFFFF;
+    
+}
+
+.files_file img {
+    
+    height: 48px;
+    width: 64px;
+    
+}
+
+.uploadset_back {
+    
+    color: #222222;
+    text-decoration: none;
+    
+    background-color: #FBFBFB;
+    border: 1px solid #DDDDDD;
+    
+    padding: 5px;
+    
+}
+
+.uploadset_back:hover {
+    
+    color: #222222;
+    background-color: #EEEEEE;
+    
+}
