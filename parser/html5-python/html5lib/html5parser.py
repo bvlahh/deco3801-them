@@ -352,7 +352,14 @@ class HTMLParser(object):
         data = token.get("data")
 
         for urlAttr in urlTagMap[token.get("name")]:
-            url, pos = data.get(urlAttr)
+
+            pair = data.get(urlAttr)
+
+            if(pair is None):
+                continue
+
+            url, pos = pair
+
             if "http://" in url or "https://" in url: # We ignore Web urls
                 continue
 
