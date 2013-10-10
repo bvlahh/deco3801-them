@@ -96,6 +96,10 @@ class HTMLParser(object):
         # contains a title within the head section or not.
         self.hasTitle = False
 
+        # DECO3801 - Arrays to track open tags.
+        self.openStartTags = []
+        self.remainingClosingTags = []
+
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
 
@@ -289,8 +293,10 @@ class HTMLParser(object):
                     elif type == SpaceCharactersToken:
                         new_token = phase.processSpaceCharacters(new_token)
                     elif type == StartTagToken:
+                        self.openStartTags.append(new_token)
                         new_token = phase.processStartTag(new_token)
                     elif type == EndTagToken:
+                        self.checkClosingTags(new_token)
                         new_token = phase.processEndTag(new_token)
                     elif type == CommentToken:
                         new_token = phase.processComment(new_token)
@@ -343,6 +349,29 @@ class HTMLParser(object):
             reprocess = self.phase.processEOF()
             if reprocess:
                 assert self.phase not in phases
+
+        # DECO3801 - Report missing closing tags.
+        for tag in self.openStartTags:            
+            self.parseErrorWithPos((tag['startPos'], tag['endPos']), "missing-end-tag", {"name": tag["name"]})
+
+    # DECO3801 - Process end tags, removing the corresponding start tag from the
+    # openStartTags list. If a closing tag cannot be matched to any of the starting
+    # tags seen so far, it is added to the remainingClosingTags list which
+    # tracks closing tags with no matching opening tag.
+    def checkClosingTags(self, token):
+        tempTokens = []
+        while(self.openStartTags):
+            currentToken = self.openStartTags.pop()
+            if currentToken['name'] == token['name']:
+                break
+
+            tempTokens.append(currentToken)
+
+        if not self.openStartTags:
+            self.remainingClosingTags.append(token)
+
+        while tempTokens:
+            self.openStartTags.append(tempTokens.pop())
 
     # DECO3801 - Checks local URLs for validity. This function works for both absolute and relative
     # local file paths. Checks all html5 tags for which the specification indicates a URL attribute,

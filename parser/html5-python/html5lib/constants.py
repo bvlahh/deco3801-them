@@ -292,6 +292,7 @@ errorCodes = {
     "missing-end-tag-before-footer": 53,
     "missing-closing-tags-in-footer": 54,
     "invalid-element-name": 55,
+    "missing-end-tag": 56,
 }
 
 E = {

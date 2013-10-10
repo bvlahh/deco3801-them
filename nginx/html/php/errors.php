@@ -62,6 +62,7 @@ class Errors
         53 => "Found an open start tag before the footer section. Either a closing tag has been placed after the opening footer tag or it is missing.",
         54 => "Found an open start tag within the footer section. Either a closing tag has been placed after the closing footer tag or it is missing.",
         55 => "This tag does not contain a valid tag name and therefore isn't valid HTML.",
+        56 => "This start tag is missing a matching closing tag.",
     );
     
     /**
