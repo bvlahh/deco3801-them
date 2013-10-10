@@ -293,6 +293,10 @@ errorCodes = {
     "missing-closing-tags-in-footer": 54,
     "invalid-element-name": 55,
     "missing-end-tag": 56,
+    "a-element-missing-href-attribute": 57,
+    "a-href-attribute-empty": 58,
+    "a-element-missing-name-attribute": 59,
+    "a-name-attribute-empty": 60,
 }
 
 E = {

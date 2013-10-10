@@ -8,7 +8,7 @@ parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 files = ""
 filename = ""
 
-blah = """<html><head></head><body><p></p><p></p><a><footer></footer></body></html>"""
+blah = """<html><head></head><body><a name="" href=""></a><a></a><footer></footer></body></html>"""
 
 fragment = blah.decode("utf-8")
 

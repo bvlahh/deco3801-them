@@ -249,10 +249,25 @@ class HTMLParser(object):
                     if not "alt" in new_token["data"]:
                         self.parseError("img-element-missing-alt-attribute", {"name": new_token["name"]})
                     else:
-                        if new_token["data"]["alt"] == "":
+                        if new_token["data"]["alt"][0] == "":
                             # DECO3801 TODO - Update with proper error check once attribute positions
                             # are added to tokens.
                             self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"]})
+
+                # DECO3801 - Check link tags have valid attributes.
+                if new_token["type"] == StartTagToken and new_token["name"] == "a":
+                    if not "href" in new_token["data"]:
+                        self.parseError("a-element-missing-href-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["href"][0] == "":
+                            print "test"
+                            self.parseError("a-href-attribute-empty", {"attr": new_token["data"]["href"]})
+
+                    if not "name" in new_token["data"]:
+                        self.parseError("a-element-missing-name-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["name"][0] == "":
+                            self.parseError("a-name-attribute-empty", {"attr": new_token["data"]["name"]})
 
                 # DECO3801 - File name attribute checking for zip file uploads.
                 if self.files is not None and new_token.get("name") in urlTags:
@@ -379,6 +394,11 @@ class HTMLParser(object):
     # of an 'object' tag.
     def checkURL(self, token):
         data = token.get("data")
+
+        # Check for the case where no attributes are present and ignore
+        # any further attribute checking.
+        if not data:
+            return
 
         for urlAttr in urlTagMap[token.get("name")]:
 

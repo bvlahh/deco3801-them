@@ -63,6 +63,10 @@ class Errors
         54 => "Found an open start tag within the footer section. Either a closing tag has been placed after the closing footer tag or it is missing.",
         55 => "This tag does not contain a valid tag name and therefore isn't valid HTML.",
         56 => "This start tag is missing a matching closing tag.",
+        57 => "A link element is missing a required 'href' attribute.",
+        58 => "A link element's href attribute is empty. Please enter a valid link.",
+        59 => "A link element is missing a required 'name' attribute.",
+        60 => "A link element's 'name' attribute is empty. Please enter a valid name.",
     );
     
     /**
