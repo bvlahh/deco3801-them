@@ -100,6 +100,12 @@ class HTMLParser(object):
         self.openStartTags = []
         self.remainingClosingTags = []
 
+        # DECO3801 - Dictionary to track the number of occurrences of each
+        # heading type. The second dictionary tracks multiple instances of
+        # the h1 tag.
+        self.headingCount = {"h1": 0, "h2": 0, "h3": 0, "h4": 0, "h5": 0, "h6": 0}
+        self.h1Instances = {"first": False, "duplicates": []}
+
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
 
@@ -260,7 +266,6 @@ class HTMLParser(object):
                         self.parseError("a-element-missing-href-attribute", {"name": new_token["name"]})
                     else:
                         if new_token["data"]["href"][0] == "":
-                            print "test"
                             self.parseError("a-href-attribute-empty", {"attr": new_token["data"]["href"]})
 
                     if not "name" in new_token["data"]:
@@ -268,6 +273,10 @@ class HTMLParser(object):
                     else:
                         if new_token["data"]["name"][0] == "":
                             self.parseError("a-name-attribute-empty", {"attr": new_token["data"]["name"]})
+
+                # DECO3801 - Heading tag type checking.
+                if new_token["type"] == StartTagToken and new_token["name"] in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+                    self.processHeadings(new_token)
 
                 # DECO3801 - File name attribute checking for zip file uploads.
                 if self.files is not None and new_token.get("name") in urlTags:
@@ -355,6 +364,9 @@ class HTMLParser(object):
 
         if not self.hasTitle:
             self.parseError("title-element-missing-from-head")
+
+        for duplicate in self.h1Instances["duplicates"]:
+            self.parseErrorWithPos((duplicate["startPos"], duplicate["endPos"]), "duplicate-h1-element", {"name": duplicate["name"]})
  
         # When the loop finishes it's EOF
         reprocess = True
@@ -368,6 +380,32 @@ class HTMLParser(object):
         # DECO3801 - Report missing closing tags.
         for tag in self.openStartTags:            
             self.parseErrorWithPos((tag['startPos'], tag['endPos']), "missing-end-tag", {"name": tag["name"]})
+
+    # DECO3801 - Handles all heading tag checks. This includes enforcing singular h1 tags
+    # and tracking incorrect heading order.
+    def processHeadings(self, token):
+        self.headingCount[token["name"]] += 1
+
+        if token["name"].lower() == "h1":
+            if not self.h1Instances["first"]:
+                self.h1Instances["first"] = True
+            else:
+                self.h1Instances["duplicates"].append(token)
+
+        missingHeadings = []
+        for heading in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+            if heading == token["name"].lower():
+                break
+
+            if self.headingCount[heading] == 0:
+                missingHeadings.append(heading)
+
+        missingMessage = ", ".join(missingHeadings)
+
+        if missingMessage == "":
+            return
+
+        self.parseError("invalid-heading-order", {"name": token["name"], "missing": missingMessage})
 
     # DECO3801 - Process end tags, removing the corresponding start tag from the
     # openStartTags list. If a closing tag cannot be matched to any of the starting

@@ -67,6 +67,8 @@ class Errors
         58 => "A link element's href attribute is empty. Please enter a valid link.",
         59 => "A link element is missing a required 'name' attribute.",
         60 => "A link element's 'name' attribute is empty. Please enter a valid name.",
+        61 => "Only one instance of the h1 tag should be used in a single HTML document.",
+        62 => "Heading elements appear in order of h1 being the most important and h6 being the least important. This heading tag has skipped one or more of the sizings.",
     );
     
     /**
@@ -87,7 +89,7 @@ class Errors
     */
     static function errorColour($error_number) {
         
-        if (in_array($error_number, array(48))) {
+        if (in_array($error_number, array(48, 61, 62))) {
             /* poor practice */
             return "#ffff7f";
         } else if (in_array($error_number, array(47, 51))) {

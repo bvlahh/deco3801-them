@@ -297,6 +297,8 @@ errorCodes = {
     "a-href-attribute-empty": 58,
     "a-element-missing-name-attribute": 59,
     "a-name-attribute-empty": 60,
+    "duplicate-h1-element": 61,
+    "invalid-heading-order": 62,
 }
 
 E = {
