@@ -22,7 +22,7 @@ from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 
 # DECO3801 - Imports
 from .constants import singularTags, errorCodes, deprecatedTags, urlTags, urlTagMap
-from .constants import formElements, formInputType
+from .constants import formElements, formInputType, allowedElementNames
 
 def parse(doc, treebuilder="etree", encoding=None,
           namespaceHTMLElements=True):
@@ -95,6 +95,16 @@ class HTMLParser(object):
         # DECO3801 - Boolean flag used to check whether or not a HTML document
         # contains a title within the head section or not.
         self.hasTitle = False
+
+        # DECO3801 - Arrays to track open tags.
+        self.openStartTags = []
+        self.remainingClosingTags = []
+
+        # DECO3801 - Dictionary to track the number of occurrences of each
+        # heading type. The second dictionary tracks multiple instances of
+        # the h1 tag.
+        self.headingCount = {"h1": 0, "h2": 0, "h3": 0, "h4": 0, "h5": 0, "h6": 0}
+        self.h1Instances = {"first": False, "duplicates": []}
 
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
@@ -218,6 +228,9 @@ class HTMLParser(object):
             self.remainingTokens.pop(0)
 
             if new_token is not None and 'name' in new_token:
+                # DECO3801 - Check tag contains a valid tag name.
+                if new_token["name"] not in allowedElementNames:
+                    self.parseError("invalid-element-name", {"name": new_token["name"]})
                 # DECO3801 - Check for deprecated tags.
                 if new_token["name"] in deprecatedTags:
                     if new_token["name"] in ["frame", "frameset", "noframes"]:
@@ -242,10 +255,28 @@ class HTMLParser(object):
                     if not "alt" in new_token["data"]:
                         self.parseError("img-element-missing-alt-attribute", {"name": new_token["name"]})
                     else:
-                        if new_token["data"]["alt"] == "":
+                        if new_token["data"]["alt"][0] == "":
                             # DECO3801 TODO - Update with proper error check once attribute positions
                             # are added to tokens.
                             self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"]})
+
+                # DECO3801 - Check link tags have valid attributes.
+                if new_token["type"] == StartTagToken and new_token["name"] == "a":
+                    if not "href" in new_token["data"]:
+                        self.parseError("a-element-missing-href-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["href"][0] == "":
+                            self.parseError("a-href-attribute-empty", {"attr": new_token["data"]["href"]})
+
+                    if not "name" in new_token["data"]:
+                        self.parseError("a-element-missing-name-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["name"][0] == "":
+                            self.parseError("a-name-attribute-empty", {"attr": new_token["data"]["name"]})
+
+                # DECO3801 - Heading tag type checking.
+                if new_token["type"] == StartTagToken and new_token["name"] in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+                    self.processHeadings(new_token)
 
                 # DECO3801 - File name attribute checking for zip file uploads.
                 if self.files is not None and new_token.get("name") in urlTags:
@@ -286,8 +317,10 @@ class HTMLParser(object):
                     elif type == SpaceCharactersToken:
                         new_token = phase.processSpaceCharacters(new_token)
                     elif type == StartTagToken:
+                        self.openStartTags.append(new_token)
                         new_token = phase.processStartTag(new_token)
                     elif type == EndTagToken:
+                        self.checkClosingTags(new_token)
                         new_token = phase.processEndTag(new_token)
                     elif type == CommentToken:
                         new_token = phase.processComment(new_token)
@@ -331,6 +364,9 @@ class HTMLParser(object):
 
         if not self.hasTitle:
             self.parseError("title-element-missing-from-head")
+
+        for duplicate in self.h1Instances["duplicates"]:
+            self.parseErrorWithPos((duplicate["startPos"], duplicate["endPos"]), "duplicate-h1-element", {"name": duplicate["name"]})
  
         # When the loop finishes it's EOF
         reprocess = True
@@ -341,6 +377,55 @@ class HTMLParser(object):
             if reprocess:
                 assert self.phase not in phases
 
+        # DECO3801 - Report missing closing tags.
+        for tag in self.openStartTags:            
+            self.parseErrorWithPos((tag['startPos'], tag['endPos']), "missing-end-tag", {"name": tag["name"]})
+
+    # DECO3801 - Handles all heading tag checks. This includes enforcing singular h1 tags
+    # and tracking incorrect heading order.
+    def processHeadings(self, token):
+        self.headingCount[token["name"]] += 1
+
+        if token["name"].lower() == "h1":
+            if not self.h1Instances["first"]:
+                self.h1Instances["first"] = True
+            else:
+                self.h1Instances["duplicates"].append(token)
+
+        missingHeadings = []
+        for heading in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+            if heading == token["name"].lower():
+                break
+
+            if self.headingCount[heading] == 0:
+                missingHeadings.append(heading)
+
+        missingMessage = ", ".join(missingHeadings)
+
+        if missingMessage == "":
+            return
+
+        self.parseError("invalid-heading-order", {"name": token["name"], "missing": missingMessage})
+
+    # DECO3801 - Process end tags, removing the corresponding start tag from the
+    # openStartTags list. If a closing tag cannot be matched to any of the starting
+    # tags seen so far, it is added to the remainingClosingTags list which
+    # tracks closing tags with no matching opening tag.
+    def checkClosingTags(self, token):
+        tempTokens = []
+        while(self.openStartTags):
+            currentToken = self.openStartTags.pop()
+            if currentToken['name'] == token['name']:
+                break
+
+            tempTokens.append(currentToken)
+
+        if not self.openStartTags:
+            self.remainingClosingTags.append(token)
+
+        while tempTokens:
+            self.openStartTags.append(tempTokens.pop())
+
     # DECO3801 - Checks local URLs for validity. This function works for both absolute and relative
     # local file paths. Checks all html5 tags for which the specification indicates a URL attribute,
     # i.e. the 'src' attribute of an img tag, the 'href' attribute of an 'a' tag, or the 'data' attribute
@@ -348,8 +433,20 @@ class HTMLParser(object):
     def checkURL(self, token):
         data = token.get("data")
 
+        # Check for the case where no attributes are present and ignore
+        # any further attribute checking.
+        if not data:
+            return
+
         for urlAttr in urlTagMap[token.get("name")]:
-            url, pos = data.get(urlAttr)
+
+            pair = data.get(urlAttr)
+
+            if(pair is None):
+                continue
+
+            url, pos = pair
+
             if "http://" in url or "https://" in url: # We ignore Web urls
                 continue
 

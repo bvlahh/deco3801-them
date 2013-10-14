@@ -61,6 +61,14 @@ class Errors
         52 => "The 'alt' attribute for this img start tag contains a blank string. Please enter a valid description of the image associated with this image tag.",
         53 => "Found an open start tag before the footer section. Either a closing tag has been placed after the opening footer tag or it is missing.",
         54 => "Found an open start tag within the footer section. Either a closing tag has been placed after the closing footer tag or it is missing.",
+        55 => "This tag does not contain a valid tag name and therefore isn't valid HTML.",
+        56 => "This start tag is missing a matching closing tag.",
+        57 => "A link element is missing a required 'href' attribute.",
+        58 => "A link element's href attribute is empty. Please enter a valid link.",
+        59 => "A link element is missing a required 'name' attribute.",
+        60 => "A link element's 'name' attribute is empty. Please enter a valid name.",
+        61 => "Only one instance of the h1 tag should be used in a single HTML document.",
+        62 => "Heading elements appear in order of h1 being the most important and h6 being the least important. This heading tag has skipped one or more of the sizings.",
     );
     
     /**
@@ -81,7 +89,7 @@ class Errors
     */
     static function errorColour($error_number) {
         
-        if (in_array($error_number, array(48))) {
+        if (in_array($error_number, array(48, 61, 62))) {
             /* poor practice */
             return "#ffff7f";
         } else if (in_array($error_number, array(47, 51))) {

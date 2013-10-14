@@ -228,22 +228,22 @@ draw_header("THEM prototype - $filename");
 $upload_set = "";
 
 if ($count_files > 1)
-$upload_set = <<<END
-<a href="show_set?set=$set">
-Uploaded Files
-</a>
+    $upload_set = <<<END
+        <a class="uploadset_back" href="show_set?set=$set">
+            Uploaded Files
+        </a>
 END;
 
 print <<<END
 
 <div>
-
-<span style="font-size: 140%;">
-$filename
-</span>
-
-$upload_set
-
+    
+    $upload_set
+    
+    <span style="font-size: 140%;">
+    $filename
+    </span>
+    
 </div>
 
 <div style="margin-bottom: 10px;">
