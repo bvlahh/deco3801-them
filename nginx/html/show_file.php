@@ -163,6 +163,10 @@ foreach ( $general_document_errors as $general_document_error ) {
 
 $error_lines = array();
 $escaped_document = "";
+$error_semantics = 0;
+$error_access = 0;
+$error_deprecated = 0;
+$error_misc = 0;
 
 foreach ( $chunks as $chunk ) {
     
@@ -180,6 +184,20 @@ foreach ( $chunks as $chunk ) {
         
         // mark the line for line number highlighting
         $error_lines[ $chunk["start"] > 0 ? substr_count($input, "\n", 0, $chunk["start"]) : 0] = $err_colour;
+
+        if ($err_colour == "#ffff7f") {
+            /* poor practice */
+            $error_misc++;
+        } else if ($err_colour == "#7f7fff") {
+            /* accessibiity */
+            $error_access++;
+        } else if ($err_colour == "#ffbb77") {
+            /* deprecated tags */
+            $error_deprecated++;
+        } else {
+            /* syntax, semantics */
+            $error_semantics++;
+        }
         
     }
     
@@ -235,15 +253,15 @@ END;
 if ( count($parsed_errors) == 0 )
     draw_error_bar(0, 0, 0, 0, 1, 1010, 10);
 else
-    draw_error_bar(0, 1, 0, 0, 0, 1010, 10);
+    draw_error_bar($error_semantics, $error_access, $error_deprecated, $error_misc, 0, 1010, 10);
 
 print <<<END
 
 </div>
 
-<div>Click on highlighted text for more information.</div>
-
 <div class="top_infobox" id="top_infobox">$top_info</div>
+
+<div style="padding: 10px;">Click on highlighted text for more information.</div>
 
 <div class="file" style="float: left; margin-top: 10px">
     
