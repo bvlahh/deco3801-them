@@ -150,6 +150,10 @@ foreach ( $in_document_errors as $in_document_error ) {
 }
 
 $top_info = "";
+$error_semantics = 0;
+$error_access = 0;
+$error_deprecated = 0;
+$error_misc = 0;
 
 foreach ( $general_document_errors as $general_document_error ) {
     
@@ -158,15 +162,13 @@ foreach ( $general_document_errors as $general_document_error ) {
     $err_message_output = htmlspecialchars( Errors::errorString($err_no) );
     
     $top_info .= $err_message_output . "<br />";
+
+    $error_semantics++;
     
 }
 
 $error_lines = array();
 $escaped_document = "";
-$error_semantics = 0;
-$error_access = 0;
-$error_deprecated = 0;
-$error_misc = 0;
 
 foreach ( $chunks as $chunk ) {
     
