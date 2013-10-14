@@ -1,2 +1,5 @@
 think ahead for exhibition, video information about the team and the process used to create the program, maybe video of Lorna teaching
  -- do Shen or David have experience with Adobe After Effects?
+
+visual aids in presentation to draw people's eyes - explain how users interact with the system and what they get out of it
+Direct Input / File Input -> Validation -> Learning and understanding about the errors in their code to further their understanding of the HTML5 standard.

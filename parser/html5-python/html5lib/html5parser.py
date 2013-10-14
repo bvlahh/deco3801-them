@@ -22,7 +22,7 @@ from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 
 # DECO3801 - Imports
 from .constants import singularTags, errorCodes, deprecatedTags, urlTags, urlTagMap
-from .constants import formElements, formInputType
+from .constants import formElements, formInputType, allowedElementNames
 
 def parse(doc, treebuilder="etree", encoding=None,
           namespaceHTMLElements=True):
@@ -95,6 +95,16 @@ class HTMLParser(object):
         # DECO3801 - Boolean flag used to check whether or not a HTML document
         # contains a title within the head section or not.
         self.hasTitle = False
+
+        # DECO3801 - Arrays to track open tags.
+        self.openStartTags = []
+        self.remainingClosingTags = []
+
+        # DECO3801 - Dictionary to track the number of occurrences of each
+        # heading type. The second dictionary tracks multiple instances of
+        # the h1 tag.
+        self.headingCount = {"h1": 0, "h2": 0, "h3": 0, "h4": 0, "h5": 0, "h6": 0}
+        self.h1Instances = {"first": False, "duplicates": []}
 
         self.phases = dict([(name, cls(self, self.tree)) for name, cls in
                             getPhases(debug).items()])
@@ -208,8 +218,6 @@ class HTMLParser(object):
         DoctypeToken = tokenTypes["Doctype"]
         ParseErrorToken = tokenTypes["ParseError"]
 
-        checkURLs = self.files is not None
-
         self.generateRemainingTokens()
 
         for token in self.normalizedTokens():
@@ -218,8 +226,11 @@ class HTMLParser(object):
             # DECO3801 - Removes a token to maintain parity with the 
             # list of tokens which have yet to be processed.
             self.remainingTokens.pop(0)
-            
+
             if new_token is not None and 'name' in new_token:
+                # DECO3801 - Check tag contains a valid tag name.
+                if new_token["name"] not in allowedElementNames:
+                    self.parseError("invalid-element-name", {"name": new_token["name"]})
                 # DECO3801 - Check for deprecated tags.
                 if new_token["name"] in deprecatedTags:
                     if new_token["name"] in ["frame", "frameset", "noframes"]:
@@ -230,14 +241,14 @@ class HTMLParser(object):
                 # DECO3801 - Updates the dictionary of ID's and tracks duplicate
                 # entries. Reports duplicate instances of the same ID being used.
                 if new_token["type"] == StartTagToken and "id" in new_token["data"]:
-                    if not new_token["data"]["id"][0] in self.idDict:
-                        self.idDict[new_token["data"]["id"][0]] = {"original": new_token, "duplicates": []}
+                    if not new_token["data"]["id"] in self.idDict:
+                        self.idDict[new_token["data"]["id"]] = {"original": new_token, "duplicates": []}
                     else:
-                        self.idDict[new_token["data"]["id"][0]]["duplicates"].append(new_token)
+                        self.idDict[new_token["data"]["id"]]["duplicates"].append(new_token)
                         # DECO3801 TODO: If we implement tag positions within the token information
                         # we can update the error checking accordingly.
                         self.parseError("duplicate-id-attribute", 
-                            {"name": new_token["name"], "original": self.idDict[new_token["data"]["id"][0]]["original"]["name"]})
+                            {"name": new_token["name"], "original": self.idDict[new_token["data"]["id"]]["original"]["name"]})
 
                 # DECO3801 - Check img tags have a valid alt attribute.
                 if new_token["type"] == StartTagToken and new_token["name"] == "img":
@@ -247,10 +258,28 @@ class HTMLParser(object):
                         if new_token["data"]["alt"][0] == "":
                             # DECO3801 TODO - Update with proper error check once attribute positions
                             # are added to tokens.
-                            self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"][0]})
+                            self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"]})
+
+                # DECO3801 - Check link tags have valid attributes.
+                if new_token["type"] == StartTagToken and new_token["name"] == "a":
+                    if not "href" in new_token["data"]:
+                        self.parseError("a-element-missing-href-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["href"][0] == "":
+                            self.parseError("a-href-attribute-empty", {"attr": new_token["data"]["href"]})
+
+                    if not "name" in new_token["data"]:
+                        self.parseError("a-element-missing-name-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["name"][0] == "":
+                            self.parseError("a-name-attribute-empty", {"attr": new_token["data"]["name"]})
+
+                # DECO3801 - Heading tag type checking.
+                if new_token["type"] == StartTagToken and new_token["name"] in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+                    self.processHeadings(new_token)
 
                 # DECO3801 - File name attribute checking for zip file uploads.
-                if new_token["type"] == StartTagToken and checkURLs and new_token.get("name") in urlTags:
+                if self.files is not None and new_token.get("name") in urlTags:
                     self.checkURL(new_token)
 
             while new_token is not None:
@@ -288,8 +317,10 @@ class HTMLParser(object):
                     elif type == SpaceCharactersToken:
                         new_token = phase.processSpaceCharacters(new_token)
                     elif type == StartTagToken:
+                        self.openStartTags.append(new_token)
                         new_token = phase.processStartTag(new_token)
                     elif type == EndTagToken:
+                        self.checkClosingTags(new_token)
                         new_token = phase.processEndTag(new_token)
                     elif type == CommentToken:
                         new_token = phase.processComment(new_token)
@@ -333,6 +364,9 @@ class HTMLParser(object):
 
         if not self.hasTitle:
             self.parseError("title-element-missing-from-head")
+
+        for duplicate in self.h1Instances["duplicates"]:
+            self.parseErrorWithPos((duplicate["startPos"], duplicate["endPos"]), "duplicate-h1-element", {"name": duplicate["name"]})
  
         # When the loop finishes it's EOF
         reprocess = True
@@ -343,6 +377,55 @@ class HTMLParser(object):
             if reprocess:
                 assert self.phase not in phases
 
+        # DECO3801 - Report missing closing tags.
+        for tag in self.openStartTags:            
+            self.parseErrorWithPos((tag['startPos'], tag['endPos']), "missing-end-tag", {"name": tag["name"]})
+
+    # DECO3801 - Handles all heading tag checks. This includes enforcing singular h1 tags
+    # and tracking incorrect heading order.
+    def processHeadings(self, token):
+        self.headingCount[token["name"]] += 1
+
+        if token["name"].lower() == "h1":
+            if not self.h1Instances["first"]:
+                self.h1Instances["first"] = True
+            else:
+                self.h1Instances["duplicates"].append(token)
+
+        missingHeadings = []
+        for heading in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+            if heading == token["name"].lower():
+                break
+
+            if self.headingCount[heading] == 0:
+                missingHeadings.append(heading)
+
+        missingMessage = ", ".join(missingHeadings)
+
+        if missingMessage == "":
+            return
+
+        self.parseError("invalid-heading-order", {"name": token["name"], "missing": missingMessage})
+
+    # DECO3801 - Process end tags, removing the corresponding start tag from the
+    # openStartTags list. If a closing tag cannot be matched to any of the starting
+    # tags seen so far, it is added to the remainingClosingTags list which
+    # tracks closing tags with no matching opening tag.
+    def checkClosingTags(self, token):
+        tempTokens = []
+        while(self.openStartTags):
+            currentToken = self.openStartTags.pop()
+            if currentToken['name'] == token['name']:
+                break
+
+            tempTokens.append(currentToken)
+
+        if not self.openStartTags:
+            self.remainingClosingTags.append(token)
+
+        while tempTokens:
+            self.openStartTags.append(tempTokens.pop())
+
     # DECO3801 - Checks local URLs for validity. This function works for both absolute and relative
     # local file paths. Checks all html5 tags for which the specification indicates a URL attribute,
     # i.e. the 'src' attribute of an img tag, the 'href' attribute of an 'a' tag, or the 'data' attribute
@@ -350,10 +433,18 @@ class HTMLParser(object):
     def checkURL(self, token):
         data = token.get("data")
 
+        # Check for the case where no attributes are present and ignore
+        # any further attribute checking.
+        if not data:
+            return
+
         for urlAttr in urlTagMap[token.get("name")]:
+
             pair = data.get(urlAttr)
-            if pair is None:
+
+            if(pair is None):
                 continue
+
             url, pos = pair
 
             if "http://" in url or "https://" in url: # We ignore Web urls
@@ -407,20 +498,20 @@ class HTMLParser(object):
                     self.parseError("input-element-missing-value-attribute", {"name": token["name"]})
             else:
                 
-                if not "value" in token["data"] and not token["data"]["type"][0] == "file":
+                if not "value" in token["data"] and not token["data"]["type"] == "file":
                     self.parseError("input-element-missing-value-attribute", {"name": token["name"]})
-                elif "value" in token["data"] and token["data"]["type"][0] == "file":
+                elif "value" in token["data"] and token["data"]["type"] == "file":
                     self.parseError("illegal-file-input-element-value-attribute", {"name": token["name"]})
 
-                if token["data"]["type"][0] not in formInputType:
-                    self.parseError("invalid-input-element-type-attribute", {"attr": token["data"]["type"][0]})
+                if token["data"]["type"] not in formInputType:
+                    self.parseError("invalid-input-element-type-attribute", {"attr": token["data"]["type"]})
 
             if not "name" in token["data"]:
                 self.parseError("input-element-missing-name-attribute", {"name": token["name"]})
 
             # DECO3801 - Check that input elements have an associated label tag.
             if "id" in token["data"]:
-                if not token["data"]["id"][0] in self.forLabels and not self.tree.openElements[-1].name == "label":
+                if not token["data"]["id"] in self.forLabels and not self.tree.openElements[-1].name == "label":
                     self.parseError("input-element-missing-label", {"name": token["name"]})
             else:
                 if not self.tree.openElements[-1].name == "label":
@@ -430,7 +521,7 @@ class HTMLParser(object):
         # are used to tie label tags to matching input tag IDs.
         if token["type"] == tokenTypes["StartTag"] and token["name"] == "label":
             if "for" in token["data"]:
-                self.forLabels.append(token["data"]["for"][0])
+                self.forLabels.append(token["data"]["for"])
 
     def normalizedTokens(self):
         for token in self.tokenizer:
@@ -497,8 +588,8 @@ class HTMLParser(object):
         replacements = {"definitionurl": "definitionURL"}
         for k, v in replacements.items():
             if k in token["data"]:
-                token["data"][v][0] = token["data"][k][0]
-                del token["data"][k][0]
+                token["data"][v] = token["data"][k]
+                del token["data"][k]
 
     def adjustSVGAttributes(self, token):
         replacements = {
@@ -568,8 +659,8 @@ class HTMLParser(object):
         for originalName in list(token["data"].keys()):
             if originalName in replacements:
                 svgName = replacements[originalName]
-                token["data"][svgName][0] = token["data"][originalName][0]
-                del token["data"][originalName][0]
+                token["data"][svgName] = token["data"][originalName]
+                del token["data"][originalName]
 
     def adjustForeignAttributes(self, token):
         replacements = adjustForeignAttributesMap
@@ -577,8 +668,8 @@ class HTMLParser(object):
         for originalName in token["data"].keys():
             if originalName in replacements:
                 foreignName = replacements[originalName]
-                token["data"][foreignName][0] = token["data"][originalName][0]
-                del token["data"][originalName][0]
+                token["data"][foreignName] = token["data"][originalName]
+                del token["data"][originalName]
 
     def reparseTokenNormal(self, token):
         self.parser.phase()
@@ -1626,7 +1717,7 @@ def getPhases(debug):
             framesetOK = self.parser.framesetOK
             self.startTagVoidFormatting(token)
             if ("type" in token["data"] and
-                    token["data"]["type"][0].translate(asciiUpper2Lower) == "hidden"):
+                    token["data"]["type"].translate(asciiUpper2Lower) == "hidden"):
                 # input type=hidden doesn't change framesetOK
                 self.parser.framesetOK = framesetOK
 
@@ -1657,14 +1748,14 @@ def getPhases(debug):
                 return
             form_attrs = {}
             if "action" in token["data"]:
-                form_attrs["action"] = token["data"]["action"][0]
+                form_attrs["action"] = token["data"]["action"]
             self.processStartTag(impliedTagToken("form", "StartTag",
                                                  attributes=form_attrs))
             self.processStartTag(impliedTagToken("hr", "StartTag"))
             self.processStartTag(impliedTagToken("label", "StartTag"))
             # XXX Localization ...
             if "prompt" in token["data"]:
-                prompt = token["data"]["prompt"][0]
+                prompt = token["data"]["prompt"]
             else:
                 prompt = "This is a searchable index. Enter search keywords: "
             self.processCharacters(
@@ -2241,7 +2332,7 @@ def getPhases(debug):
 
         def startTagInput(self, token):
             if ("type" in token["data"] and
-                    token["data"]["type"][0].translate(asciiUpper2Lower) == "hidden"):
+                    token["data"]["type"].translate(asciiUpper2Lower) == "hidden"):
                 self.parser.parseError("unexpected-hidden-input-in-table")
                 self.tree.insertElement(token)
                 # XXX associate with form
