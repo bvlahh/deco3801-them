@@ -253,7 +253,7 @@ END;
 if ( count($parsed_errors) == 0 )
     draw_error_bar(0, 0, 0, 0, 1, 1010, 10);
 else
-    draw_error_bar($error_semantics, $error_access, $error_deprecated, $error_misc, 0, 1010, 10);
+    draw_error_bar($error_access, $error_semantics, $error_deprecated, $error_misc, 0, 1010, 10);
 
 print <<<END
 
