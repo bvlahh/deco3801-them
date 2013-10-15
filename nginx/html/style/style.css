@@ -260,10 +260,10 @@ a:hover {
     border: 1px solid #DDDDDD;
     background-color: #FFFFFF;
     
-    height: 500px;
+    height: 700px;
     overflow-y: scroll;
     
-    width: 500px;
+    width: 700px;
     overflow-x: scroll;
     
 }
@@ -305,11 +305,12 @@ a:hover {
     
     float: left;
     border: 1px solid #DDDDDD;
-    margin: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     padding: 5px;
     
-    width: 490px;
-    min-height: 490px;
+    width: 300px;
+    min-height: 700px;
     background-color: #ffffff;
     
 }
@@ -378,6 +379,12 @@ a:hover {
     
 }
 
+.files_file span {
+    
+    display: block;
+    
+}
+
 .uploadset_back {
     
     color: #222222;
@@ -387,6 +394,7 @@ a:hover {
     border: 1px solid #DDDDDD;
     
     padding: 5px;
+    float: left;
     
 }
 
@@ -394,5 +402,20 @@ a:hover {
     
     color: #222222;
     background-color: #EEEEEE;
+    
+}
+
+.filename {
+    
+    font-size: 140%;
+    padding-left: 10px;
+    padding-top: 3px;
+    float: left;
+    
+}
+
+.error_message {
+    
+    border-bottom: 1px solid red;
     
 }
