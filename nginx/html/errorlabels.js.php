@@ -24,7 +24,7 @@ print <<<END
         var message = "";
         
         for ( var i=0; i<errors.length; i++ )
-            message += err_message(errors[i]) + "<br />";
+            message += "<div class=\"error_message\">" + err_message(errors[i]) + "</div>";
         
         set_message(message);
         

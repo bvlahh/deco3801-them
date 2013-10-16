@@ -28,7 +28,7 @@ if (! $file)
 * $parsed is the array of error information returned by the parser.
 */
 
-$filename = $file["filename"];
+$filename = htmlspecialchars($file["filename"]);
 $input = base64_decode($file["document"]);
 $parsed_errors = json_decode($file["cached_parse"]);
 
@@ -227,24 +227,26 @@ $count_files = count(get_set($set));
 
 draw_header("THEM prototype - $filename");
 
-$upload_set = "";
+print <<<END
+
+<div style="margin-bottom: 5px;">
+
+END;
 
 if ($count_files > 1)
-    $upload_set = <<<END
+    print <<<END
         <a class="uploadset_back" href="show_set?set=$set">
             Uploaded Files
         </a>
 END;
 
 print <<<END
-
-<div>
     
-    $upload_set
-    
-    <span style="font-size: 140%;">
-    $filename
+    <span class="filename">
+        $filename
     </span>
+    
+    <div class="cb"></div>
     
 </div>
 
@@ -253,19 +255,21 @@ print <<<END
 END;
 
 if ( count($parsed_errors) == 0 )
-    draw_error_bar(0, 0, 0, 0, 1, 1010, 10);
+    draw_error_bar(0, 0, 0, 0, 1, 1020, 10);
 else
-    draw_error_bar($error_access, $error_semantics, $error_deprecated, $error_misc, 0, 1010, 10);
+    draw_error_bar($error_access, $error_semantics, $error_deprecated, $error_misc, 0, 1020, 10);
 
 print <<<END
 
 </div>
 
+<!--
 <div class="top_infobox" id="top_infobox">$top_info</div>
 
 <div style="padding: 10px;">Click on highlighted text for more information.</div>
+-->
 
-<div class="file" style="float: left; margin-top: 10px">
+<div class="file" style="float: left;">
     
     <div class="file_lines">
         <pre>$line_nos</pre>
@@ -279,9 +283,7 @@ print <<<END
     
 </div>
 
-<div class="infobox" id="infobox">
-
-</div>
+<div class="infobox" id="infobox"></div>
 
 <div class="cb"></div>
 

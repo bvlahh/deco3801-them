@@ -104,7 +104,7 @@ parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 files = ""
 filename = ""
 
-blah = """<!DOCTYPE html><html><head><title></head></title><body></body></html>"""
+blah = """<html><head><title>ye</title></head><body><frame></frame></body></html>"""
 
 table = """
 <html><head></head><body>
@@ -120,7 +120,7 @@ table = """
 </table>
 <footer></footer></body></html>
 """
-fragment = error.decode("utf-8")
+fragment = bigdoc.decode("utf-8")
 
 minidom_document = parser.parse(fragment, files=files, filename=filename)
 # <html><html><body><body></body></body></html></html>

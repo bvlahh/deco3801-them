@@ -23,6 +23,7 @@ from .constants import adjustForeignAttributes as adjustForeignAttributesMap
 # DECO3801 - Imports
 from .constants import singularTags, errorCodes, deprecatedTags, urlTags, urlTagMap
 from .constants import formElements, formInputType, allowedElementNames
+from .constants import voidElements
 
 def parse(doc, treebuilder="etree", encoding=None,
           namespaceHTMLElements=True):
@@ -317,7 +318,8 @@ class HTMLParser(object):
                     elif type == SpaceCharactersToken:
                         new_token = phase.processSpaceCharacters(new_token)
                     elif type == StartTagToken:
-                        self.openStartTags.append(new_token)
+                        if not new_token["name"].lower() in voidElements and not self.phase == self.phases["initial"]:
+                            self.openStartTags.append(new_token)
                         new_token = phase.processStartTag(new_token)
                     elif type == EndTagToken:
                         self.checkClosingTags(new_token)
