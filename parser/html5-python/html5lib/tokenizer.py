@@ -483,6 +483,9 @@ class HTMLTokenizer(object):
 
     def rcdataEndTagNameState(self):
         appropriate = self.currentToken and self.currentToken["name"].lower() == self.temporaryBuffer.lower()
+        ## DECO3801 Elements within comparisong list will cause us to leave text field of tag
+        inappropriate = self.currentToken and self.temporaryBuffer.lower() in ["head"]
+
         data = self.stream.char()
         if data in spaceCharacters and appropriate:
             self.currentToken = {"type": tokenTypes["EndTag"],
@@ -494,11 +497,19 @@ class HTMLTokenizer(object):
                                  "name": self.temporaryBuffer,
                                  "data": [], "selfClosing": False}
             self.state = self.selfClosingStartTagState
-        elif data == ">" and appropriate:
+        elif data == ">" and (appropriate or inappropriate):
+            ## DECO3801 Adding checks for tags embedded within text fields
+            if inappropriate:
+                self.currentToken = {"type": tokenTypes["EndTag"],
+                                    "name": self.currentToken["name"].lower(),
+                                    "data": [], "selfClosing": False}
+                self.emitCurrentToken()
+
             self.currentToken = {"type": tokenTypes["EndTag"],
                                  "name": self.temporaryBuffer,
                                  "data": [], "selfClosing": False}
             self.emitCurrentToken()
+
             self.state = self.dataState
         elif data in asciiLetters:
             self.temporaryBuffer += data

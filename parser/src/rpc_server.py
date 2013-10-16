@@ -40,6 +40,12 @@ def parse_base64(input):
     document = parser.parse(base64.b64decode(input["document"]), files=input.get("files"), filename=input.get("filename"))
     return parser.parseErrors()
 
+def check_ascii(input):
+    try:
+        input.decode('ascii')
+    except UnicodeDecodeError:
+        self.parser.parseError("html-contains-non-ascii-characters")
+
 def line_count(input):
     if ( type(input) == unicode ):
         time.sleep(10)

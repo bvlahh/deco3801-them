@@ -225,7 +225,7 @@ class HTMLParser(object):
 
             # DECO3801 - Removes a token to maintain parity with the 
             # list of tokens which have yet to be processed.
-            self.remainingTokens.pop(0)
+            #self.remainingTokens.pop(0)
 
             if new_token is not None and 'name' in new_token:
                 # DECO3801 - Check tag contains a valid tag name.
@@ -1201,10 +1201,10 @@ def getPhases(debug):
         def startTagOther(self, token):
             # DECO3801 TODO: Error checking for start tags in wrong section.
             # Old:
-            # self.anythingElse()
-            # return token
+            self.anythingElse()
             self.parser.parseError("incorrect-start-tag-placement-in-head",
                                    {"name": token["name"]})
+            return token
 
         # DECO3801 - Checks if the body tag found comes before a closing
         # head tag. If no closing head tag is found, a closing tag is inserted
@@ -2366,9 +2366,9 @@ def getPhases(debug):
                     self.tree.openElements.pop()
                 self.tree.openElements.pop()
                 
+                print dir(self.tree.getDocument().find("."))
                 self.parser.resetInsertionMode()
             else:
-                print "GH2"
                 # innerHTML case
                 assert self.parser.innerHTML
                 self.parser.parseError()

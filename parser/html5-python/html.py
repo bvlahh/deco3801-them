@@ -4,6 +4,11 @@ from html5lib import treewalkers
 from html5lib import treebuilders
 
 
+error = """
+<!DOCTYPE html>
+<html><head><title>My First Evaluated Webpage</table></head>
+<body><h2>I bet I can sneak in a lower header... or maybe not!</h2><h1>Look at the majesty of my multiple heading ones!!</h1><h1>Wait that's a bad thing</h1><frame>I can use frames, right?</frame><p>Dang, what about leaving a tag open, with a image <img src=""> and no alt text!</body></html>
+"""
 bigdoc = """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -99,7 +104,7 @@ parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 files = ""
 filename = ""
 
-blah = """<html><head></head><body><h1></h1><H1></H1><h3></h3><footer></footer></body></html>"""
+blah = """<!DOCTYPE html><html><head><title></head></title><body></body></html>"""
 
 table = """
 <html><head></head><body>
@@ -115,7 +120,7 @@ table = """
 </table>
 <footer></footer></body></html>
 """
-fragment = bigdoc.decode("utf-8")
+fragment = error.decode("utf-8")
 
 minidom_document = parser.parse(fragment, files=files, filename=filename)
 # <html><html><body><body></body></body></html></html>
