@@ -390,8 +390,8 @@ a:hover {
     color: #222222;
     text-decoration: none;
     
-    background-color: #FBFBFB;
-    border: 1px solid #DDDDDD;
+    border: 1px solid #BBBBBB;
+    background-color: #EEEEEE;
     
     padding: 5px;
     float: left;
@@ -400,8 +400,13 @@ a:hover {
 
 .uploadset_back:hover {
     
+    /*
     color: #222222;
     background-color: #EEEEEE;
+    */
+    
+    background-color: #e44d26;
+    color: #FFFFFF;
     
 }
 
@@ -416,6 +421,7 @@ a:hover {
 
 .error_message {
     
-    border-bottom: 1px solid red;
+    padding: 5px;
+    border-bottom: 1px solid #DDDDDD;
     
 }
