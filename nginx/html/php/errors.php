@@ -7,7 +7,7 @@ class Errors
     */
     static $error_strings = array(
         
-        1 => "No valid doctype was found. HTML files should start with <!DOCTYPE html>.", //
+        1 => "No valid doctype was found. HTML files should start with <code><!DOCTYPE html></code>.",
         2 => "Multiple instance of a singular tag.",
         3 => "A singular start tag was placed in the wrong location.",
         4 => "A singular closing tag was placed in the wrong location.",

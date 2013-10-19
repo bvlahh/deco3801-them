@@ -38,6 +38,11 @@ foreach ( Errors::$error_strings as $err_number => $err_message ) {
     
     $escaped_message = htmlspecialchars($err_message);
     
+    $escaped_message = str_replace(htmlspecialchars("<code>"), "<span class=\"monospace\">", $escaped_message);
+    $escaped_message = str_replace(htmlspecialchars("</code>"), "</span>", $escaped_message);
+    
+    $escaped_message = addslashes($escaped_message);
+    
     print <<<END
         
         if (number == $err_number)
