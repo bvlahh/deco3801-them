@@ -120,7 +120,7 @@ table = """
 </table>
 <footer></footer></body></html>
 """
-fragment = bigdoc.decode("utf-8")
+fragment = error.decode("utf-8")
 
 minidom_document = parser.parse(fragment, files=files, filename=filename)
 # <html><html><body><body></body></body></html></html>
