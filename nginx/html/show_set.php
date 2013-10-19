@@ -92,7 +92,7 @@ function draw_file($file) {
     
     print <<<END
         <a class="files_file" href="/show_file?file=${fid}">
-            <img src="/images/white_file.png" alt="" />
+            <img src="/images/file.png" alt="" />
             <span>
 END;
     
