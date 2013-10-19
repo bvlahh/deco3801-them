@@ -250,7 +250,7 @@ print <<<END
     
 </div>
 
-<div style="margin-bottom: 10px;">
+<div style="margin-bottom: 10px; width: 1020px;">
 
 END;
 

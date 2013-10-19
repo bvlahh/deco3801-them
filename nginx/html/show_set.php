@@ -60,9 +60,49 @@ function draw_file($file) {
     
     $fid = $file["id"];
     
+    $parsed_errors = json_decode($file["cached_parse"]);
+    
+    $error_access = 0;
+    $error_semantics = 0;
+    $error_deprecated = 0;
+    $error_misc = 0;
+    
+    // count the errors
+    foreach ( $parsed_errors as $parsed_error ) {
+        
+        $err_no = $parsed_error[0];
+        
+        $err_colour = Errors::errorColour($err_no);
+        
+        if ($err_colour == "#ffff7f") {
+            /* poor practice */
+            $error_misc++;
+        } else if ($err_colour == "#7f7fff") {
+            /* accessibiity */
+            $error_access++;
+        } else if ($err_colour == "#ffbb77") {
+            /* deprecated tags */
+            $error_deprecated++;
+        } else {
+            /* syntax, semantics */
+            $error_semantics++;
+        }
+        
+    }
+    
     print <<<END
         <a class="files_file" href="/show_file?file=${fid}">
             <img src="/images/white_file.png" alt="" />
+            <span>
+END;
+    
+    if ( count($parsed_errors) == 0 )
+        draw_error_bar(0, 0, 0, 0, 1, 48, 5);
+    else
+        draw_error_bar($error_access, $error_semantics, $error_deprecated, $error_misc, 0, 48, 5);
+    
+    print <<<END
+            </span>
             <span>
                 ${filename}
             </span>
