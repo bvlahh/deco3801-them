@@ -155,15 +155,31 @@ $error_access = 0;
 $error_deprecated = 0;
 $error_misc = 0;
 
+$first_gde = true;
+
 foreach ( $general_document_errors as $general_document_error ) {
+    
+    if (! $first_gde)
+        $style = "border-top: 1px solid #DDDDDD;";
     
     $err_no = $general_document_error[0];
     
     $err_message_output = htmlspecialchars( Errors::errorString($err_no) );
     
-    $top_info .= $err_message_output . "<br />";
-
+    $err_col = Errors::errorColour($err_no);
+    
+    $top_info .= <<<END
+        <div class="top_infobox_item" style="$style">
+            <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: $err_col; float: left; margin-left: 5px; margin-top: 3px;">
+            </div>
+            <div style="float: left; margin-left: 5px; width: 990px;">$err_message_output</div><div class="cb">
+            </div>
+        </div>
+END;
+    
     $error_semantics++;
+    
+    $first_gde = false;
     
 }
 
@@ -181,12 +197,12 @@ foreach ( $chunks as $chunk ) {
         $err_nos = htmlspecialchars(json_encode($chunk["errors"]));
         $err_colour = Errors::errorColour($err_no);
         
-        $start_span = "<a href=\"#\" style=\"background-color: $err_colour; text-decoration: none; border-left: 1px solid #fbfbfb; border: 1px solid #fbfbfb;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
+        $start_span = "<a href=\"#\" style=\"background-color: $err_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
         $end_span = "</a>";
         
         // mark the line for line number highlighting
         $error_lines[ $chunk["start"] > 0 ? substr_count($input, "\n", 0, $chunk["start"]) : 0] = $err_colour;
-
+        
         if ($err_colour == "#ffff7f") {
             /* poor practice */
             $error_misc++;
@@ -250,7 +266,7 @@ print <<<END
     
 </div>
 
-<div style="margin-bottom: 10px; width: 1020px;">
+<div style="margin-bottom: 5px; width: 1020px;">
 
 END;
 
@@ -263,9 +279,9 @@ print <<<END
 
 </div>
 
-<!--
-<div class="top_infobox" id="top_infobox">$top_info</div>
+<div id="top_infobox">$top_info</div>
 
+<!--
 <div style="padding: 10px;">Click on highlighted text for more information.</div>
 -->
 
