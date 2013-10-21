@@ -155,13 +155,13 @@ $error_access = 0;
 $error_deprecated = 0;
 $error_misc = 0;
 
-$first_gde = true;
+$first_error = true;
 
 foreach ( $general_document_errors as $general_document_error ) {
     
     $style = "";
     
-    if (! $first_gde)
+    if (! $first_error)
         $style = "border-top: 1px solid #DDDDDD;";
     
     $err_no = $general_document_error[0];
@@ -184,7 +184,7 @@ END;
     
     $error_semantics++;
     
-    $first_gde = false;
+    $first_error = false;
     
 }
 
@@ -202,7 +202,14 @@ foreach ( $chunks as $chunk ) {
         $err_nos = htmlspecialchars(json_encode($chunk["errors"]));
         $err_colour = Errors::errorColour($err_no);
         
-        $start_span = "<a href=\"#\" style=\"background-color: $err_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
+        // don't insert empty chunks
+        if ( $chunk["text"] == "")
+            continue;
+        
+        // the toggling colour (for highlighting errors side by side)
+        $display_colour = Errors::documentErrorColour($err_no);
+        
+        $start_span = "<a href=\"#\" style=\"background-color: $display_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
         $end_span = "</a>";
         
         // mark the line for line number highlighting

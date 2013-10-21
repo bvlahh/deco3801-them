@@ -69,6 +69,7 @@ class Errors
         60 => "A link element's 'name' attribute is empty. Please enter a valid name.",
         61 => "Only one instance of the h1 tag should be used in a single HTML document.",
         62 => "Heading elements appear in order of h1 being the most important and h6 being the least important. This heading tag has skipped one or more of the sizings.",
+        
     );
     
     /**
@@ -101,6 +102,39 @@ class Errors
         } else {
             /* syntax, semantics */
             return "#ff7f7f";
+        }
+        
+    }
+    
+    static function documentErrorColour($error_number) {
+        
+        static $colour_toggle = false;
+        $colour_toggle = ($colour_toggle xor true);
+        
+        if (in_array($error_number, array(48, 61, 62))) {
+            /* poor practice */
+            if ($colour_toggle)
+                return "#ffff6f";
+            else
+                return "#ffff7f";
+        } else if (in_array($error_number, array(47, 51))) {
+            /* accessibiity */
+            if ($colour_toggle)
+                return "#6f6fff";
+            else
+                return "#7f7fff";
+        } else if (in_array($error_number, array(40, 41))) {
+            /* deprecated tags */
+            if ($colour_toggle)
+                return "#ffbb66";
+            else
+                return "#ffbb77";
+        } else {
+            /* syntax, semantics */
+            if ($colour_toggle)
+                return "#ff6f6f";
+            else
+                return "#ff7f7f";
         }
         
     }
