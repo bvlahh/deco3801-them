@@ -145,7 +145,7 @@ END;
     
 }
 
-draw_header("THEM prototype - Uploaded Files");
+draw_header("THEM - Uploaded Files");
 
 // Uploaded Files or Uploaded Zip if the files[] != []
 draw_folder("Uploaded Files", $filetree);
