@@ -425,3 +425,12 @@ a:hover {
     border-bottom: 1px solid #DDDDDD;
     
 }
+
+.monospace {
+    
+    background-color: #DDDDDD;
+    
+    font-family: monospace;
+    font-weight: bold;
+    
+}
