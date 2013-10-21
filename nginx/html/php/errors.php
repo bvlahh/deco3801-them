@@ -17,7 +17,7 @@ class Errors
         8 => "This closing tag is not valid within the head section. It should probably go in the body section instead, along with it's starting tag!",
         9 => "No <code><head></code> tag was found in the document.",
         10 => "No <code></head></code> tag was found in the document.",
-        11 => "A <code></html></code> tag was found before the <code></body></code> tag. The <code></html></code> should be the final line of the HTML document.",
+        11 => "A <code></html></code> tag was found before the <code></body></code> tag. The <code></html></code> tag should be the final line of the HTML document.",
         12 => "A start tag was found after the expected <code></html></code> tag.",
         13 => "A closing tag was found after the expected <code></html></code> tag.",
         14 => "This closing tag is missing a matching start tag.",
