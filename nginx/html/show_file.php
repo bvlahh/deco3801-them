@@ -159,12 +159,17 @@ $first_gde = true;
 
 foreach ( $general_document_errors as $general_document_error ) {
     
+    $style = "";
+    
     if (! $first_gde)
         $style = "border-top: 1px solid #DDDDDD;";
     
     $err_no = $general_document_error[0];
     
-    $err_message_output = htmlspecialchars( Errors::errorString($err_no) );
+    $escaped_message = htmlspecialchars( Errors::errorString($err_no) );
+    
+    $escaped_message = str_replace(htmlspecialchars("<code>"), "<span class=\"monospace\">", $escaped_message);
+    $escaped_message = str_replace(htmlspecialchars("</code>"), "</span>", $escaped_message);
     
     $err_col = Errors::errorColour($err_no);
     
@@ -172,7 +177,7 @@ foreach ( $general_document_errors as $general_document_error ) {
         <div class="top_infobox_item" style="$style">
             <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: $err_col; float: left; margin-left: 5px; margin-top: 3px;">
             </div>
-            <div style="float: left; margin-left: 5px; width: 990px;">$err_message_output</div><div class="cb">
+            <div style="float: left; margin-left: 5px; width: 990px;">$escaped_message</div><div class="cb">
             </div>
         </div>
 END;
