@@ -69,6 +69,8 @@ class Errors
         60 => "A link element's <code>name</code> attribute is empty. Please enter a valid name.",
         61 => "Only one instance of the <code><h1></code> tag should be used in a single HTML document.",
         62 => "Heading elements appear in order of <code><h1></code> being the most important and <code><h6></code> being the least important. This heading tag has skipped one or more of the sizings.",
+        63 => "The HTML contains non-ascii characters. It's best to use only ascii characters where possible."
+        64 => "It appears you may be using a HTML table for layout. You should only use a <code><table></code> element for tabular data." 
     );
     
     /**
@@ -89,7 +91,7 @@ class Errors
     */
     static function errorColour($error_number) {
         
-        if (in_array($error_number, array(48, 61, 62))) {
+        if (in_array($error_number, array(48, 61, 62, 63, 64))) {
             /* poor practice */
             return "#ffff7f";
         } else if (in_array($error_number, array(47, 51))) {

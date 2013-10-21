@@ -37,7 +37,10 @@ def _gogentle(signum, frame):
 # Generates an array of errors found after parsing the given base64 input.
 def parse_base64(input):
     parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
+
+    check_ascii(input)
     document = parser.parse(base64.b64decode(input["document"]), files=input.get("files"), filename=input.get("filename"))
+
     return parser.parseErrors()
 
 def check_ascii(input):
