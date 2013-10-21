@@ -253,7 +253,7 @@ for ($l=1; $l<$num_lines+2; $l++) {
 $set = $file["upload_set"];
 $count_files = count(get_set($set));
 
-draw_header("THEM prototype - $filename");
+draw_header("THEM - $filename");
 
 print <<<END
 

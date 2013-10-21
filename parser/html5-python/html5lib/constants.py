@@ -299,6 +299,8 @@ errorCodes = {
     "a-name-attribute-empty": 60,
     "duplicate-h1-element": 61,
     "invalid-heading-order": 62,
+    "html-contains-non-ascii-characters": 63,
+    "table-used-for-layout": 64,
 }
 
 E = {
