@@ -92,7 +92,7 @@ function draw_file($file) {
     
     print <<<END
         <a class="files_file" href="/show_file?file=${fid}">
-            <img src="/images/white_file.png" alt="" />
+            <img src="/images/file.png" alt="" />
             <span>
 END;
     
@@ -145,7 +145,7 @@ END;
     
 }
 
-draw_header("THEM prototype - Uploaded Files");
+draw_header("THEM - Uploaded Files");
 
 // Uploaded Files or Uploaded Zip if the files[] != []
 draw_folder("Uploaded Files", $filetree);

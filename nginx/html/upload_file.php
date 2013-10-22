@@ -7,7 +7,7 @@
 require_once "php/header.php";
 require_once "php/footer.php";
 
-draw_header("THEM prototype - Upload File", 2);
+draw_header("THEM - Upload File", 2);
 
 print <<<END
     
@@ -19,7 +19,7 @@ print <<<END
             </div>
             <div>
                 <div style="float: left;">
-                    <button onclick="addFileUpload(); return false;" class="button">Add File</button>
+                    <button type="button" onclick="addFileUpload(); return false;" class="button">Add File</button>
                 </div>
                 <div style="float: right;">
                     <input type="submit" value="Validate" class="button" />

@@ -7,7 +7,7 @@
 require_once "php/header.php";
 require_once "php/footer.php";
 
-draw_header("THEM prototype - Upload ZIP", 3);
+draw_header("THEM - Upload ZIP", 3);
 
 print <<<END
     

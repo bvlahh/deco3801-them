@@ -315,15 +315,11 @@ a:hover {
     
 }
 
-.top_infobox {
+.top_infobox_item {
     
-    border: 1px solid #DDDDDD;
-    padding: 5px;
-    
-    width: 1000px;
-    min-height: 75px;
-    background-color: #ffffff;
-    overflow: scroll;
+    width: 1020px;
+    padding-top: 5px;
+    margin-bottom: 5px;
     
 }
 
@@ -423,5 +419,14 @@ a:hover {
     
     padding: 5px;
     border-bottom: 1px solid #DDDDDD;
+    
+}
+
+.monospace {
+    
+    background-color: #DDDDDD;
+    
+    font-family: monospace;
+    font-weight: bold;
     
 }
