@@ -39,7 +39,15 @@ def parse_base64(input):
     parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
     text = base64.b64decode(input["document"])
-    document = parser.parse(text, files=input.get("files"), filename=input.get("filename"))
+    
+    files = input.get("files")
+    filename = input.get("filename")
+
+    if files == []:
+        files = None
+        filename = None
+
+    document = parser.parse(text, files=files, filename=filename)
 
     if not ascii_only(text):
         parser.parseError("html-contains-non-ascii-characters")
