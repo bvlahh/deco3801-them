@@ -36,7 +36,16 @@ print <<<END
         
         function addFileUpload() {
             
-            fileDiv.innerHTML += '<input type="file" name="file[]" class="filepicker" multiple="multiple" />';
+            //fileDiv.innerHTML += '<input type="file" name="file[]" class="filepicker" multiple="multiple" />';
+            
+            var newInput = document.createElement("input");
+            
+            newInput.setAttribute( "type", "file" );
+            newInput.setAttribute( "name", "file[]" );
+            newInput.setAttribute( "class", "filepicker" );
+            newInput.setAttribute( "multiple", "multiple" );
+            
+            fileDiv.appendChild(newInput);
             
         }
         
