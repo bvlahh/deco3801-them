@@ -8,6 +8,7 @@ except NameError:
 from collections import deque
 
 from .constants import spaceCharacters
+from .constants import singularTags
 from .constants import entities
 from .constants import asciiLetters, asciiUpper2Lower
 from .constants import digits, hexDigits, EOF
@@ -484,7 +485,7 @@ class HTMLTokenizer(object):
     def rcdataEndTagNameState(self):
         appropriate = self.currentToken and self.currentToken["name"].lower() == self.temporaryBuffer.lower()
         ## DECO3801 Elements within comparisong list will cause us to leave text field of tag
-        inappropriate = self.currentToken and self.temporaryBuffer.lower() in ["head", "table"]
+        inappropriate = self.currentToken and self.temporaryBuffer.lower() in singularTags 
 
         data = self.stream.char()
         if data in spaceCharacters and appropriate:

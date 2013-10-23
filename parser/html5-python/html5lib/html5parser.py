@@ -130,6 +130,7 @@ class HTMLParser(object):
                                               parser=self, **kwargs)
         # DECO3801 - List of files and directories
         self.files = files
+        
         # DECO3801 - The full file name of the file currently being parsed
         self.cwd = ""
 

@@ -140,7 +140,7 @@ class HTMLUnicodeInputStream(object):
 
     """
 
-    _defaultChunkSize = 10240
+    _defaultChunkSize = 1024000
 
     def __init__(self, source):
         """Initialises the HTMLInputStream.
