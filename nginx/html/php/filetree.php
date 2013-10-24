@@ -33,46 +33,58 @@ function draw_file($file) {
     $error_deprecated = 0;
     $error_misc = 0;
     
-    // count the errors
-    foreach ( $parsed_errors as $parsed_error ) {
-        
-        $err_no = $parsed_error[0];
-        
-        $err_colour = Errors::errorColour($err_no);
-        
-        if ($err_colour == "#ffff7f") {
-            /* poor practice */
-            $error_misc++;
-        } else if ($err_colour == "#7f7fff") {
-            /* accessibiity */
-            $error_access++;
-        } else if ($err_colour == "#ffbb77") {
-            /* deprecated tags */
-            $error_deprecated++;
-        } else {
-            /* syntax, semantics */
-            $error_semantics++;
+    if ($parsed_errors != -1) {
+        // count the errors
+        foreach ( $parsed_errors as $parsed_error ) {
+            
+            $err_no = $parsed_error[0];
+            
+            $err_colour = Errors::errorColour($err_no);
+            
+            if ($err_colour == "#ffff7f") {
+                /* poor practice */
+                $error_misc++;
+            } else if ($err_colour == "#7f7fff") {
+                /* accessibiity */
+                $error_access++;
+            } else if ($err_colour == "#ffbb77") {
+                /* deprecated tags */
+                $error_deprecated++;
+            } else {
+                /* syntax, semantics */
+                $error_semantics++;
+            }
+            
         }
-        
     }
     
+    $filetag = "a";
+    
+    if ( $parsed_errors == -1 )
+        $filetag = "span";
+    
     print <<<END
-        <a class="files_file" href="/file?file=${fid}">
+        <$filetag class="files_file" href="/file?file=${fid}">
             <img src="/images/file.png" alt="" />
             <span>
 END;
     
-    if ( count($parsed_errors) == 0 )
-        draw_error_bar(0, 0, 0, 0, 1, 48, 5);
-    else
-        draw_error_bar($error_access, $error_semantics, $error_deprecated, $error_misc, 0, 48, 5);
+    if ( $parsed_errors != -1) {
+        if ( count($parsed_errors) == 0 ) {
+            draw_error_bar(0, 0, 0, 0, 1, 48, 5);
+        } else {
+            draw_error_bar($error_access, $error_semantics, $error_deprecated, $error_misc, 0, 48, 5);
+        }
+    } else {
+        print "<span style=\"height: 7px; font-size: 7px;\">Not HTML</span>";
+    }
     
     print <<<END
             </span>
             <span>
                 ${filename}
             </span>
-        </a>
+        </$filetag>
 END;
     
 }

@@ -10,7 +10,7 @@ require_once "php/footer.php";
 draw_header("THEM - Upload ZIP");
 
 print <<<END
-    <div style="padding-left: 100px; padding-top: 30px;">
+    <div style="padding-left: 50px; padding-top: 20px;">
         <div class="datainput">
             Upload ZIP
             <form action="do_upload_zip" method="post" enctype="multipart/form-data" >

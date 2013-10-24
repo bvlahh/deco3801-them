@@ -15,8 +15,14 @@ $set = $_GET["set"];
 
 $set = get_set($set);
 
-if ( count($set) < 2 )
-    redirect("/file?file=" . $set[0]["id"]);
+if ( count($set) < 2 ) {
+    
+    if ( json_decode($set[0]["cached_parse"]) == -1 )
+        redirect("/");
+    else
+        redirect("/file?file=" . $set[0]["id"]);
+    
+}
 
 $filetree = array(
     "files" => array(),
