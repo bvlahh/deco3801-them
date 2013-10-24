@@ -10,46 +10,14 @@ draw_header("THEM - Help");
 
 print <<<END
     
-    Help Section
+    <div>Help Section</div>
     
 END;
 
-// include information about clicking tags to display errors and some other thing brendan mentioned??
-
 print <<<END
     
-    Understanding the Error Bars:<br />
-
-    Here you can see an error bar, with corresponding error numbers included.<br />
+    <iframe width="420" height="315" src="//www.youtube.com/embed/ZSZPTFxE29Q" frameborder="0" allowfullscreen></iframe>
     
-END;
-
-draw_error_bar(1, 6, 3, 2, 0, 500, 20, true);
-
-print <<<END
-
-	<br />This bar shows the relative ratios of each error in a document. In order, this highlights:<br /><br />
-
-	Accessibility, Structure / Syntax, Deprecated Elements and General Poor Practice / Other Misc. Errors<br /><br />
-
-	If the file has no errors, a green bar will display instead.<br />
-
-END;
-
-draw_error_bar(0, 0, 0, 0, 1, 500, 10);
-
-print <<<END
-
-	In some instances, you will see short forms of lines underneath files you upload via the <a href="/upload_zip">Upload Zip</a> page.
-
-END;
-
-draw_error_bar(1, 1, 1, 1, 1, 50, 10);
-
-print <<<END
-
-	These bars will also display on the multiple file upload page, next to the files they represent.
-
 END;
 
 draw_footer();
