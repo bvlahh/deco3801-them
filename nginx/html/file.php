@@ -293,10 +293,6 @@ print <<<END
 
 <div id="top_infobox">$top_info</div>
 
-<!--
-<div style="padding: 10px;">Click on highlighted text for more information.</div>
--->
-
 <div class="file" style="float: left;">
     
     <div style="background-color: #EEEEEE; font-size: 80%; line-height: 150%; padding-left: 5px;">Click on highlighted text for more information.</div>
