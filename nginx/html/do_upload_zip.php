@@ -48,7 +48,9 @@ for ($i=0; $i<($zip->numFiles);$i++) {
     
     $encoded_input = base64_encode($file_data);
     
-    $parsed = validate($filenames, $file_name, $encoded_input);
+    //$parsed = validate($filenames, $file_name, $encoded_input);
+    
+    $parsed = array();
     
     $encoded_parsed = json_encode($parsed);
     

@@ -17,7 +17,7 @@ HTML5 Logo oranges:
 
 body {
     
-    min-width: 800px;
+    min-width: 1270px;
     color: #222222;
     font-family: sans-serif;
     background-color: #222222;
@@ -325,7 +325,7 @@ a:hover {
 
 .files_collection {
     
-    min-width: 575px;
+    max-width: 1000px;
     
 }
 
