@@ -2,7 +2,19 @@
 
 function draw_file_tree($tree) {
     
-    draw_folder("Uploaded Files", $filetree);
+    print <<<END
+        
+        <div class="files_collection">
+        
+END;
+    
+    draw_folder("Uploaded Files", $tree);
+    
+    print <<<END
+        
+        </div>
+        
+END;
     
 }
 
