@@ -69,7 +69,7 @@ class Errors
         60 => "A link element's <code>name</code> attribute is empty. Please enter a valid name.",
         61 => "Only one instance of the <code><h1></code> tag should be used in a single HTML document.",
         62 => "Heading elements appear in order of <code><h1></code> being the most important and <code><h6></code> being the least important. This heading tag has skipped one or more of the sizings.",
-        63 => "The HTML contains non-ascii characters. It's best to use only ascii characters where possible.",
+        63 => "The HTML contains non-ascii characters. It's best to avoid the use of non-ascii characters unless necessary. If non-ascii characters are required, ensure UTF-8 encoding is used by including the following snippet in the head section: <code><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></code>",
         64 => "It appears you may be using a HTML table for layout. You should only use a <code><table></code> element for tabular data.",
     );
     
