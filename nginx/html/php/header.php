@@ -16,7 +16,7 @@ function draw_header($title) {
 		
         <title>$title</title>
         
-        <link rel="icon" type="image/svg+xml" href="/images/HTML5_Badge.svg" />
+        <link rel="icon" type="image/png" href="/images/32px-HTML5_Badge.svg.png" />
 		<link rel="stylesheet" type="text/css" href="/style/style.css" />
         
     </head>

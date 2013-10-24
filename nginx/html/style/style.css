@@ -123,13 +123,6 @@ a:hover {
     
 }
 
-.indextitle {
-    
-    text-align: center;
-    font-size: 120%;
-    
-}
-
 .datainput {
     
     border: 1px solid #EEEEEE;
@@ -152,8 +145,8 @@ a:hover {
 .datainput textarea {
     
     margin-top: 10px;
-    width: 500px;
-    height: 500px;
+    width: 900px;
+    height: 600px;
     border: 1px solid #DDDDDD;
     
 }

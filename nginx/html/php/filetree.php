@@ -84,7 +84,7 @@ function draw_folder($folder_name, $folder) {
     print <<<END
         <div class="files_folder">
             <div class="files_folder_title">
-                ${escaped_folder_name}
+                <img src="/images/folder.png" style="height: 18px; width: 24px; margin-right: 5px;" alt="" />${escaped_folder_name}
             </div>
             <div class="files_folder_contents">
                 <div>
