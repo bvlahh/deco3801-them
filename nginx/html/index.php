@@ -3,32 +3,63 @@
 require_once "php/header.php";
 require_once "php/footer.php";
 
-draw_header("THEM - Typed HTML5 Evaluation Machine", 0);
+draw_header("THEM - Typed HTML5 Evaluation Machine");
 
 print <<<END
     
-    <div style="width: 550px">
+    <div style="width: 1000px">
         
-        <div class="indextitle">
+        <div style="text-align: center; font-size: 150%;">
             Welcome to The HTML5 Evaluation Machine
         </div>
-
-        <div style="padding: 10px;">
         
-        This web application allows you to directly input or upload HTML files and entire websites. These files are evaluated for their adherance to best style practices in four major categories:<br /><br />
-        
-        <div style="padding-left: 10px">Syntax / Semantics<br />
-        Deprecated Elements<br />
-        Accessibility<br />
-        Poor Practice / Other Miscellenous Issues.<br /><br /></div>
-
-        Start uploading now by clicking on <a href="/direct_input">Direct Input</a>, <a href="/upload_file">Upload File</a> or <a href="/upload_zip">Upload Zip</a> in the sidebar.<br /><br />
-
-        For more information on how everything works, check out the <a href="/help">help page</a>!
-        
+        <div style="padding: 30px;">
+            
+            This web application allows you to directly input or upload HTML files and entire websites. These files are evaluated for their adherance to best style practices in four major categories:<br /><br />
+            
+            <div style="float: left; margin-left: 250px; padding: 15px; border: 1px solid #DDDDDD;">
+                
+                <div>
+                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ff6f6f; float: left; margin: 5px;"></div>
+                    <div style="float: left;">
+                        Syntax / Semantics
+                    </div>
+                    <div class="cb"></div>
+                </div>
+                
+                <div>
+                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffbb66; float: left; margin: 5px;"></div>
+                    <div style="float: left;">
+                        Deprecated Elements
+                    </div>
+                    <div class="cb"></div>
+                </div>
+                
+                <div>
+                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #6f6fff; float: left; margin: 5px;"></div>
+                    <div style="float: left;">
+                        Accessibility
+                    </div>
+                    <div class="cb"></div>
+                </div>
+                
+                <div>
+                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffff6f; float: left; margin: 5px;"></div>
+                    <div style="float: left;">
+                        Poor Practice / Other Miscellenous Issues
+                    </div>
+                    <div class="cb"></div>
+                </div>
+                
+            </div>
+            
+            <div class="cb"></div>
+                
+            <div style="padding-top: 15px;">
+                For more information on how everything works, check out the <a href="/help">Help Section</a>
+            </div>
+            
         </div>
-        
-        <div class="cb"></div>
         
     </div>
     

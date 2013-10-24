@@ -39,7 +39,11 @@ foreach ($uploaded_files as $uploaded_file) {
     $file_data = file_get_contents($tmp_file);
     $encoded_input = base64_encode($file_data);
     
-    $parsed = validate(array(), $file_name, $encoded_input);
+    $parsed = -1;
+    $f = finfo_open();
+    $mime = finfo_buffer($f, $file_data, FILEINFO_MIME_TYPE);
+    if ($mime == "text/html")
+        $parsed = validate(array(), $file_name, $encoded_input);
     
     $encoded_parsed = json_encode($parsed);
     
@@ -47,6 +51,6 @@ foreach ($uploaded_files as $uploaded_file) {
     
 }
 
-redirect("/show_set?set=$set");
+redirect("/set?set=$set");
 
 ?>

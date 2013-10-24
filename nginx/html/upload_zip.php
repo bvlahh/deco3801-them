@@ -7,22 +7,22 @@
 require_once "php/header.php";
 require_once "php/footer.php";
 
-draw_header("THEM - Upload ZIP", 3);
+draw_header("THEM - Upload ZIP");
 
 print <<<END
-    
-    <div class="datainput">
-        Upload ZIP
-        <form action="do_upload_zip" method="post" enctype="multipart/form-data" >
-            <div>
-                <input type="file" name="archive" class="filepicker" />
-            </div>
-            <div>
-                <input type="submit" value="Validate" class="button" />
-            </div>
-        </form>
+    <div style="padding-left: 50px; padding-top: 20px;">
+        <div class="datainput">
+            Upload ZIP
+            <form action="do_upload_zip" method="post" enctype="multipart/form-data" >
+                <div>
+                    <input type="file" name="archive" class="filepicker" />
+                </div>
+                <div>
+                    <input type="submit" value="Validate" class="button" />
+                </div>
+            </form>
+        </div>
     </div>
-    
 END;
 
 draw_footer();

@@ -40,7 +40,7 @@ $set = create_set("");
 * page for each HTML document.
 */
 
-for ($i=0; $i<($zip->numFiles);$i++) {
+for ($i=0; $i<($zip->numFiles); $i++) {
     
     $file_name = $zip->getNameIndex($i);
     
@@ -48,7 +48,11 @@ for ($i=0; $i<($zip->numFiles);$i++) {
     
     $encoded_input = base64_encode($file_data);
     
-    $parsed = validate($filenames, $file_name, $encoded_input);
+    $parsed = -1;
+    $f = finfo_open();
+    $mime = finfo_buffer($f, $file_data, FILEINFO_MIME_TYPE);
+    if ($mime == "text/html")
+        $parsed = validate($filenames, $file_name, $encoded_input);
     
     $encoded_parsed = json_encode($parsed);
     
@@ -58,6 +62,6 @@ for ($i=0; $i<($zip->numFiles);$i++) {
 
 $zip->close();
 
-redirect("/show_set?set=$set");
+redirect("/set?set=$set");
 
 ?>

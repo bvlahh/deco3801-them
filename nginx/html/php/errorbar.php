@@ -51,8 +51,10 @@ function draw_error_bar($blue, $red, $orange, $yellow, $green, $total_wide, $tot
         
     }
     
+    $total_wide += .1;
+    
     print <<<END
-        <span style="display: block; width: ${total_wide}px; border: 1px solid #DDDDDD; margin: auto auto;">
+        <span style="display: block; width: ${total_wide}px; border: 1px solid #DDDDDD; background-color: #DDDDDD; margin: auto auto;">
             <span style="display: block; float: left; width: ${blue_wide}px; background-color: #7f7fff; text-align: center; height: ${total_height}px; font-size: ${total_height}px;">${blue}</span>
             <span style="display: block; float: left; width: ${red_wide}px; background-color: #ff7f7f; text-align: center; height: ${total_height}px; font-size: ${total_height}px;">${red}</span>
             <span style="display: block; float: left; width: ${orange_wide}px; background-color: #ffbb77; text-align: center; height: ${total_height}px; font-size: ${total_height}px;">${orange}</span>
