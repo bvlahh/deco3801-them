@@ -27,6 +27,6 @@ $encoded_parsed = json_encode($parsed);
 // put it in the db
 $file = add_file($set, "Direct Input", $encoded_input, $encoded_parsed);
 
-redirect("/show_file?file=$file");
+redirect("/file?file=$file");
 
 ?>

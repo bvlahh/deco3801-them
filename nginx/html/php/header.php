@@ -5,7 +5,7 @@
 *
 * @param string $title The title of the page.
 */
-function draw_header($title, $selected_tab=0) {
+function draw_header($title) {
     
     print <<<END
 <?xml version="1.0" encoding="UTF-8"?>

@@ -58,6 +58,6 @@ for ($i=0; $i<($zip->numFiles);$i++) {
 
 $zip->close();
 
-redirect("/show_set?set=$set");
+redirect("/set?set=$set");
 
 ?>

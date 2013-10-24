@@ -3,7 +3,7 @@
 require_once "php/header.php";
 require_once "php/footer.php";
 
-draw_header("THEM - Typed HTML5 Evaluation Machine", 0);
+draw_header("THEM - Typed HTML5 Evaluation Machine");
 
 print <<<END
     

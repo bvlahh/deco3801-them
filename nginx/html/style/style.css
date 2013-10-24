@@ -17,7 +17,7 @@ HTML5 Logo oranges:
 
 body {
     
-    min-width: 750px;
+    min-width: 800px;
     color: #222222;
     font-family: sans-serif;
     background-color: #222222;
@@ -323,6 +323,12 @@ a:hover {
     
 }
 
+.files_collection {
+    
+    
+    
+}
+
 .files_folder {
     
     clear: both;
@@ -395,11 +401,6 @@ a:hover {
 }
 
 .uploadset_back:hover {
-    
-    /*
-    color: #222222;
-    background-color: #EEEEEE;
-    */
     
     background-color: #e44d26;
     color: #FFFFFF;

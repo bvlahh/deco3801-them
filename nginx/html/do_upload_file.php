@@ -47,6 +47,6 @@ foreach ($uploaded_files as $uploaded_file) {
     
 }
 
-redirect("/show_set?set=$set");
+redirect("/set?set=$set");
 
 ?>

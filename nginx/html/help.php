@@ -6,7 +6,7 @@ require_once "php/header.php";
 require_once "php/footer.php";
 require_once "php/errorbar.php";
 
-draw_header("THEM - Help", 4);
+draw_header("THEM - Help");
 
 print <<<END
     

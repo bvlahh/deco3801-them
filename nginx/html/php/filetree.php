@@ -1,54 +1,8 @@
 <?php
 
-require_once "php/misc.php";
-require_once "php/header.php";
-require_once "php/footer.php";
-require_once "php/files.php";
-require_once "php/errors.php";
-require_once "php/errorbar.php";
-
-if (! array_key_exists("set", $_GET) )
-    redirect("/");
-
-$set = $_GET["set"];
-
-$set = get_set($set);
-
-if ( count($set) < 2 )
-    redirect("/show_file?file=" . $set[0]["id"]);
-
-$filetree = array(
-    "files" => array(),
-    "folders" => array()
-);
-
-foreach ( $set as $file ) {
+function draw_file_tree($tree) {
     
-    $filename = $file["filename"];
-    
-    $filepath = explode("/", $filename);
-    
-    // start at the root
-    $filetreeparent = &$filetree;
-    
-    // loop over the folders leading to the file
-    for ($f=0; $f<(count($filepath) - 1); $f++) {
-        
-        // if the folder doesn't exist in the tree, make it.
-        if (! array_key_exists($filepath[$f], $filetreeparent["folders"]) )
-            $filetreeparent["folders"][$filepath[$f]] = array(
-                "files" => array(),
-                "folders" => array()
-            );
-        
-        // set that as the current parent
-        $filetreeparent = &$filetreeparent["folders"][$filepath[$f]];
-        
-    }
-    
-    // if it's a file put it in the files array
-    if ( $filepath[ count($filepath) - 1 ] != "" )
-        $filetreeparent["files"][ $filepath[count($filepath) - 1] ] = $file;
+    draw_folder("Uploaded Files", $filetree);
     
 }
 
@@ -91,7 +45,7 @@ function draw_file($file) {
     }
     
     print <<<END
-        <a class="files_file" href="/show_file?file=${fid}">
+        <a class="files_file" href="/file?file=${fid}">
             <img src="/images/file.png" alt="" />
             <span>
 END;
@@ -144,12 +98,5 @@ END;
 END;
     
 }
-
-draw_header("THEM - Uploaded Files");
-
-// Uploaded Files or Uploaded Zip if the files[] != []
-draw_folder("Uploaded Files", $filetree);
-
-draw_footer();
 
 ?>

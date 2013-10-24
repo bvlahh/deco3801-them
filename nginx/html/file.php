@@ -263,7 +263,7 @@ END;
 
 if ($count_files > 1)
     print <<<END
-        <a class="uploadset_back" href="show_set?set=$set">
+        <a class="uploadset_back" href="set?set=$set">
             Uploaded Files
         </a>
 END;
