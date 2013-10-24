@@ -18,11 +18,11 @@ function draw_error_bar($blue, $red, $orange, $yellow, $green, $total_wide, $tot
     
     $total = $blue + $red + $orange + $yellow + $green;
     
-    $blue_wide = ($blue/$total) * $total_wide;
-    $red_wide = ($red/$total) * $total_wide;
-    $orange_wide = ($orange/$total) * $total_wide;
-    $yellow_wide = ($yellow/$total) * $total_wide;
-    $green_wide = ($green/$total) * $total_wide;
+    $blue_wide = (int)round( ($blue/$total) * $total_wide );
+    $red_wide = (int)round( ($red/$total) * $total_wide );
+    $orange_wide = (int)round( ($orange/$total) * $total_wide );
+    $yellow_wide = (int)round( ($yellow/$total) * $total_wide );
+    $green_wide = (int)round( ($green/$total) * $total_wide );
     
     if (! $show_numbers) {
         
