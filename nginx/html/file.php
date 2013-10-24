@@ -209,7 +209,7 @@ foreach ( $chunks as $chunk ) {
         // the toggling colour (for highlighting errors side by side)
         $display_colour = Errors::documentErrorColour($err_no);
         
-        $start_span = "<a href=\"#\" style=\"background-color: $display_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
+        $start_span = "<a href=\"#\" style=\"background-color: $display_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); select(this); return false;\">";
         $end_span = "</a>";
         
         // mark the line for line number highlighting
@@ -299,12 +299,14 @@ print <<<END
 
 <div class="file" style="float: left;">
     
+    <div style="background-color: #EEEEEE; font-size: 80%; line-height: 150%; padding-left: 5px;">Click on highlighted text for more information.</div>
+    
     <div class="file_lines">
         <pre>$line_nos</pre>
     </div>
     
     <div class="file_body">
-        <pre>$escaped_document</pre>
+        <pre id="html_document">$escaped_document</pre>
     </div>
     
     <div class="cb"></div>
