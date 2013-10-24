@@ -262,7 +262,7 @@ class HTMLParser(object):
                             # are added to tokens.
                             self.parseError("img-alt-attribute-empty", {"attr": new_token["data"]["alt"][0]})
 
-                # DECO3801 - Check link tags have valid attributes.
+                # DECO3801 - Check <a> tags have valid attributes.
                 if new_token["type"] == StartTagToken and new_token["name"] == "a":
                     if not "href" in new_token["data"]:
                         self.parseError("a-element-missing-href-attribute", {"name": new_token["name"]})
@@ -275,6 +275,28 @@ class HTMLParser(object):
                     else:
                         if new_token["data"]["name"][0] == "":
                             self.parseError("a-name-attribute-empty", {"attr": new_token["data"]["name"][0]})
+
+                    if "rel" in new_token["data"]:
+                        if new_token["data"]["rel"][0] == "":
+                            self.parseError("a-rel-attribute-empty", {"attr": new_token["data"]["rel"][0]})
+
+                # DECO3801 - Check <link> tags have valid attributes.
+                if new_token["type"] == StartTagToken and new_token["name"] == "link":
+                    if not "href" in new_token["data"]:
+                        self.parseError("link-element-missing-href-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["href"][0] == "":
+                            self.parseError("link-href-attribute-empty", {"attr": new_token["data"]["href"][0]})
+
+                    if "type" in new_token["data"]:
+                        if new_token["data"]["type"][0] == "":
+                            self.parseError("link-type-attribute-empty", {"attr": new_token["data"]["type"][0]})
+
+                    if not "rel" in new_token["data"]:
+                        self.parseError("link-element-missing-rel-attribute", {"name": new_token["name"]})
+                    else:
+                        if new_token["data"]["rel"][0] == "":
+                            self.parseError("link-rel-attribute-empty", {"attr": new_token["data"]["rel"][0]})
 
                 # DECO3801 - Heading tag type checking.
                 if new_token["type"] == StartTagToken and new_token["name"] in ["h1", "h2", "h3", "h4", "h5", "h6"]:
