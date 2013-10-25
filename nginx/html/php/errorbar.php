@@ -17,38 +17,45 @@
 function draw_error_bar($blue, $red, $orange, $yellow, $green, $total_wide, $total_height, $show_numbers = false) {
     
     $total = $blue + $red + $orange + $yellow + $green;
+
+    if ($total != 0) {
     
-    $blue_wide = ($blue/$total) * $total_wide;
-    $red_wide = ($red/$total) * $total_wide;
-    $orange_wide = ($orange/$total) * $total_wide;
-    $yellow_wide = ($yellow/$total) * $total_wide;
-    $green_wide = ($green/$total) * $total_wide;
-    
-    if (! $show_numbers) {
+        $blue_wide = ($blue/$total) * $total_wide;
+        $red_wide = ($red/$total) * $total_wide;
+        $orange_wide = ($orange/$total) * $total_wide;
+        $yellow_wide = ($yellow/$total) * $total_wide;
+        $green_wide = ($green/$total) * $total_wide;
         
-        $blue = "";
-        $red = "";
-        $orange = "";
-        $yellow = "";
-        $green = "";
-        
-    } else {
-        
-        if ($blue == 0)
+        if (! $show_numbers) {
+            
             $blue = "";
-        
-        if ($red == 0)
             $red = "";
-        
-        if ($orange == 0)
             $orange = "";
-        
-        if ($yellow == 0)
             $yellow = "";
-        
-        if ($green == 0)
             $green = "";
-        
+            
+        } else {
+            
+            if ($blue == 0)
+                $blue = "";
+            
+            if ($red == 0)
+                $red = "";
+            
+            if ($orange == 0)
+                $orange = "";
+            
+            if ($yellow == 0)
+                $yellow = "";
+            
+            if ($green == 0)
+                $green = "";
+            
+        }
+
+    } else {
+
+        $green_wide == 1;
     }
     
     print <<<END
