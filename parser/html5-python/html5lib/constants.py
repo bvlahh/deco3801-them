@@ -302,6 +302,16 @@ errorCodes = {
     "invalid-heading-order": 62,
     "html-contains-non-ascii-characters": 63,
     "table-used-for-layout": 64,
+    "a-rel-attribute-empty": 65,
+    "link-element-missing-href-attribute": 66,
+    "link-href-attribute-empty": 67,
+    "link-type-attribute-empty": 68,
+    "link-element-missing-rel-attribute": 69,
+    "link-rel-attribute-empty": 70,
+    "footer-start-tag-missing": 71,
+    "footer-end-tag-missing": 72,
+
+
 }
 
 E = {

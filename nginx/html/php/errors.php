@@ -75,8 +75,10 @@ class Errors
         66 => "A <code><link></code> element is missinga required <code>href</code> attribute.",
         67 => "A <code><link></code> element's <code>href</code> attribute is empty. Please enter a valid link.",
         68 => "A <code><a><code> element's <code>type</code> attribute is empty. Please enter a valid type.",
-        69 => "A <code><link></code> element is missinga required <code>rel</code> attribute.",
+        69 => "A <code><link></code> element is missing a required <code>rel</code> attribute.",
         70 => "A <code><link></code> element's <code>rel</code> attribute is empty. Please enter a valid value for rel.",
+        71 => "No <code><footer></code> tag was found in the expected context, implying that no body section exists.",
+        72 => "No <code></footer></code> tag was found in the expected context, implying that no body section exists or it wasn't closed properly."
     );
     
     /**
