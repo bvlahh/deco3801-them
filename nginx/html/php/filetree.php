@@ -59,12 +59,14 @@ function draw_file($file) {
     }
     
     $filetag = "a";
+    $href = "href=\"/file?file=${fid}\"";
     
-    if ( $parsed_errors == -1 )
+    if ( $parsed_errors == -1 ) {
         $filetag = "span";
-    
+        $href = "";
+    }
     print <<<END
-        <$filetag class="files_file" href="/file?file=${fid}">
+        <$filetag class="files_file" $href>
             <img src="/images/file.png" alt="" />
             <span>
 END;
@@ -102,17 +104,17 @@ function draw_folder($folder_name, $folder) {
                 <div>
 END;
     
-    foreach ( $folder["folders"] as $subfolder_name => $subfolder)
-        draw_folder($subfolder_name, $subfolder);
-    
-    print <<<END
-            </div>
-            <div class="cb"></div>
-            <div>
-END;
-    
     foreach ( $folder["files"] as $display_name => $file)
         draw_file($file);
+    
+    print <<<END
+                </div>
+                <div class="cb"></div>
+                <div>
+END;
+    
+    foreach ( $folder["folders"] as $subfolder_name => $subfolder)
+        draw_folder($subfolder_name, $subfolder);
     
     print <<<END
                 </div>
