@@ -202,7 +202,7 @@ class HTMLParser(object):
         if (element.name == "annotation-xml" and
                 element.namespace == namespaces["mathml"]):
             return ("encoding" in element.attributes and
-                    element.attributes["encoding"].translate(
+                    element.attributes["encoding"][0].translate(
                         asciiUpper2Lower) in
                     ("text/html", "application/xhtml+xml"))
         else:
@@ -836,7 +836,7 @@ def getPhases(debug):
 
             for attr, value in token["data"].items():
                 if attr not in self.tree.openElements[0].attributes:
-                    self.tree.openElements[0].attributes[attr] = value
+                    self.tree.openElements[0].attributes[attr][0] = value
             self.parser.firstStartTag = False
 
         def processEndTag(self, token):
@@ -1193,15 +1193,15 @@ def getPhases(debug):
             attributes = token["data"]
             if self.parser.tokenizer.stream.charEncoding[1] == "tentative":
                 if "charset" in attributes:
-                    self.parser.tokenizer.stream.changeEncoding(attributes["charset"])
+                    self.parser.tokenizer.stream.changeEncoding(attributes["charset"][0])
                 elif ("content" in attributes and
                       "http-equiv" in attributes and
-                      attributes["http-equiv"].lower() == "content-type"):
+                      attributes["http-equiv"][0].lower() == "content-type"):
                     # Encoding it as UTF-8 here is a hack, as really we should pass
                     # the abstract Unicode string, and just use the
                     # ContentAttrParser on that, but using UTF-8 allows all chars
                     # to be encoded and as a ASCII-superset works.
-                    data = inputstream.EncodingBytes(attributes["content"].encode("utf-8"))
+                    data = inputstream.EncodingBytes(attributes["content"][0].encode("utf-8"))
                     parser = inputstream.ContentAttrParser(data)
                     codec = parser.parse()
                     self.parser.tokenizer.stream.changeEncoding(codec)
@@ -1586,7 +1586,7 @@ def getPhases(debug):
                 self.parser.framesetOK = False
                 for attr, value in token["data"].items():
                     if attr not in self.tree.openElements[1].attributes:
-                        self.tree.openElements[1].attributes[attr] = value
+                        self.tree.openElements[1].attributes[attr][0] = value
 
         def startTagFrameset(self, token):
             self.parser.parseError("unexpected-start-tag", {"name": "frameset"})
@@ -1790,7 +1790,7 @@ def getPhases(debug):
                 del attributes["action"]
             if "prompt" in attributes:
                 del attributes["prompt"]
-            attributes["name"] = "isindex"
+            attributes["name"][0] = "isindex"
             self.processStartTag(impliedTagToken("input", "StartTag",
                                                  attributes=attributes,
                                                  selfClosing=
@@ -2380,7 +2380,6 @@ def getPhases(debug):
             self.tree.insertFromTable = False
 
         def endTagTable(self, token):
-            print "GH"
             if self.tree.elementInScope("table", variant="table"):
                 self.tree.generateImpliedEndTags()
                 if self.tree.openElements[-1].name != "table":
@@ -2391,7 +2390,7 @@ def getPhases(debug):
                     self.tree.openElements.pop()
                 self.tree.openElements.pop()
                 
-                print dir(self.tree.getDocument().find("."))
+                #print dir(self.tree.getDocument().find("."))
                 self.parser.resetInsertionMode()
             else:
                 # innerHTML case
