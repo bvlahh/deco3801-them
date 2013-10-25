@@ -5,7 +5,7 @@
 *
 * @param string $title The title of the page.
 */
-function draw_header($title, $selected_tab=0) {
+function draw_header($title) {
     
     print <<<END
 <?xml version="1.0" encoding="UTF-8"?>
@@ -16,7 +16,7 @@ function draw_header($title, $selected_tab=0) {
 		
         <title>$title</title>
         
-        <link rel="icon" type="image/svg+xml" href="/images/HTML5_Badge.svg" />
+        <link rel="icon" type="image/png" href="/images/32px-HTML5_Badge.svg.png" />
 		<link rel="stylesheet" type="text/css" href="/style/style.css" />
         
     </head>

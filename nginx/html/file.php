@@ -155,13 +155,13 @@ $error_access = 0;
 $error_deprecated = 0;
 $error_misc = 0;
 
-$first_gde = true;
+$first_error = true;
 
 foreach ( $general_document_errors as $general_document_error ) {
     
     $style = "";
     
-    if (! $first_gde)
+    if (! $first_error)
         $style = "border-top: 1px solid #DDDDDD;";
     
     $err_no = $general_document_error[0];
@@ -184,7 +184,7 @@ END;
     
     $error_semantics++;
     
-    $first_gde = false;
+    $first_error = false;
     
 }
 
@@ -202,7 +202,14 @@ foreach ( $chunks as $chunk ) {
         $err_nos = htmlspecialchars(json_encode($chunk["errors"]));
         $err_colour = Errors::errorColour($err_no);
         
-        $start_span = "<a href=\"#\" style=\"background-color: $err_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); return false;\">";
+        // don't insert empty chunks
+        if ( $chunk["text"] == "")
+            continue;
+        
+        // the toggling colour (for highlighting errors side by side)
+        $display_colour = Errors::documentErrorColour($err_no);
+        
+        $start_span = "<a href=\"#\" style=\"background-color: $display_colour; text-decoration: none;\" onclick=\"messagebox(&quot;$err_nos&quot;); select(this); return false;\">";
         $end_span = "</a>";
         
         // mark the line for line number highlighting
@@ -256,7 +263,7 @@ END;
 
 if ($count_files > 1)
     print <<<END
-        <a class="uploadset_back" href="show_set?set=$set">
+        <a class="uploadset_back" href="set?set=$set">
             Uploaded Files
         </a>
 END;
@@ -286,18 +293,16 @@ print <<<END
 
 <div id="top_infobox">$top_info</div>
 
-<!--
-<div style="padding: 10px;">Click on highlighted text for more information.</div>
--->
-
 <div class="file" style="float: left;">
+    
+    <div style="background-color: #EEEEEE; font-size: 80%; line-height: 150%; padding-left: 5px;">Click on highlighted text for more information.</div>
     
     <div class="file_lines">
         <pre>$line_nos</pre>
     </div>
     
     <div class="file_body">
-        <pre>$escaped_document</pre>
+        <pre id="html_document">$escaped_document</pre>
     </div>
     
     <div class="cb"></div>

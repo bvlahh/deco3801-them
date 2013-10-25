@@ -21,12 +21,17 @@ $input = $_POST["input"];
 $encoded_input = base64_encode($input);
 
 // send it to the parser
-$parsed = validate(array(), "", $encoded_input );
+$parsed = -1;
+$f = finfo_open();
+$mime = finfo_buffer($f, $input, FILEINFO_MIME_TYPE);
+if ($mime == "text/html")
+    $parsed = validate(array(), "", $encoded_input );
+
 $encoded_parsed = json_encode($parsed);
 
 // put it in the db
 $file = add_file($set, "Direct Input", $encoded_input, $encoded_parsed);
 
-redirect("/show_file?file=$file");
+redirect("/file?file=$file");
 
 ?>

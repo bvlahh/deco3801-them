@@ -38,16 +38,28 @@ def _gogentle(signum, frame):
 def parse_base64(input):
     parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
-    check_ascii(input)
-    document = parser.parse(base64.b64decode(input["document"]), files=input.get("files"), filename=input.get("filename"))
+    text = base64.b64decode(input["document"])
+    
+    files = input.get("files")
+    filename = input.get("filename")
+
+    if files == []:
+        files = None
+        filename = None
+
+    document = parser.parse(text, files=files, filename=filename)
+
+    if not ascii_only(text):
+        parser.parseError("html-contains-non-ascii-characters")
 
     return parser.parseErrors()
 
-def check_ascii(input):
+def ascii_only(input):
     try:
         input.decode('ascii')
+        return True
     except UnicodeDecodeError:
-        self.parser.parseError("html-contains-non-ascii-characters")
+        return False
 
 def line_count(input):
     if ( type(input) == unicode ):

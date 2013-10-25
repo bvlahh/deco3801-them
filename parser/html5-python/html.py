@@ -9,95 +9,120 @@ error = """
 <html><head><title>My First Evaluated Webpage</table></head>
 <body><h2>I bet I can sneak in a lower header... or maybe not!</h2><h1>Look at the majesty of my multiple heading ones!!</h1><h1>Wait that's a bad thing</h1><frame>I can use frames, right?</frame><p>Dang, what about leaving a tag open, with a image <img src=""> and no alt text!</body></html>
 """
+
 bigdoc = """
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-	<head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<title>Vintage Rides</title>
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/contact.css" />
-		<link rel="stylesheet" type="text/css" href="css/navigation.css">
-		<script type="text/Javascript" src="js/contact.js"></script>
-	</head>
+    <link rel="stylesheet" type="text/css" href="demo.css" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-darkness/jquery-ui.css" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="fancybox/jquery.fancybox-1.2.6.css" />
 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="fancybox/jquery.fancybox-1.2.6.pack.js"></script>
 
-	<body>
-	<div id="titleBar">
-			<div id="logoContainer">
-			<div id="logo">Vintage Rides</div>
-		</div>
-		<div id="menuContainer">
-		<div id="menu">
-			<ul>
-				<li><a href="index.html">Home</a></li>
-				<li><a href="specialOffers.html">Special Offers</a></li> 
-				<li><a href="cars.html">Cars</a></li> 
-				<li><a href="about.html">About</a></li>
-				<li><a href="contact.html">Contact</a></li>  
-			</ul>
-		</div>	
-		</div>
-		</div>
-	
-	<div class="wrapper">
+    <script type="text/javascript" src="script.js"></script>
 
-				
-		<div id="contact-area" onsubmit="return ValidateForm();">
-		
-		<p>Please do not hesitate to contact us for any further information.</p>
-			<form class="contactForm" name="ContactForm" action="#" method="post" onsubmit="return ValidateForm();">
-				<div id="fname"></div>
-				<label for="firstName">First Name</label>
-				<input type="text" class="input" name="firstName" id="fname">
-				
-				<br><br><div id="error1"></div>
-				<label for="lname">Last Name</label>
-				<input type="text" class="input" name="lastName" id="lname">
-				
-				<br><br><div id="email"></div>
-				<label for="email">Email</label>
-				<input type="text" class="inpute" name="email" id="email">
-				
-				<br><br><div id="phone"></div>
-				<label for="phone">Phone</label>
-				<input type="text" class="inputp" name="phone" id="phone">
-				
-				<br><br><div id="message"></div>
-				<label for="Message">Message</label><br><br>
-				<textarea name="Message" rows="20" cols="55" id="Message"></textarea>
+    <script>
 
-				<br><br><br><input type="submit" value="Submit" class="submit">
-				
-				<div class="success" style="display: none;">
-							<p>Booking successfully processed!</p>
-							</div>
-			
-				
-			</form>
-			
-			<div class="email">
-			<div class="text">Email <br> johnfarnsworth@vintagerides.com</div>
-			</div>
-			
-			<br><br><div class="phone">
-			<div class="text">Phone <br> 5447 5528</div>
-			</div>
-			
-	
-		
-		</div>
-	
+        var randLeft = 0;
+        var randTop = 0;
+        var randRot = 0;
+        var apiKey = "jsk1qqntnrj7qbvf";
+        var stageWidth=600; 
+        var stageHeight=400;
+        var newspaperTitles = []; 
 
-	
-	
+        $(document).ready(function(){
+            $("form#searchTrove").submit(function() {
+                newspaperTitles = [];
 
-	
+                //get input values
+                var searchTerm = $("#searchTerm").val().trim();
+                searchTerm = searchTerm.replace(/ /g,"%20");
+                var sortBy = $("#sortBy").val();
 
-	</body>
+                //create searh query
+                var url = "http://api.trove.nla.gov.au/result?key=" 
+                + apiKey + "&encoding=json&zone=newspaper" 
+                + "&sortby=" + sortBy
+                + "&q=" + searchTerm + "&callback=?";
+
+                //print JSON object
+                console.log(url);
+
+                //get the JSON information we need to display the images
+                $.getJSON(url, function(data) {
+                    $('#output').empty();
+                    for (var i = 0; i < data.response.zone[0].records.article.length; i++) {
+                        try{
+                            newspaperTitles.push(data.response.zone[0].records.article[i].heading);
+                        } catch(e){}
+                    }
+
+                    for (var i = 0; i < 20; i++) {
+                        /*Generate random values for the position and rotation */
+                        randLeft = Math.floor(Math.random() * stageWidth) + 1;
+                        randTop = Math.floor(Math.random() * stageHeight) + 1;
+                        randRot = Math.floor(Math.random() * 80) + 1 - 40;
+
+                        /*Makes sure that it doesn't leave the boundaries*/
+                        if (randTop>stageHeight-100 && randLeft>stageWidth-100){
+                            randTop -=150;
+                            randLeft -= 150;
+                        }
+
+                        //set position of the paper
+                    //  document.getElementById('pic-' + i).innerHTML = newspaperTitles[i];
+                        
+                        //
+                        document.getElementById('sp-' + i).innerHTML = newspaperTitles[i];
+                        
+                        document.getElementById('pic-' + i).style.top = randTop + 'px';
+                        document.getElementById('pic-' + i).style.left = randLeft + 'px';
+                    }
+                });
+            });
+        });
+    </script>
+
+    </head>
+
+    <body>
+
+        <div class="troveSearch">
+            <form action="#" id="searchTrove">
+                <input id="searchTerm" type="text" />
+                <select id="sortBy">
+                    <option>dateasc</option>
+                    <option>datedesc</option>
+                    <option>relevance</option>
+                </select>
+                <button type="submit" id="searchbtn">Search</button>
+            </form>
+        </div>
+
+        <div id="gallery">
+
+            <script>
+
+            for (var i = 0; i < 20; i++) {
+
+                var newCollageItem = '<a z-index="-1" tabindex="1" rel="group" href="http://fancybox.net/" class="fancybox"><div id="pic-'+i+'" class="pic ui-draggable" tabindex="1"><span z-index="1" id="sp-'+i+'" style="colour:white;"></span></div></a>';
+
+                $('#gallery').append(newCollageItem);
+            }
+
+            </script>
+
+        </div>
+
+    </body>
 </html>
 """
-
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
@@ -120,7 +145,7 @@ table = """
 </table>
 <footer></footer></body></html>
 """
-fragment = error.decode("utf-8")
+fragment = bigdoc.decode("utf-8")
 
 minidom_document = parser.parse(fragment, files=files, filename=filename)
 # <html><html><body><body></body></body></html></html>
@@ -136,12 +161,16 @@ minidom_document = parser.parse(fragment, files=files, filename=filename)
 # Causes a number of undefined errors.
 #<html><*body></body /></body></html>
 
+def parseAgain():
+    minidom_document = parser.parse(fragment, files=files, filename=filename)
+
+
 walker = treewalkers.getTreeWalker("etree")
 stream = walker(minidom_document)
 
 print '---------------------'
 
-print fragment
+#print fragment
 
 print '---------------------'
 

@@ -172,6 +172,7 @@ allowedElementNames = [
     "label",
     "legend",
     "li",
+    "link",
     "listing",
     "main",
     "map",
