@@ -55,7 +55,38 @@ function draw_error_bar($blue, $red, $orange, $yellow, $green, $total_wide, $tot
 
     } else {
 
-        $green_wide == 1;
+        $blue_wide = 0;
+        $red_wide = 0;
+        $orange_wide = 0;
+        $yellow_wide = 0;
+        $green_wide = $total_wide;
+
+        if (! $show_numbers) {
+            
+            $blue = "";
+            $red = "";
+            $orange = "";
+            $yellow = "";
+            $green = "";
+            
+        } else {
+            
+            if ($blue == 0)
+                $blue = "";
+            
+            if ($red == 0)
+                $red = "";
+            
+            if ($orange == 0)
+                $orange = "";
+            
+            if ($yellow == 0)
+                $yellow = "";
+            
+            if ($green == 0)
+                $green = "";
+            
+        }
     }
     
     $total_wide += .1;
