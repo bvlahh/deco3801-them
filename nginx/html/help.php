@@ -9,11 +9,77 @@ require_once "php/errorbar.php";
 draw_header("THEM - Help");
 
 print <<<END
-    
-    <div style="text-align: center; font-size: 150%;">Help Section</div>
-    
-    <div><iframe width="420" height="315" src="//www.youtube.com/embed/ZSZPTFxE29Q" frameborder="0" allowfullscreen></iframe></div>
-    
+
+    <div style="width: 1000px">
+
+	    <div style="text-align: center; font-size: 150%;">Help Section</div>
+
+	    <div>
+	    	<div style="padding: 30px; width: 520px; float: left;">
+		    	<div style="margin-bottom: 10px">The below help information can be viewed in visual form in the video to the side. Note that it requires sound.</div>
+
+	    		<div style="font-size: 120%">Uploading Your Code</div>
+
+	    		<div style="margin: 20px;">There are three main ways you can upload your code - either by <a name="Direct Input" href="direct_input" target="_blank">directly inputting</a> your code into a textbox (good for short snippets of code and personal testing), or <a name="Upload File" href="upload_file" target="_blank">uploading files</a> you have stored on your computer. When adding files, you can select multiple files in the window, or use the Add File button provided. You can even upload your whole HTML 5 website <a name="Upload Zip" href="upload_zip" target="_blank">as a zip</a>.</div>
+
+	    		<div style="font-size: 120%">Understanding Outputs</div>
+
+	    		<div style="margin: 20px;">After you've uploaded your code, you will be directed to one of two pages. If you've uploaded a single file, or used Direct Input, you'll be sent to the file page straight away. An example file page can be viewed <a name="Example" href="#" target="_blank">here</a>. The bar you can see along the top is the error bar.</div>
+
+END;
+
+draw_error_bar(3, 6, 4, 2, 0, 500, 10);
+
+print <<<END
+
+				<div class="legendbox">
+
+					    <div>
+		                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ff6f6f; float: left; margin: 5px;"></div>
+		                    <div style="float: left;">
+		                        Syntax / Semantics
+		                    </div>
+		                    <div class="cb"></div>
+		                </div>
+		                
+		                <div>
+		                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffbb66; float: left; margin: 5px;"></div>
+		                    <div style="float: left;">
+		                        Deprecated Elements
+		                    </div>
+		                    <div class="cb"></div>
+		                </div>
+		                
+		                <div>
+		                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #6f6fff; float: left; margin: 5px;"></div>
+		                    <div style="float: left;">
+		                        Accessibility
+		                    </div>
+		                    <div class="cb"></div>
+		                </div>
+		                
+		                <div>
+		                    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffff6f; float: left; margin: 5px;"></div>
+		                    <div style="float: left;">
+		                        Poor Practice / Other Miscellenous Issues
+		                    </div>
+		                    <div class="cb"></div>
+		                </div>
+
+		    	</div>
+
+		    	<div style="margin: 20px;"><p>As the legend says, each colour refers to a different type of error. Structural and semantic errors are those that affect how your webpage is seen, while Accessibility errors are relevant to cover all web users, including the blind. Deprecated errors refer to tags that no longer perform as expected by all browsers, and will likely be phased out in the next web standard. The remaining errors are cases of Poor Practice which are less pertinent than the other errors but still important to achieve best practices.</p>
+		    	<p></p></div>
+
+			</div>
+
+		    <div style="float: right;"><iframe width="420" height="315" src="//www.youtube.com/embed/ZSZPTFxE29Q" frameborder="0" allowfullscreen></iframe></div>
+
+		    <div class="cb"></div>
+
+	    </div>
+	</div>
+
 END;
 
 draw_footer();
