@@ -291,6 +291,35 @@ print <<<END
 
 </div>
 
+<div class="legendbox">
+
+<div>
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ff6f6f; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Syntax / Semantics
+    </div>
+
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffbb66; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Deprecated Elements
+    </div>
+
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #6f6fff; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Accessibility
+    </div>
+
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffff6f; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Poor Practice / Other Miscellenous Issues
+    </div>
+
+    <div class="cb"></div>
+
+</div>
+
+</div>
+
 <div id="top_infobox">$top_info</div>
 
 <div class="file" style="float: left;">

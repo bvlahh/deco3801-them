@@ -61,6 +61,37 @@ foreach ( $set as $file ) {
 
 draw_header("THEM - Uploaded Files");
 
+print <<<END
+
+<div class="legendbox2">
+
+<div>
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ff6f6f; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Syntax / Semantics
+    </div>
+
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffbb66; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Deprecated Elements
+    </div>
+
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #6f6fff; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Accessibility
+    </div>
+
+    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffff6f; float: left; margin: 5px;"></div>
+    <div style="float: left;">
+        Poor Practice / Other Miscellenous Issues
+    </div>
+    <div class="cb"></div>
+</div>
+
+</div>
+
+END;
+
 draw_file_tree($filetree);
 
 draw_footer();

@@ -10,13 +10,9 @@ draw_header("THEM - Help");
 
 print <<<END
     
-    <div>Help Section</div>
+    <div style="text-align: center; font-size: 150%;">Help Section</div>
     
-END;
-
-print <<<END
-    
-    <iframe width="420" height="315" src="//www.youtube.com/embed/ZSZPTFxE29Q" frameborder="0" allowfullscreen></iframe>
+    <div><iframe width="420" height="315" src="//www.youtube.com/embed/ZSZPTFxE29Q" frameborder="0" allowfullscreen></iframe></div>
     
 END;
 
