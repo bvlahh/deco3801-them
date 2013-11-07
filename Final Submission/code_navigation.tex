@@ -1,0 +1,64 @@
+\documentclass[10pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts}
+\usepackage{graphicx}
+
+\pagestyle{plain}
+
+\setlength{\textwidth}{6.3truein}
+\setlength{\textheight}{8.7truein}
+\setlength{\oddsidemargin}{1.0mm}
+\setlength{\evensidemargin}{1.0mm}
+\setlength{\topmargin}{-20.5truemm}
+\setlength{\parindent}{0.0truemm}
+\parskip=2mm
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{lightgray}{gray}{0.7}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  commentstyle=\color{lightgray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{\bf \large DECO3801 - Tech Spike Code Navigation Document}
+\author{\normalsize THEM - Typed HTML5 Evaluation Machine \\ \normalsize Carl Hattenfels, Scott Heiner, Shen Yong Lau, Robert Meyer, Brendan Miller, David Uebergang}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+There are two primary components to our project: the website and the parser. The PHP files for the website can be found in the \verb'nginx\html' folder. All of the website files have been coded from scratch; that is, all files in \verb'nginx\html' have been written by us. The two files that are akin to templates for each page are 
+
+\begin{verbatim}
+/nginx/html/php/header.php
+/nginx/html/php/footer.php
+\end{verbatim}
+
+The Python files for the parser can be found in \verb'parser'. Our validator is based off of the open source (GPL licensed) html5lib python library. We have made heavy modifications to this library with the goal of turning the parser into a validator. The html5-python folder (\verb'parser\html5-python') contains all of the code of \verb'html5lib'. All code additions and modifications to this code base have been marked with a ``DECO3801" tag to signify where we have made these changes. The most significant changes have been made in html5parser.py. It is easy to begin navigation of that file from the \verb'mainLoop' method. The following directory listings comprise all of the files that have been modified.
+
+\begin{verbatim}/html5-python/html5lib/html5parser.py
+/html5-python/html5lib/constants.py
+/html5-python/html5lib/tokenizer.py
+/html5-python/html5lib/inputstream.py
+\end{verbatim}
+
+The folder \verb'/html5-python/html5lib/deco3801-tests' contains our unit tests for the parser.
+
+The source code found in the ``rpc-server" directory contains the source code for our concurrent JSON RPC server for handling validation requests. The file \verb'rpc_server.py' specifically handles RPC requests and forks child parser processes. The folder \verb'/rpc-server/tests' contains unit tests and related test data for our RPC server.
+\end{document}
