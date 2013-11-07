@@ -253,7 +253,7 @@ for ($l=1; $l<$num_lines+2; $l++) {
 $set = $file["upload_set"];
 $count_files = count(get_set($set));
 
-draw_header("THEM - $filename");
+draw_header("THEM - $filename", true);
 
 print <<<END
 
@@ -289,32 +289,6 @@ else
 
 print <<<END
 
-</div>
-
-<div style="padding-left: 75px;">
-    
-    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ff6f6f; float: left; margin: 5px 5px 5px 15px;"></div>
-    <div style="float: left; padding-top: 2px;">
-        Syntax / Semantics
-    </div>
-    
-    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffbb66; float: left; margin: 5px 5px 5px 15px;"></div>
-    <div style="float: left; padding-top: 2px;">
-        Deprecated Elements
-    </div>
-    
-    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #6f6fff; float: left; margin: 5px 5px 5px 15px;"></div>
-    <div style="float: left; padding-top: 2px;">
-        Accessibility
-    </div>
-    
-    <div style="width: 10px; height: 10px; border: 1px solid #DDDDDD; background-color: #ffff6f; float: left; margin: 5px 5px 5px 15px;"></div>
-    <div style="float: left; padding-top: 2px;">
-        Poor Practice / Other Miscellenous Issues
-    </div>
-    
-    <div class="cb"></div>
-    
 </div>
 
 <div id="top_infobox">$top_info</div>

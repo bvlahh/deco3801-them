@@ -89,7 +89,7 @@ draw_header("THEM - Help");
 
         <div style="margin: 20px;">The error bar shows the relative amounts of each error in your webpage. General errors that aren't tied to a specific section of the code are displayed at the top with its corresponding coloured square. Any part of the code that is itself erroneous is highlighted, and these highlighted tags can be clicked to learn more about that particular error. Try a couple out on the example to see how they work.</div>
 
-        <div style="font-size: 120%">Uploaded zips</div>
+        <div style="font-size: 120%">Uploaded Zips</div>
 
         <div style="margin: 20px;">Uploading a zip allows you to see a tree-like structure of your website. Any HTML files that are part of the upload can also be clicked to navigate to the file page we were just working with for that HTML. The parser also checks the links you've included in your files, e.g. tags that require a src or a href. If you don't have the specific link in your files, then it gives an error on the file page. On the file page, there is a handy Uploaded Files button that you can use to get back to the set you originally uploaded. Try it out with your own website!</div>
 
