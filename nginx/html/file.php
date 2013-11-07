@@ -43,14 +43,15 @@ $input = str_replace("\r", "", $input);
 $general_document_errors = array();
 $in_document_errors = array();
 
-foreach ( $parsed_errors as $parsed_error ) {
-    
-    if ( $parsed_error[1] == -1 )
-        $general_document_errors[] = $parsed_error;
-    else
-        $in_document_errors[] = $parsed_error;
-    
-}
+if ( count($parsed_errors) > 1 )
+    foreach ( $parsed_errors as $parsed_error ) {
+        
+        if ( $parsed_error[1] == -1 )
+            $general_document_errors[] = $parsed_error;
+        else
+            $in_document_errors[] = $parsed_error;
+        
+    }
 
 $chunks = array();
 
