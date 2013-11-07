@@ -135,7 +135,7 @@ allowedElementNames = [
     "datalist",
     "dd",
     "decorator",
-    "del"
+    "del",
     "details",
     "dfn",
     "dir",
@@ -188,7 +188,7 @@ allowedElementNames = [
     "nobr",
     "noframes",
     "noscript",
-    "object"
+    "object",
     "ol",
     "optgroup",
     "option",
