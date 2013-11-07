@@ -8,17 +8,25 @@ require_once "php/errors.php";
 require_once "php/errorbar.php";
 require_once "php/filetree.php";
 
+$onfail = "/";
+
+if ( array_key_exists("onfail", $_GET) )
+    $onfail = $_GET["onfail"];
+
 if (! array_key_exists("set", $_GET) )
-    redirect("/");
+    redirect($onfail);
 
 $set = $_GET["set"];
 
 $set = get_set($set);
 
-if ( count($set) < 2 ) {
+if ( count($set) == 0 )
+    redirect($onfail);
+
+if ( count($set) == 1 ) {
     
     if ( json_decode($set[0]["cached_parse"]) == -1 )
-        redirect("/");
+        redirect($onfail);
     else
         redirect("/file?file=" . $set[0]["id"]);
     

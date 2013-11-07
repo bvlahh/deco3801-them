@@ -62,6 +62,6 @@ for ($i=0; $i<($zip->numFiles); $i++) {
 
 $zip->close();
 
-redirect("/set?set=$set");
+redirect("/set?set=$set&onfail=".urlencode("/upload_zip?upload_failed"));
 
 ?>

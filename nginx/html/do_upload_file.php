@@ -51,6 +51,6 @@ foreach ($uploaded_files as $uploaded_file) {
     
 }
 
-redirect("/set?set=$set");
+redirect("/set?set=$set&onfail=".urlencode("/upload_file?upload_failed"));
 
 ?>
