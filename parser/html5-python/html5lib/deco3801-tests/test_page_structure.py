@@ -119,7 +119,7 @@ class TestPageStructure(unittest.TestCase):
 
 	def test_misplaced_tags_before_head(self):
 		"""
-		Test that both start and closing tags occuring before the head
+		Test that both start and closing tags occurring before the head
 		section are reported as being misplaced.
 
 		Input:
@@ -177,15 +177,15 @@ class TestPageStructure(unittest.TestCase):
 
 	def test_tags_after_eof(self):
 		"""
-		Tests that starting and closing tags occuring after the last
+		Tests that starting and closing tags occurring after the last
 		instace of a closing HTML tag are reported as an error.
 
 		Input:
-		A HTML fragment with a start and closing tag pair occuring
+		A HTML fragment with a start and closing tag pair occurring
 		after the start and closing HTML pair.
 
 		Expected Results:
-		An error being thrown for both the start and closing tags occuring
+		An error being thrown for both the start and closing tags occurring
 		after the HTML tags.
 		"""
 
@@ -222,7 +222,7 @@ class TestPageStructure(unittest.TestCase):
 
 	def test_misplaced_tags_after_body(self):
 		"""
-		Tests that any tags occuring after the body phase
+		Tests that any tags occurring after the body phase
 		are reported as being incorrectly placed.
 
 		Input:
@@ -428,6 +428,354 @@ class TestPageStructure(unittest.TestCase):
 
 		self.assertIn(((0, 8), u'need-space-after-doctype', {}),
 			self.parser.errors, "Failed to report missing space after the doctype declaration.")
+
+	def test_end_tag_before_doctype(self):
+		"""
+		Test that a closing tag isn't placed before the doctype declaration.
+
+		Input:
+		A HTML fragment containing a single closing tag.
+
+		Expected Results:
+		An error should be thrown reporting that a closing tag has been 
+		placed before the doctype declaration.
+		"""
+
+		inputFragment = '</html>'
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((1, 7), u'expected-doctype-but-got-end-tag', {u'name': u'html'}),
+			self.parser.errors, "Failed to report closing tag before doctype declaration.")
+
+	def test_EOF_before_doctype(self):
+		"""
+		Test that an error is reported if the document is blank.
+		
+		Input:
+		A blank document containing no characters of any kind.
+
+		Expected Results:
+		An error should be thrown reporting that the EOF was reached before
+		a doctype was declared.
+		"""
+
+		inputFragment = """
+
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((-1, -1), u'expected-doctype-but-got-eof', {}),
+			self.parser.errors, "Failed to report the EOF occurring before the doctype declaration.")
+
+	def test_form_element_not_in_form(self):
+		"""
+		Test that form elements must be contained in wrapping form tags.
+		
+		Input:
+		A HTML fragment containing form elements which aren't wrapped in 
+		form tags.
+
+		Expected Results:
+		An error should be thrown reporting that the form elements aren't contained
+		in wrapping form tags.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<datalist></datalist>
+<fieldset></fieldset>
+<input></input>
+<label></label>
+<output></output>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((46, 55), u'form-element-not-in-form', {u'name': u'datalist'}),
+			self.parser.errors, "Failed to report datalist tag outside of wrapping form tags.")
+
+		self.assertIn(((68, 77), u'form-element-not-in-form', {u'name': u'fieldset'}),
+			self.parser.errors, "Failed to report fieldset tag outside of wrapping form tags.")
+
+		self.assertIn(((90, 96), u'form-element-not-in-form', {u'name': u'input'}),
+			self.parser.errors, "Failed to report input tag outside of wrapping form tags.")
+
+		self.assertIn(((106, 112), u'form-element-not-in-form', {u'name': u'label'}),
+			self.parser.errors, "Failed to report label tag outside of wrapping form tags.")
+
+		self.assertIn(((122, 129), u'form-element-not-in-form', {u'name': u'output'}),
+			self.parser.errors, "Failed to report output tag outside of wrapping form tag.")
+
+	def test_duplicate_id_value(self):
+		"""
+		Test that the occurrence of duplicate id values is reported as an error.
+		
+		Input:
+		A HTML fragment containing 2 elements with the same value for their id attribute.
+
+		Expected Results:
+		An error should be thrown reporting that an id attribute has the same value of a previously declared id
+		attribute.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p id="blah"></p>
+<p id="blah"></p>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((64, 76), u'duplicate-id-attribute', {u'name': u'p', u'original': u'p'}),
+			self.parser.errors, "Failed to report duplicate id value usage.")
+
+	def test_duplicate_page_title(self):
+		"""
+		Test that a duplicate title element is reported as an error.
+		
+		Input:
+		A HTML fragment containing duplicate title elements.
+
+		Expected Results:
+		An error should be thrown reporting that a duplicate instance of the page 
+		title has been found.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+<title>blah</title>
+<title>blah</title>
+</head>
+<body>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((51, 57), u'duplicate-title-in-head', {u'name': u'title'}),
+			self.parser.errors, "Failed to report duplicate title element.")
+
+	def test_missing_title_element(self):
+		"""
+		Test that a missing title element as part of the head section
+		is reported as missing.
+		
+		Input:
+		A HTML fragment containing a basic page structure but missing the required
+		title element in the head section.
+
+		Expected Results:
+		An error should be thrown reporting that the title element is missing from
+		the head sectionself.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((-1, -1), u'title-element-missing-from-head', {}),
+			self.parser.errors, "Failed to report missing title element.")
+
+	def test_img_missing_alt_attribute(self):
+		"""
+		Test that an img tag missing the required alt attribute is reported
+		as an error.
+		
+		Input:
+		A HTML fragment containing an img tag missing the required alt attribute.
+
+		Expected Results:
+		An error should be thrown reporting that the alt attribute is missing for the 
+		given img tag.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<img>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((46, 50), u'img-element-missing-alt-attribute', {u'name': u'img'}),
+			self.parser.errors, "Failed to report missing alt attribute for the given img tag.")
+
+	def test_img_alt_attribute_empty(self):
+		"""
+		Test that an img tag's alt attribute, when empty, is reported as an error.
+		
+		Input:
+		A HTML fragment containing an img tag with an empty alt attribute.
+
+		Expected Results:
+		An error should be thrown reporting that the alt attribute is empty.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<img alt="">
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((46, 57), u'img-alt-attribute-empty', {u'attr': u''}),
+			self.parser.errors, "Failed to report empty alt attriubte for img tag.")
+
+	def test_missing_closing_tag_before_footer(self):
+		"""
+		Test that any open tags (missing the closing tag) are reported if the 
+		footer section occurs before closing tag.
+		
+		Input:
+		A HTML fragment containing an open 'a' tag which is missing the closing tag, 
+		followed by the footer section.
+
+		Expected Results:
+		An error should be thrown reporting that the closing tag wasn't found before
+		the footer section.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<a>
+<footer>
+</footer>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((50, 57), u'missing-end-tag-before-footer', {u'name': u'a'}),
+			self.parser.errors, "Failed to report missing end tag before footer section.")
+
+	def test_missing_closing_tags_footer_section(self):
+		"""
+		Test that missing closing tags in the footer section are reported.
+		
+		Input:
+		A HTML fragment containing an 'a' tag with a missing closing tag.
+
+		Expected Results:
+		An error should be thrown reporting that the closing tag is missing within the footer
+		section.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<footer>
+<a>
+</footer>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((59, 67), u'missing-closing-tags-in-footer', {u'name': u'a'}),
+			self.parser.errors, "Failed to report missing closing tag in footer section.")
+
+	def test_invalid_tag_name(self):
+		"""
+		Test that tags with invalid tag names are reported as errors.
+		
+		Input:
+		A HTML fragment containing a tag with an invalid name "blah".
+
+		Expected Results:
+		An error should be thrown reporting that the tag name is invalid.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<blah></blah>
+<footer>
+</footer>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((46, 51), u'invalid-element-name', {u'name': u'blah'}),
+			self.parser.errors, "Failed to report invalid tag name.")
+
+	def test_missing_closing_tag(self):
+		"""
+		Test that any missing closing tags are reported as errors.
+		
+		Input:
+		A HTML fragment containing an opening 'a' tag with a missing closing tag.
+
+		Expected Results:
+		An error should be thrown reporting that the closing tag is missing.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<a>
+<footer>
+</footer>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((46, 48), u'missing-end-tag', {u'name': u'a'}),
+			self.parser.errors, "Failed to report missing closing tag.")
 
 if __name__ == '__main__':
 	unittest.main()

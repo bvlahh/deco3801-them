@@ -46,6 +46,7 @@ urlTagMap = {
 deprecatedTags = [
     "acronym",
     "applet",
+    "b",
     "basefont",
     "big",
     "center",
@@ -53,8 +54,9 @@ deprecatedTags = [
     "font",
     "frame",
     "frameset",
-    "isindex",
+    "i",
     "noframes",
+    "small",
     "strike",
     "tt",
 ]
@@ -310,7 +312,7 @@ errorCodes = {
     "link-rel-attribute-empty": 70,
     "footer-start-tag-missing": 71,
     "footer-end-tag-missing": 72,
-
+    "expected-doctype-but-got-chars": 73,
 
 }
 

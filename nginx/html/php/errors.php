@@ -78,7 +78,8 @@ class Errors
         69 => "A <code><link></code> element is missing a required <code>rel</code> attribute.",
         70 => "A <code><link></code> element's <code>rel</code> attribute is empty. Please enter a valid value for rel.",
         71 => "No <code><footer></code> tag was found in the expected context, implying that no body section exists.",
-        72 => "No <code></footer></code> tag was found in the expected context, implying that no body section exists or it wasn't closed properly."
+        72 => "No <code></footer></code> tag was found in the expected context, implying that no body section exists or it wasn't closed properly.",
+        73 => "Characters were found before the <code><!DOCTYPE html></code> declaration. It is possible you were trying to add a comment before the <code><!DOCTYPE html></code> declaration. Comments in HTML are of the form <!-- Comment -->."
     );
     
     /**

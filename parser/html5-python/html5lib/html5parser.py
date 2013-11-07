@@ -227,7 +227,7 @@ class HTMLParser(object):
 
             # DECO3801 - Removes a token to maintain parity with the 
             # list of tokens which have yet to be processed.
-            #self.remainingTokens.pop(0)
+            self.remainingTokens.pop(0)
 
             if new_token is not None and 'name' in new_token:
                 # DECO3801 - Check tag contains a valid tag name.
@@ -1740,7 +1740,8 @@ def getPhases(debug):
 
         def startTagInput(self, token):
             framesetOK = self.parser.framesetOK
-            self.startTagVoidFormatting(token)
+            # DECO3801 - Removed to prevent clashes with intended error checking.
+            #self.startTagVoidFormatting(token)
             if ("type" in token["data"] and
                     token["data"]["type"][0].translate(asciiUpper2Lower) == "hidden"):
                 # input type=hidden doesn't change framesetOK

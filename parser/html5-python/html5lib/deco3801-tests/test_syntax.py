@@ -107,5 +107,66 @@ class TestSyntax(unittest.TestCase):
 		self.assertIn(((9, 23), u'attributes-in-end-tag', {}),
 			self.parser.errors, "Failed to report attributes in closing tag.")
 
+	def test_duplicate_h1_tags(self):
+		"""
+		Test that any duplicate h1 tags are reported as errors.
+		
+		Input:
+		A HTML fragment containing more than one set of h1 tags.
+
+		Expected Results:
+		An error should be thrown reporting that duplicate h1 tags were found in the document.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1></h1>
+<h1></h1>
+<footer>
+</footer>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((56, 59), u'duplicate-h1-element', {u'name': u'h1'}),
+			self.parser.errors, "Failed to report duplicate h1 tags.")
+
+	def test_heading_order(self):
+		"""
+		Test that heading elements maintain correct order within the document. The 
+		order follows from h1-h6 and they must appear in that order during the document.
+		
+		Input:
+		A HTML fragment containing a set of h2 tags appearing before a set of h1 tags.
+
+		Expected Results:
+		An error should be thrown reporting that the h2 tags are out of order.
+		"""
+
+		inputFragment = """
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h2></h2>
+<h1></h1>
+<footer>
+</footer>
+</body>
+</html>
+		"""
+
+		self.parser.parse(inputFragment)
+
+		self.assertIn(((46, 49), u'invalid-heading-order', {u'name': u'h2', u'missing': u'h1'}),
+			self.parser.errors, "Failed to report heading tags out of order.")
+
 if __name__ == '__main__':
 	unittest.main()
