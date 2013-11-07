@@ -41,23 +41,6 @@ a:hover {
     
 }
 
-.legendbox {
-    text-align: center;
-    padding: 15px; 
-    border: 1px solid #DDDDDD;
-    width: 75%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.legendbox2 {
-    text-align: center;
-    padding: 15px; 
-    border: 1px solid #DDDDDD;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .topbox_top {
     
     background-color: #FBFBFB;
