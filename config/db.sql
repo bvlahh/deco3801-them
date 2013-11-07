@@ -17,6 +17,15 @@ create table uploaded_files (
     cached_parse text
 );
 
+# install the test/demo file referenced in the help section
+insert into uploaded_files values(
+    -1,
+    -1,
+    "test_html_file.html",
+    "PCFET0NUWVBFIGh0bWw+DQoNCjxodG1sPjxoZWFkPjwvaGVhZD4NCiANCjxib2R5Pg0KPGgyPkkgYmV0IEkgY2FuIHNuZWFrIGluIGEgbG93ZXIgaGVhZGVyLi4uIG9yIG1heWJlIG5vdCE8L2gyPg0KPGgxPkxvb2sgYXQgdGhlIG1hamVzdHkgb2YgbXkgbXVsdGlwbGUgaGVhZGluZyBvbmVzISE8L2gxPg0KPGgxPldhaXQgdGhhdCdzIGEgYmFkIHRoaW5nPC9oMT4NCjxmcmFtZT5JIGNhbiB1c2UgZnJhbWVzLCByaWdodD88L2ZyYW1lPg0KPHA+RGFuZywgd2hhdCBhYm91dCBsZWF2aW5nIGEgdGFnIMO2cGVuLCB3aXRoIGEgaW1hZ2UgPGltZyBzcmM9IiI+IGFuZCBubyBhbHQgdGV4dCENCjwvYm9keT4NCg0KPC9odG1sPg==",
+    "[[62,46,49,{\"name\":\"h2\",\"missing\":\"h1\"}],[41,200,206,{\"name\":\"frame\"}],[41,231,238,{\"name\":\"frame\"}],[51,294,305,{\"name\":\"img\"}],[50,-1,-1,{}],[61,167,170,{\"name\":\"h1\"}],[56,240,242,{\"name\":\"p\"}],[63,-1,-1,{}]]"
+);
+
 delimiter //
 
 create procedure garbage_collect()
