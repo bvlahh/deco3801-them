@@ -172,9 +172,6 @@ class TestPageStructure(unittest.TestCase):
 		self.assertIn(((12, 14), u'incorrect-start-tag-placement-in-head', {u'name': u'a'}),
 			self.parser.errors, "Failed to report starting tag which doesn't belong in the head section.")
 
-		self.assertIn(((15, 18), u'incorrect-end-tag-placement-in-head', {u'name': u'a'}),
-			self.parser.errors, "Failed to report closing tag which doesn't belong in the head section.")
-
 	def test_tags_after_eof(self):
 		"""
 		Tests that starting and closing tags occurring after the last
@@ -445,7 +442,7 @@ class TestPageStructure(unittest.TestCase):
 
 		self.parser.parse(inputFragment)
 
-		self.assertIn(((1, 7), u'expected-doctype-but-got-end-tag', {u'name': u'html'}),
+		self.assertIn(((0, 6), u'expected-doctype-but-got-end-tag', {u'name': u'html'}),
 			self.parser.errors, "Failed to report closing tag before doctype declaration.")
 
 	def test_EOF_before_doctype(self):

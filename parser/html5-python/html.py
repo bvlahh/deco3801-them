@@ -16,6 +16,8 @@ bigdoc = """
 <a>
 </head>
 """
+misplacedLinkTags = "<html><head><head>/head></head></html>"
+tag = "<!DOCTYPE html><html><head></head><body><form><input></input></form></body></html>"
 
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
@@ -38,7 +40,7 @@ table = """
 </table>
 <footer></footer></body></html>
 """
-fragment = bigdoc.decode("utf-8")
+fragment = tag.decode("utf-8") #bigdoc.decode("utf-8")
 
 minidom_document = parser.parse(fragment, files=files, filename=filename)
 # <html><html><body><body></body></body></html></html>
