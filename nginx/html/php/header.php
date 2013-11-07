@@ -18,7 +18,7 @@ function draw_header($title) {
         
         <link rel="icon" type="image/png" href="/images/32px-HTML5_Badge.svg.png" />
 		<link rel="stylesheet" type="text/css" href="/style/style.css" />
-        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sintony">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sintony" />
     </head>
 	
 	<body>
