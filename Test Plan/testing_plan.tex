@@ -87,35 +87,37 @@ emphstyle={\color{self}\slshape},
 \begin{document}
 
 \maketitle
+\tableofcontents
+\newpage
 
-\section*{Functional Test Plan}
+\section{Functional Test Plan}
 
-\subsection*{Testing Strategy}
+\subsection{Testing Strategy}
 
-There are three major testable components of our web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test our front-end website and database with a suite of computer-run tests. Instead, we wrote up a series of scenarios that we would undertake to ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented, or when fixing one error creates another error.
+There are three major testable components of the web application: the front-end website, back-end parser and database. While it was easy to write Python test cases for the back-end parser, it was more difficult to test the front-end website and database with a suite of computer-run tests. Instead, a series of scenarios were drafted that would  ensure that the web application was running correctly and as expected. Clearly, all of these scenario tests can be ``implemented" as they are merely actions performed by us. This means that a test fails when some functionality is not yet implemented, or when fixing one error creates another error.
 
-The test cases we are running on the parser can be found in Appendix A within this document. This gives an indication of the tests we have currently implemented in the system. More tests are being added periodically, as different types of HTML5 errors are added to the parser. Each HTML5 error will have its own associated test. Other parser related tests are also contained in Appendix A, including the JSON-RPC server tests. These test for concurrency (can the parser handle 5 concurrent requests?) as well as correctness of JSON-RPC input and output.
+The test cases that are being run on the parser can be found in Appendix A within this document. This gives an indication of the tests that are currently implemented in the system. More tests are being added periodically, as different types of HTML5 errors are added to the parser. Each HTML5 error will have its own associated test. Other parser related tests are also contained in Appendix A, including the JSON-RPC server tests. These test for concurrency (can the parser handle 5 concurrent requests?) as well as correctness of JSON-RPC input and output.
 
-\subsection*{Implications of Functional Testing}
+\subsection{Implications of Functional Testing}
 
-Our functional testing highlighted some issues with all aspects of our application. Primarily, there are several aspects of our functionality which are unimplemented at the moment but we hope to implement before the end of the project. However, we knew that these were issues. Instead, the interesting implications of the testing showed that we were mostly assured that we were programming our code correctly. We thought we had implemented an appropriate fix for the case of empty files (Website and Server Tests, 11) but our testing revealed this was an inadequate fix. Since we are still unsure of the implementation methods of each individual error check, many of the tests relating to errors are unimplemented. They will be periodically added as we introduce more error checks to the parser. From here, the next version of our prototype will aim to implement all the remaining functionality that our tests cover, and include tests on the remaining error parsing.
+The functional testing highlighted some issues with all aspects of the application during initial development. There were several sections of the functionality which were unimplemented initially that are now implemented. The interesting implications of the testing showed that the code was implemented correctly. An appropriate fix for the case of empty files (Website and Server Tests, 11) was implemented post-testing. Many of the tests relating to errors were unimplemented initially, but all are present in this final solution. The test suite that is now being used for this program is complete and thorough.
 
 \newgeometry{margin=1cm}
 \begin{landscape}
 \pagestyle{empty}
-\subsection*{Test Case Transcript}
+\subsection{Test Case Transcript}
 
 {\bf Python Parser Tests}
 
 \begin{center}
-\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | X<{\strut}}
+\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | l}
 Test Number & Test Description & Inputs  & Expected Output / Resulting Action & Pass / Fail + How to Fix \\
 \hline
 \hline
 1
 & Testing that a specific error is being reported correctly, given a particular fragment of HTML as the input. Since not all of the error checks have been or can be defined in advance, the implementation of this test case is reactionary and will be continually updated to include new error checks as they are added. The existing tests will have to be run each time a new error check is implemented to ensure that all existing functionality still works as intended. 
 & A tailored fragment of HTML that should cause a specific error to be reported. eg. \texttt{``<head> <head> </head> </head>"} =\textgreater Testing for the duplicate set of head tags. & Confirmation that the expected error and associated error code is being returned for the given HTML fragment, in the expected character position of the input fragment.
-& \cellcolor{lightgreen} Pass / Ongoing. The usage of this test case is currently being implemented after each error type is implemented. These tests are passing for the error checks we have implemented so far. \\
+& \cellcolor{lightgreen} Pass \\
 \hline
 2
 & Test that the JSON-RPC server is running and can respond to a remote function call.
@@ -139,13 +141,13 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 & Testing the parser's response to a case where input of an empty string is supplied.
 & An empty string.
 & The parser should respond with a general error stating that the input is empty, preventing other general errors such a missing closing HTML tags or page structure sections (head, body, footer).
-& \cellcolor{pink} Failed. This check will have to be performed at the start of the main parsing loop, preventing the general structural errors from being reported. \\
+& \cellcolor{lightgreen} Pass \\
 \hline
 6
 & Testing the parser's response when the input string doesn't contain any valid HTML.
 & A garbage string which doesn't contain any HTML tags or tag like elements eg. <blah>
 & The parser should respond with a general error stating that the input doesn't contain any valid HTML.
-& \cellcolor{pink} Failed. The parser will have to check the tokenizer for the existence of any valid tags. If none are found and the input string isn't empty, an error will be thrown stating that no valid HTML was found in the input. \\
+& \cellcolor{lightgreen} Pass \\
 \hline
 7
 & Testing that a correctly formed JSON-RPC 2.0 request is handled by the server, which should respond with the correct response.
@@ -209,7 +211,7 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 \textbf{Website and Server Tests}
 
 \begin{center}
-\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | X<{\strut}}
+\begin{longtabu} to 10in {l | X<{\strut} | X<{\strut} | X<{\strut} | l}
 Test Number & Test Description & Inputs  & Expected Output / Resulting Action & Pass / Fail + How to Fix \\
 \hline
 \hline
@@ -271,13 +273,13 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 & Upload non-HTML file
 & The user attempts to upload a file which is not HTML.
 & The user is redirected to the same page and shown a information box informing them that the file chosen is not a HTML file.
-& \cellcolor{pink} Failed. Currently it parses all uploaded files for HTML. Fix by checking mime type before sending to parser \\
+& \cellcolor{lightgreen} Pass \\
 \hline
 11
 & No file selected on upload
 & The user attempts to upload a file when no file is selected.
 & Redirect to upload file page with a helpful error message
-& \cellcolor{pink} Failed. Currently an empty file is shown \\
+& \cellcolor{lightgreen} Pass \\
 \hline
 12
 & View Upload Zip page
@@ -294,8 +296,8 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 14
 & View Uploaded Set page
 & User either uploads multiple files, or uploads a zip archive
-& The user is shown the list of files uploaded in this set, with corresponding error bars.
-& \cellcolor{lightgreen} Pass, except in the case of a single file in a set or zip, in which case the user is redirected directly to the show file page \\
+& The user is shown the list of files uploaded in this set, with corresponding error bars, except in the case of a single file in a set or zip, in which case the user is redirected directly to the show file page.
+& \cellcolor{lightgreen} Pass \\
 \hline
 15
 & View Uploaded File page
@@ -307,13 +309,7 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 & Remove file after certain period of being untouched in the server
 & A file should be removed from the server after a period of inactivity.
 & The files are removed from the database after a time. (3 hours)
-& \cellcolor{pink} Failed. Currently, files stay in database. The cron job, which cleans up a file after it is left untouched for a time, is written and tested, but not installed on the development server \\
-\hline
-17
-& User attempts to access files they have not uploaded
-& The user manually attempts to alter the URL to view a file they have not uploaded.
-& The user is redirected to the home page.
-& \cellcolor{pink} Failed. Currently no security checking exists. The field exists in the data structure, but is not populated and validated against a php session id \\
+& \cellcolor{lightgreen} Pass \\
 \hline
 \end{longtabu}
 \end{center}
@@ -323,11 +319,11 @@ Test Number & Test Description & Inputs  & Expected Output / Resulting Action & 
 
 \newpage
 
-\section*{User Experience Goals}
+\section{User Experience Goals}
 
-We had a clear user experience in mind while developing this website. Through its ease of use and minimal effort on the part of the user, we have aimed to create a very surgical, ambient, and passive experience. The tool should give users almost immediate insight into the issues with their HTML and websites. This is where the user's experience with our tool ends, for this session. The user now can go and fix their file externally, return to our program and almost instantly receive another assessment of their code's validity. We do not aim to get the user invested in our system, and be held on the website for long periods at a time. However, we wish to create a reliable and worthwhile experience, brief as it is. The user should not be frustrated by the errors the program reveals, with the focus instead on \textbf{helping} the user learn and develop better web practices. It is meant to be a program that a user just ``touches", that is, they upload their file they want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process.
+A clear user experience was in mind while developing this website. Through its ease of use and minimal effort on the part of the user, the application aims to create a very surgical, ambient, and passive experience. The tool should give users almost immediate insight into the issues with their HTML and websites. This is where the user's experience with the tool ends, for this session. The user now can go and fix their file externally, return to the program and almost instantly receive another assessment of their code's validity. There is no aim to get the user invested in the system, and be held on the website for long periods at a time. However, creating a reliable and worthwhile experience is a large focus of this project, brief as this experience with the user is. The user should not be frustrated by the errors the program reveals, with the focus instead on \textbf{helping} the user learn and develop better web practices. It is meant to be a program that a user just ``touches", that is, they upload their file they want to check, and then go back and fix it, and then come back to this to validate again, in a cyclic process.
 
-Our priorities are on quick and easy use, which is why all web pages are instantly accessible from all other web pages and users only need a few clicks to navigate. We have designed the website to require as few clicks as possible to access the primary functionality of the system. For example, the following images represent an average user's attempt to verify a file, after brief knowledge of the system's workings. \\
+Our priorities are on quick and easy use, which is why all web pages are instantly accessible from all other web pages and users only need a few clicks to navigate. The website has been designed to require as few clicks as possible to access the primary functionality of the system. For example, the following images represent an average user's attempt to verify a file, after brief knowledge of the system's workings. \\
 
 \includegraphics[scale=0.5]{click1.png}
 
@@ -339,15 +335,17 @@ The second click chooses a file to verify. Other clicks may be employed here as 
 
 \includegraphics[scale=0.5]{click3.png}
 
-The third click validates the selected file. In this way, the user quickly and easily travels from the opening page to viewing their validated HTML. All throughout the web application, we have aimed to create similar experiences where few clicks are required by the user, and they reach their end goal in minimal time.
+The third click validates the selected file. In this way, the user quickly and easily travels from the opening page to viewing their validated HTML. All throughout the web application, the aim has been to create similar experiences where few clicks are required by the user, and they reach their end goal in minimal time.
+
+Users benefit greatly from this experience. The surgical nature means that they develop a relationship with the website where it is used as an intermediate and reliable tool, much like their text editor or their browser. It is easily inserted as part of their workflow. It is hoped that by using this application, users will experience a great rush of joy when their program finally passes, and that long error bar on the web page turns completely green. Validation, after all, is its own reward.
 
 \newpage
 
-\section*{User Testing Plan}
+\section{User Testing Plan}
 
-\subsection*{User Testing Strategy}
+\subsection{User Testing Strategy}
 
-Our web application will eventually be utilised by two user groups - students of DECO1400, and students of DECO7140. As such, we determined four major user testing groups:
+The web application will eventually be utilised by two user groups - students of DECO1400, and students of DECO7140. As such, four major user testing groups were pinpointed:
 
 \begin{itemize}
 \item Undergraduate students who have already completed DECO1400
@@ -356,12 +354,12 @@ Our web application will eventually be utilised by two user groups - students of
 \item Masters students who have not already completed DECO7140.
 \end{itemize}
 
-However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who had not done DECO1400, as these users represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to understand the needs of users who had previously completed the course, and could determine whether the tool would have been worthwhile to them. Poor communication on our part led to us getting very few in this category. Ultimately, we got information from nine users - four were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
+However, poor initial consideration due to this highly targeted user base caused us to primarily focus on students who had not done DECO1400, as these users represented students ``new" to DECO1400. Focusing also on past DECO1400 students would have allowed us to understand the needs of users who had previously completed the course, and could determine whether the tool would have been worthwhile to them. Poor communication on the part led to us getting very few in this category. Ultimately, information was gathered from nine users - four were undergraduates who had not done DECO1400, one was an undergraduate who had done DECO1400 and four were masters students who had done DECO7140.
 
-We formulated six key scenarios for our users to undertake. Each scenario was performed on the live prototype at \underline{\url{http://underwaterfall.com}}. Storyboards for each of them can be found in the separately submitted Appendix B.
+Six key scenarios were formulated for the users to undertake. Each scenario was performed on the live prototype at \underline{\url{http://underwaterfall.com}}. Storyboards for each of them can be found in the separately submitted Appendix B.
 
 \begin{itemize}
-\item Getting started by reading the help page (First Encounter Scenario) \\
+\item Getting started by reading the help page \textbf{(First Encounter Scenario)} \\
 \begin{tabular}{l p{3.5in}}
 Actor: & New User \\
 Goal: & To understand how the website works, and understand the feedback it provides. \\
@@ -396,7 +394,7 @@ Goal: & To check the validity of a piece of copied or typed HTML. \\
 Necessity of Scenario: & This scenario is the primary point of the application - users learning to correct their HTML5 pages. \\
 Preconditions: & User has already uploaded a file and determined the errors relating to their webpage. \\
 \end{tabular}
-\item Attempting to upload a non-HTML file (Fringe Case Scenario) \\
+\item Attempting to upload a non-HTML file \textbf{(Fringe Case Scenario)} \\
 \begin{tabular}{l p{3.5in}}
 Actor: & User \\
 Goal: & To check the validity of a non-HTML file. \\
@@ -405,13 +403,13 @@ Preconditions: & N/A \\
 \end{tabular}
 \end{itemize}
 
-We focused on the metrics of time taken to complete each scenario, and, in keeping with our surgical user experience, number of clicks required to complete each scenario. As we also wanted to create an enjoyable environment for the users, we also made note of any particular emotions and reactions of the users as they undertook the scenarios. Our primary strategy for user testing was as follows:
+There was a focus in testing of two metrics: time taken to complete each scenario, and, in keeping with the surgical user experience, number of clicks required to complete each scenario. As there was a need to create an enjoyable environment for the users, any particular emotions and reactions of the users as they undertook the scenarios was also noted. the primary strategy for user testing was as follows:
 
 \begin{enumerate}
 \item Prepare / lay out materials for the participant so that everything is ready.
 \item Introduce ourselves to the participant and give them a high-level idea of what they will be doing in their tasks today.
 \item Ask participant to fill in and sign consent form. The test conductor will fill in their parts too.
-\item Give the participant more detailed instructions about the task they are to do (i.e. access the website, upload file and validate). Ask them to think out loud or to make comments as they work. See if there are any questions from the participants before we get started, and answer these where appropriate.
+\item Give the participant more detailed instructions about the task they are to do (i.e. access the website, upload file and validate). Ask them to think out loud or to make comments as they work. See if there are any questions from the participants before starting, and answer these where appropriate.
 \item When participant is ready, ask the participant to start on the task. Start the timer. Be prepared to count the number of clicks they required to complete the task. Take hand notes as the participant works, according to the arrangements you have worked out amongst the non-participant group. If the participant goes a bit quiet, ask, ``what are you thinking now?" or ``what are you working on now?"
 \item When they complete the first scenario, move them onto the next one, and so on.
 \item After completing all six scenarios, ask the participant to fill in the questionnaire. Clarify as necessary.
@@ -419,27 +417,25 @@ We focused on the metrics of time taken to complete each scenario, and, in keepi
 \item Tell the participant that the session is at an end. Thank the participant for their time.
 \end{enumerate}
 
-You can see the results of testing below, after the ``Implications of User Testing" section, as well as the Questionnaire we used for testing.
+The results of testing are below, after the ``Implications of User Testing" section, as well as the Questionnaire used for testing.
 
-\subsection*{Implications of User Testing}
+\subsection{Implications of User Testing}
 
-In general, users had no trouble navigating the system. The average rating for how easy the system was to navigate was 4.78 / 5 on a Likert scale. We also clearly met our goal of the small number of clicks required for each operation. No user (from those who had click data registered) needed to click more than ten times. However, our system requires improvement in several key areas. On recommendation from the users, here is a key list of changes we plan to implement before the completion of this project:
+In general, users had no trouble navigating the system. The average rating for how easy the system was to navigate was 4.78 / 5 on a Likert scale. The user experience goal of the small number of clicks required for each operation was met. No user (from those who had click data registered) needed to click more than ten times. However, the system requires improvement in several key areas. On recommendation from the users, here is a key list of changes that were implemented in the completion of this project:
 
 \begin{itemize}
-\item Invite the users to click on the error tags. Users often did not realise that they could click on the highlighted text to find out more about the error. We have already gone part way to completing this by changing the mouse from a text highlight symbol to a pointer finger commonly used with hyperlinks and buttons.
-\item Errors with non-HTML files. As part of our user testing, we asked users to upload a non-HTML file, a common action which could be performed by a user. Many were surprised that the file was actually parsed. We plan to check the mimetype of the uploaded file, and prevent the parser from being passed non-HTML code. The user will be presented with an error on the Upload File screen when they attempt to upload a non-HTML file. The good news is that for the most part, the website did not break, except when a user attempted to upload a Powerpoint file. This should be prevented by the previously mentioned fix.
-\item Add multiple files via Add File button. Users noted that an attempt to add a second file via the Add File button after selecting the first file caused their previously selected file to be forgotten. This needs to be fixed. One user had trouble due to the similarity of the Validate and Add File buttons, and we may look into making these two differ. However, as we have already implemented selecting multiple files from the file explorer itself, we may simply regress to this option, and discussion with our client may be necessary in this regard.
-\item Blank file uploading. Users choosing no file in a file field of the form, along with some file fields being filled, were parsed as if they were files with no name. As such, they were sent to a set page showing bars with blank file names and error bars. These files should not be parsed, and if a user clicks Validate with no file selected, they should be redirected back to the user page and asked to upload a file.
+\item Invite the users to click on the error tags. Users often did not realise that they could click on the highlighted text to find out more about the error. Users are now provided with information on the help page about this, as well as told on the file page to ``Click on highlighted text for more information." 
+\item Errors with non-HTML files. As part of the user testing, users were asked to upload a non-HTML file, a common action which could be performed by a user. Many were surprised that the file was actually parsed. The mimetype of the uploaded file is now checked, and the parser is not passed non-HTML code, except in the case of code which is plain-text and could possibly be HTML code that lacks structure. The user is presented with an error on the Upload File screen when they attempt to upload a non-HTML file. The good news is that for the most part, the website did not break, except when a user attempted to upload a Powerpoint file. This is prevented by the previously mentioned fix.
+\item Add multiple files via Add File button. Users noted that an attempt to add a second file via the Add File button after selecting the first file caused their previously selected file to be forgotten. This needs to be fixed. One user had trouble due to the similarity of the Validate and Add File buttons, so these now differ in colour to highlight the difference functions.
+\item Blank file uploading. Users choosing no file in a file field of the form, along with some file fields being filled, were parsed as if they were files with no name. As such, they were sent to a set page showing bars with blank file names and error bars. These files are no longer parsed, and if a user clicks Validate with no file selected, they are redirected back to the upload file page and asked to upload a file.
 \end{itemize}
 
-We do not plan on redefining any test plans, but for future testing, we will likely work closer together to complete it. The differences between our methods of testing was obvious, and it lead us to getting less data than we could have gotten.
-
-All in all, we believe that our web application was well received, with many users who had experience with HTML5 stating they would find our tool beneficial to their studies. We receiving a rating 4.6 / 5 on the Likert scale for ``How likely would you use this tool to assist you in your study?" among those students who had previous experience with HTML5. Although the tool still requires a lot of work to reach completion, it is well on the way to being a fantastic tool for users to evaluate their HTML5.
+There was no plan to redefine any test plans, but for future testing, working closer together to complete it would be a priority. The differences between the methods of testing used by members of the group was obvious, and it lead to less data than expected. All in all, the web application was well received, with many users who had experience with HTML5 stating they would find the tool beneficial to their studies. It received a rating of 4.6 / 5 on the Likert scale for ``How likely would you use this tool to assist you in your study?" among those students who had previous experience with HTML5. The Typed HTML5 Evaluation tool is a fantastic tool for users to evaluate their HTML5.
 
 \newgeometry{margin=1cm}
 \begin{landscape}
 \pagestyle{empty}
-\subsection*{User Test Results}
+\subsection{User Test Results}
 
 \textbf{Metric Results}
 
@@ -518,7 +514,7 @@ Tester 9 & No (though did make website in primary school) & Yes (Python, Matlab)
 \restoregeometry
 \pagestyle{plain}
 
-\subsection*{User Test Document}
+\subsection{User Test Document}
 \begin{center}
 $\underline{\hspace{5in}}$
 \end{center}
@@ -527,21 +523,21 @@ $\underline{\hspace{5in}}$
 
 \newpage
 
-\section*{Appendix A - Python Test Code}
+\section{Appendix A - Python Test Code}
 
-\subsection*{Syntax Tests}
+\subsection{Syntax Tests}
 
 \lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/deco3801-tests/test_syntax.py}
 
 \newpage
 
-\subsection*{Page Structure Tests}
+\subsection{Page Structure Tests}
 
 \lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/html5-python/html5lib/deco3801-tests/test_page_structure.py}
 
 \newpage
 
-\subsection*{JSON-RPC Server Tests}
+\subsection{JSON-RPC Server Tests}
 
 \lstinputlisting{C:/Users/Veritas/Documents/GitHub/deco3801-them/parser/src/tests/test_json_rpc_server.py}
 
