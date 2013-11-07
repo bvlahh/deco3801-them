@@ -13,6 +13,7 @@ from html5lib import treebuilders
 # Child processes
 _PIDS = []
  
+# Function for terminating all child processes before we exit
 def _kronos(signum, frame):
     # Handle child processes
     for pid in _PIDS:
@@ -34,8 +35,9 @@ def _gogentle(signum, frame):
     # Prevent keyboard interrupt error
     os._exit(1)
 
-# Generates an array of errors found after parsing the given base64 input.
-def parse_base64(input):
+# Generates an array of errors found after parsing the given base64 input. This
+# is our main entry into the heavily modified html5lib parser.
+def parse_html(input):
     parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
     text = base64.b64decode(input["document"])
@@ -43,20 +45,25 @@ def parse_base64(input):
     files = input.get("files")
     filename = input.get("filename")
 
-    if files == []:
+    # If we weren't given any files, set to None (they come through by default as empty strings
+    if files == []: 
         files = None
         filename = None
 
     try:
         document = parser.parse(text, files=files, filename=filename)
-    except: # We probably got here because of a fatal parseError, which we threw to stop parsing early
-        return parser.parseErrors()
+    except: 
+        # We got here because of a fatal parseError, 
+        # which we threw in specific cases to cease parsing immediately
+        pass
 
     if not ascii_only(text):
         parser.parseError("html-contains-non-ascii-characters")
 
     return parser.parseErrors()
 
+# Determines if file contains on ascii content
+# returns true if ascii only, else false
 def ascii_only(input):
     try:
         input.decode('ascii')
@@ -64,28 +71,9 @@ def ascii_only(input):
     except UnicodeDecodeError:
         return False
 
-def line_count(input):
-    if ( type(input) == unicode ):
-        time.sleep(10)
-        return len(input.split('\n'))
-    else:
-        return None
-
-# Basic line count test
-def parse_html(s):
-    return parse_base64(s)
-
-# Registered function for parsing direct input.
-def parse_direct_input(s):
-    return parse_base64(s)
-
-# Sleeps for two seconds before returning the difference
-# between the current time and the given starting time.
-def test_concurrency(start):
-    time.sleep(2)
-    return time.time() - start
- 
-# Server processing
+# Forks a number of RPC servers to list on port 8080 and handle
+# RPC calls to the parser. The function parse_html is registered
+# for RPC calls.
 def main():
     global _PIDS
  
@@ -95,8 +83,6 @@ def main():
     # Register the functions to be called by the PHP client
     s.register_function(parse_html, 'parse_html')
 
-    s.register_function(test_concurrency, 'test_concurrency')
- 
     # Creates 5 child server processes
     for i in range(5):
         # Fork current process

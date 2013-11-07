@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this copies ./src to the server
+# this copies ./rpc-server to the server
 
 server_user='root';
 server_address='vmx14562.hosting24.com.au';
@@ -11,7 +11,7 @@ srv_user='root';
 
 mkdir ./temp1;
 
-cp -r ./src ./temp1
+cp -r ./rpc-server ./temp1
 
 cp -r ./html5-python ./temp1
 
