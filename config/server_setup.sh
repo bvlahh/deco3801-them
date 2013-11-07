@@ -44,11 +44,11 @@ chkconfig --add supervisord;
 chkconfig --level 35 supervisord on;
 
 # iptables firewall rule (allow http traffic inbound)
-mv -f ./iptables /etc/sysconfig/iptables;
+cat ./iptables > /etc/sysconfig/iptables;
 chcon --reference=/etc/sysconfig/syslog /etc/sysconfig/iptables;
 service iptables restart;
 
-# copy config files - we're not customising php.ini yet
+# copy config files
 mv -f ./supervisord.conf /usr/etc/supervisord.conf;
 mv -f ./nginx.conf /etc/nginx/nginx.conf;
 mv -f ./php.ini /etc/php.ini;
@@ -57,5 +57,7 @@ mv -f ./php.ini /etc/php.ini;
 service supervisord start;
 
 sleep 10;
+
+# set up the database
 cat ./db.sql | mysql;
 
