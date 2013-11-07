@@ -101,6 +101,10 @@ class HTMLParser(object):
         self.openStartTags = []
         self.remainingClosingTags = []
 
+        # DECO3801 - Flag set if we want to abort parsing, which occurs in a select
+        # few specific circumstances
+        self.abort = False;
+
         # DECO3801 - Dictionary to track the number of occurrences of each
         # heading type. The second dictionary tracks multiple instances of
         # the h1 tag.
@@ -539,7 +543,7 @@ class HTMLParser(object):
                 if not token["data"]["id"][0] in self.forLabels and not self.tree.openElements[-1].name == "label":
                     self.parseError("input-element-missing-label", {"name": token["name"]})
             else:
-                if not self.tree.openElements[-1].name == "label":
+                if len(self.tree.openElements) == 0 or not self.tree.openElements[-1].name == "label":
                     self.parseError("input-element-missing-label", {"name": token["name"]})
 
         # DECO3801 - Maintains a list of 'for' attributes which
@@ -596,6 +600,11 @@ class HTMLParser(object):
         if self.strict:
             raise ParseError
 
+    def parseFatalError(self, errorcode="XXX-undefined-error", datavars={}):
+        self.errors = []
+        self.errors.append((self.tokenizer.stream.position(), errorcode, datavars))
+        raise ParseError
+        
     # DECO3801 - Raises a parse error using the position stored within the
     # given token
     def parseErrorWithPos(self, position, errorcode="XXX-undefined-error", datavars={}):
@@ -950,7 +959,8 @@ def getPhases(debug):
             self.parser.phase = self.parser.phases["beforeHtml"]
 
         def processCharacters(self, token):
-            self.parser.parseError("expected-doctype-but-got-chars")
+            #self.parser.parseError("expected-doctype-but-got-chars")
+            self.parser.parseFatalError("possible-nonhtml-file")
             self.anythingElse()
             return token
 
@@ -967,7 +977,8 @@ def getPhases(debug):
             return token
 
         def processEOF(self):
-            self.parser.parseError("expected-doctype-but-got-eof")
+            self.parser.parseFatalError("possible-nonhtml-file")
+            #self.parser.parseError("expected-doctype-but-got-eof")
             self.anythingElse()
             return True
 

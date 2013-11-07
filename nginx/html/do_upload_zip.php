@@ -51,7 +51,7 @@ for ($i=0; $i<($zip->numFiles); $i++) {
     $parsed = -1;
     $f = finfo_open();
     $mime = finfo_buffer($f, $file_data, FILEINFO_MIME_TYPE);
-    if ($mime == "text/html")
+    if ($mime == "text/html" || $mime == "text/plain")
         $parsed = validate($filenames, $file_name, $encoded_input);
     
     $encoded_parsed = json_encode($parsed);

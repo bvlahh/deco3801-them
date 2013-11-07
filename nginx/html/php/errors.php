@@ -79,7 +79,8 @@ class Errors
         70 => "A <code><link></code> element's <code>rel</code> attribute is empty. Please enter a valid value for rel.",
         71 => "No <code><footer></code> tag was found in the expected context, implying that no body section exists.",
         72 => "No <code></footer></code> tag was found in the expected context, implying that no body section exists or it wasn't closed properly.",
-        73 => "Characters were found before the <code><!DOCTYPE html></code> declaration. It is possible you were trying to add a comment before the <code><!DOCTYPE html></code> declaration. Comments in HTML are of the form <!-- Comment -->."
+        73 => "Characters were found before the <code><!DOCTYPE html></code> declaration. It is possible you were trying to add a comment before the <code><!DOCTYPE html></code> declaration. Comments in HTML are of the form <!-- Comment -->.",
+        74 => "We didn't find any html tag or doctype at the start of this file. If this is a HTML file then please start the document with a <code><!DOCTYPE html></code> tag."
     );
     
     /**
@@ -100,7 +101,7 @@ class Errors
     */
     static function errorColour($error_number) {
         
-        if (in_array($error_number, array(48, 61, 62, 63, 64))) {
+        if (in_array($error_number, array(48, 61, 62, 63, 64, 74))) {
             /* poor practice */
             return "#ffff7f";
         } else if (in_array($error_number, array(47, 51))) {
