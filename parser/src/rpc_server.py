@@ -47,7 +47,10 @@ def parse_base64(input):
         files = None
         filename = None
 
-    document = parser.parse(text, files=files, filename=filename)
+    try:
+        document = parser.parse(text, files=files, filename=filename)
+    except: # We probably got here because of a fatal parseError, which we threw to stop parsing early
+        return parser.parseErrors()
 
     if not ascii_only(text):
         parser.parseError("html-contains-non-ascii-characters")

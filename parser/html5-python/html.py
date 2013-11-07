@@ -17,8 +17,9 @@ bigdoc = """
 </head>
 """
 misplacedLinkTags = "<html><head><head>/head></head></html>"
-tag = "<!DOCTYPE html><html><head></head><body><form><input></input></form></body></html>"
+tag = "<head></head><body><form><input></input></form></body></html>"
 
+nonsense = ""
 parser = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("etree"))
 
 files = ""
@@ -40,9 +41,11 @@ table = """
 </table>
 <footer></footer></body></html>
 """
-fragment = tag.decode("utf-8") #bigdoc.decode("utf-8")
-
-minidom_document = parser.parse(fragment, files=files, filename=filename)
+fragment = nonsense.decode("utf-8") #bigdoc.decode("utf-8")
+try:
+    minidom_document = parser.parse(fragment, files=files, filename=filename)
+except:
+    print "Caught Exception"
 # <html><html><body><body></body></body></html></html>
 # <html><html><head><head></head></head></html></html>
 # <html><html><footer><footer></footer></footer></html></html>
@@ -60,8 +63,8 @@ def parseAgain():
     minidom_document = parser.parse(fragment, files=files, filename=filename)
 
 
-walker = treewalkers.getTreeWalker("etree")
-stream = walker(minidom_document)
+#walker = treewalkers.getTreeWalker("etree")
+#stream = walker(minidom_document)
 
 print '---------------------'
 

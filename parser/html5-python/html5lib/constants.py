@@ -135,7 +135,7 @@ allowedElementNames = [
     "datalist",
     "dd",
     "decorator",
-    "del"
+    "del",
     "details",
     "dfn",
     "dir",
@@ -188,7 +188,7 @@ allowedElementNames = [
     "nobr",
     "noframes",
     "noscript",
-    "object"
+    "object",
     "ol",
     "optgroup",
     "option",
@@ -313,6 +313,7 @@ errorCodes = {
     "footer-start-tag-missing": 71,
     "footer-end-tag-missing": 72,
     "expected-doctype-but-got-chars": 73,
+    "possible-nonhtml-file":74,
 
 }
 
@@ -632,6 +633,8 @@ E = {
         _("Found a start tag after the head phase and before the body phase, implying that it is misplaced."),
     "end-tag-before-body-after-head":
         _("Found a closing tag after the head phase and before the body phase, implying that it is misplaced."),
+    "possible-nonhtml-file":
+        _("Found no doctype of html tag at the start of this file, implying this is not a html file."),
 }
 
 namespaces = {
