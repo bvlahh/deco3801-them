@@ -29,7 +29,7 @@ print <<<END
                 </div>
                 <div>
                     <div style="float: left;">
-                        <button type="button" onclick="addFileUpload(); return false;" class="button">Add File</button>
+                        <button type="button" onclick="addFileUpload(); return false;" class="button" style="background-color: #EEEEEE; color: #e44d26;">Add File</button>
                     </div>
                     <div style="float: right;">
                         <input type="submit" value="Validate" class="button" />

@@ -33,6 +33,9 @@ $set = create_set("");
 
 foreach ($uploaded_files as $uploaded_file) {
     
+    if ($uploaded_file["name"] == "")
+        continue;
+    
     $file_name = $uploaded_file["name"];
     $tmp_file = $uploaded_file["tmp_name"];
     
