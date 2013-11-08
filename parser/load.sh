@@ -2,12 +2,10 @@
 
 # this copies ./rpc-server to the server
 
-server_user='root';
-server_address='vmx14562.hosting24.com.au';
+server_user=$1;
+server_address=$2;
 
 app_dir='~/parser';
-
-srv_user='root';
 
 mkdir ./temp1;
 
