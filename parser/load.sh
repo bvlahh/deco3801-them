@@ -2,6 +2,11 @@
 
 # this copies ./rpc-server to the server
 
+if [ $# -ne  2 ]; then
+    echo "Usage: `basename $0` username serveraddress"
+    exit
+fi
+
 server_user=$1;
 server_address=$2;
 

@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# this copies our files to the server and sets it all up,
+# then loads our application onto it
+
 if [ $# -ne  2 ]; then
-    echo "Usage: `basename $0` user server"
+    echo "Usage: `basename $0` username serveraddress"
     exit
 fi
 

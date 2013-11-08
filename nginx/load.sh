@@ -2,6 +2,11 @@
 
 # this copies ./html to the server
 
+if [ $# -ne  2 ]; then
+    echo "Usage: `basename $0` username serveraddress"
+    exit
+fi
+
 server_user=$1;
 server_address=$2;
 
@@ -14,8 +19,7 @@ mkdir ./temp;
 cp -r ./html ./temp;
 
 cd ./temp;
-# we'll want to do something like this to remove the git hidden structure??
-#rm -rf `find . -type d -name .svn`;
+
 cd ../;
 
 tar -cf temp.tar temp/;
