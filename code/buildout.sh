@@ -9,6 +9,7 @@ if [ $# -ne  2 ]; then
 fi
 
 scp -r ./config $1@$2:~
+scp -r ./scripts $1@$2:~
 
 ssh $1@$2 '
 cd config
