@@ -62,5 +62,5 @@ sleep 10;
 cat ./db.sql | mysql;
 
 # install the cron job
-echo “* * * * * root /root/scripts/garbage_collect.sh” >> /etc/crontab
+echo "* * * * * root /root/scripts/garbage_collect.sh" >> /etc/crontab
 
