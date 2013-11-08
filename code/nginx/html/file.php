@@ -43,7 +43,7 @@ $input = str_replace("\r", "", $input);
 $general_document_errors = array();
 $in_document_errors = array();
 
-if ( count($parsed_errors) > 1 )
+if ( count($parsed_errors) > 0 )
     foreach ( $parsed_errors as $parsed_error ) {
         
         if ( $parsed_error[1] == -1 )
